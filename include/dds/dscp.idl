@@ -818,7 +818,7 @@ module DDS {
 		string get_filter_expression();
 		
 		ReturnCode_t get_expression_parameters(
-			inout StringSeq);
+			inout StringSeq expression_parameters);
 		
 		ReturnCode_t set_expression_parameters(
 			in StringSeq expression_parameters);
@@ -830,7 +830,7 @@ module DDS {
 		string get_subscription_expression();
 		
 		ReturnCode_t get_expression_parameters(
-			inout StringSeq);
+			inout StringSeq expression_parameters);
 		
 		ReturnCode_t set_expression_parameters(
 			in StringSeq expression_parameters);
@@ -917,15 +917,15 @@ module DDS {
 		ReturnCode_t wait_for_acknowledgments(
 			in Duration_t max_wait);
 		// Access the status
-		ReturnCode_t get_livel	iness_lost_status(
-			inout LivelinessLostStatus);
-		ReturnCode_t get_offered_deadl	ine_missed_status(
+		ReturnCode_t get_liveliness_lost_status(
+			inout LivelinessLostStatus status);
+		ReturnCode_t get_offered_deadline_missed_status(
 			inout OfferedDeadlineMissedStatus status);
-		ReturnCode_t get_offered_	incompatible_qos_status(
+		ReturnCode_t get_offered_incompatible_qos_status(
 			inout OfferedIncompatibleQosStatus status);
 		ReturnCode_t get_publication_matched_status(
 			inout PublicationMatchedStatus status);
-		ReturnCode_t assert_livel	iness();
+		ReturnCode_t assert_liveliness();
 		ReturnCode_t get_matched_subscriptions(
 			inout InstanceHandleSeq subscription_handles);
 		ReturnCode_t get_matched_subscription_data(
