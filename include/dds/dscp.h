@@ -26,6 +26,14 @@ namespace dds {
 		uint32_t length;
 		
 		T* buffer;
+		
+		sequence();
+		sequence(T* array, uint32_t size);
+		virtual ~sequence();
+		
+		bool add(T value);
+		T& operator[](uint32_t index);
+		const T& operator[](uint32_t index) const;
 	};
 	
 	typedef DOMAINID_TYPE_NATIVE DomainId_t;
@@ -33,6 +41,10 @@ namespace dds {
 	 
 	struct BuiltinTopicKey_t {
 		BUILTIN_TOPIC_KEY_TYPE_NATIVE value[3];
+
+		BuiltinTopicKey_t();
+		BuiltinTopicKey_t(BUILTIN_TOPIC_KEY_TYPE_NATIVE value[3]);
+		virtual ~BuiltinTopicKey_t();
 	};
 	
 	typedef sequence<InstanceHandle_t> InstanceHandleSeq;
@@ -44,11 +56,19 @@ namespace dds {
 	struct Duration_t {
 		int32_t sec;
 		uint32_t nanosec;
+		
+		Duration_t();
+		Duration_t(int32_t sec, uint32_t nanosec);
+		virtual ~Duration_t();
 	};
 	
 	struct Time_t {
 		int32_t sec;
 		uint32_t nanosec;
+		
+		Time_t();
+		Time_t(int32_t sec, uint32_t nanosec);
+		virtual ~Time_t();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -108,11 +128,19 @@ namespace dds {
 	struct InconsistentTopicStatus {
 		int32_t total_count;
 		int32_t total_count_change;
+		
+		InconsistentTopicStatus();
+		InconsistentTopicStatus(int32_t total_count, int32_t total_count_change);
+		virtual ~InconsistentTopicStatus();
 	};
 	
 	struct SampleLostStatus {
 		int32_t total_count;
 		int32_t total_count_change;
+		
+		SampleLostStatus();
+		SampleLostStatus(int32_t total_count, int32_t total_count_change);
+		virtual ~SampleLostStatus();
 	};
 	
 	enum SampleRejectedStatusKind {
@@ -127,11 +155,23 @@ namespace dds {
 		int32_t				total_count_change;
 		SampleRejectedStatusKind	last_reason;
 		InstanceHandle_t		last_instance_handle;
+		
+		SampleRejectedStatus();
+		SampleRejectedStatus(
+			int32_t total_count, 
+			int32_t total_count_change, 
+			SampleRejectedStatusKind last_reason, 
+			InstanceHandle_t last_instance_handle);
+		virtual ~SampleRejectedStatus();
 	};
 	
 	struct LivelinessLostStatus {
 		int32_t	total_count;
 		int32_t	total_count_change;
+		
+		LivelinessLostStatus();
+		LivelinessLostStatus(int32_t total_count, int32_t total_count_change);
+		virtual ~LivelinessLostStatus();
 	};
 	
 	struct LivelinessChangedStatus {
@@ -140,23 +180,52 @@ namespace dds {
 		int32_t			alive_count_change;
 		int32_t			not_alive_count_change;
 		InstanceHandle_t	last_publication_handle;
+		
+		LivelinessChangedStatus();
+		LivelinessChangedStatus(
+			int32_t alive_count, 
+			int32_t not_alive_count, 
+			int32_t alive_count_change, 
+			int32_t not_alive_count_change, 
+			InstanceHandle_t last_publication_handle);
+		virtual ~LivelinessChangedStatus();
 	};
 	
 	struct OfferedDeadlineMissedStatus {
 		int32_t			total_count;
 		int32_t			total_count_change;
 		InstanceHandle_t	last_instance_handle;
+		
+	 	OfferedDeadlineMissedStatus();
+	 	OfferedDeadlineMissedStatus(
+			int32_t total_count,
+			int32_t total_count_change,
+			InstanceHandle_t last_instance_handle);
+	 	virtual ~OfferedDeadlineMissedStatus();
 	};
 	
 	struct RequestedDeadlineMissedStatus {
 		int32_t			total_count;
 		int32_t			total_count_change;
 		InstanceHandle_t	last_instance_handle;
+		
+		RequestedDeadlineMissedStatus();
+		RequestedDeadlineMissedStatus(
+			int32_t total_count,
+			int32_t total_count_change,
+			InstanceHandle_t last_instance_handle);
+		virtual ~RequestedDeadlineMissedStatus();
 	};
 	
 	struct QosPolicyCount {
 		QosPolicyId_t		policy_id;
 		int32_t			count;
+		
+		QosPolicyCount();
+		QosPolicyCount(
+			QosPolicyId_t policy_id,
+			int32_t count);
+		virtual ~QosPolicyCount();
 	};
 	
 	typedef sequence<QosPolicyCount> QosPolicyCountSeq;
@@ -166,6 +235,14 @@ namespace dds {
 		int32_t			total_count_change;
 		QosPolicyId_t		last_policy_id;
 		QosPolicyCountSeq	policies;
+		
+		OfferedIncompatibleQosStatus();
+		OfferedIncompatibleQosStatus(
+			int32_t total_count,
+			int32_t total_count_change,
+			QosPolicyId_t last_policy_id,
+			QosPolicyCountSeq policies);
+		virtual ~OfferedIncompatibleQosStatus();
 	};
 	
 	struct RequestedIncompatibleQosStatus {
@@ -173,6 +250,14 @@ namespace dds {
 		int32_t			total_count_change;
 		QosPolicyId_t		last_policy_id;
 		QosPolicyCountSeq	policies;
+		
+		RequestedIncompatibleQosStatus();
+		RequestedIncompatibleQosStatus(
+			int32_t total_count,
+			int32_t total_count_change,
+			QosPolicyId_t last_policy_id,
+			QosPolicyCountSeq policies);
+		virtual ~RequestedIncompatibleQosStatus();
 	};
 	
 	struct PublicationMatchedStatus {
@@ -181,6 +266,15 @@ namespace dds {
 		int32_t			current_count;
 		int32_t			current_count_change;
 		InstanceHandle_t	last_subscription_handle;
+		
+		PublicationMatchedStatus();
+		PublicationMatchedStatus(
+			int32_t total_count,
+			int32_t total_count_change,
+			int32_t current_count,
+			int32_t current_count_change,
+			InstanceHandle_t last_subscription_handle);
+		virtual ~PublicationMatchedStatus();
 	};
 	
 	struct SubscriptionMatchedStatus {
@@ -189,6 +283,15 @@ namespace dds {
 		int32_t			current_count;
 		int32_t			current_count_change;
 		InstanceHandle_t	last_publication_handle;
+		
+		SubscriptionMatchedStatus();
+		SubscriptionMatchedStatus(
+			int32_t total_count,
+			int32_t total_count_change,
+			int32_t current_count,
+			int32_t current_count_change,
+			InstanceHandle_t last_publication_handle);
+		virtual ~SubscriptionMatchedStatus();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -211,11 +314,19 @@ namespace dds {
 	class Listener {};
 	
 	class TopicListener : Listener {
+	public:
+		TopicListener();
+		virtual ~TopicListener();
+		
 		void on_inconsistent_topic(const Topic* the_topic, 
 			const InconsistentTopicStatus* status);
 	};
 	
 	class DataWriterListener : Listener {
+	public:
+		DataWriterListener();
+		virtual ~DataWriterListener();
+		
 		void on_offered_deadline_missed(
 			const DataWriter* writer, 
 			const OfferedDeadlineMissedStatus* status);
@@ -234,6 +345,10 @@ namespace dds {
 	};
 	
 	class DataReaderListener : Listener {
+	public:
+		DataReaderListener();
+		virtual ~DataReaderListener();
+		
 		void on_requested_deadline_missed(
 			const DataReader* the_reader, 
 			const RequestedDeadlineMissedStatus* status);
@@ -257,6 +372,10 @@ namespace dds {
 	};
 	
 	class SubscriberListener : DataReaderListener {
+	public:
+		SubscriberListener();
+		virtual ~SubscriberListener();
+		
 		void on_data_on_readers(
 			const Subscriber* the_subscriber);
 	};
@@ -264,6 +383,9 @@ namespace dds {
 	class DomainParticipantListener : TopicListener,
 					PublisherListener,
 					SubscriberListener {
+	public:
+		DomainParticipantListener();
+		virtual ~DomainParticipantListener();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -271,12 +393,20 @@ namespace dds {
 	// ----------------------------------------------------------------------
 	
 	class Condition {
+	public:
+		Condition();
+		virtual ~Condition();
+		
 		bool get_trigger_value();
 	};
 	
 	typedef sequence<Condition> ConditionSeq;
 	
 	class WaitSet {
+	public:
+		WaitSet();
+		virtual ~WaitSet();
+		
 		ReturnCode_t wait(
 			ConditionSeq* active_conditions,
 			const Duration_t* timeout);
@@ -289,11 +419,19 @@ namespace dds {
 	};
 	
 	class GuardCondition : Condition {
+	public:
+		GuardCondition();
+		virtual ~GuardCondition();
+		
 		ReturnCode_t set_trigger_value(
 			bool value);
 	};
 	
 	class StatusCondition : Condition {
+	public:
+		StatusCondition();
+		virtual ~StatusCondition();
+		
 		StatusMask* get_enabled_statuses();
 		ReturnCode_t set_enabled_statuses(
 			const StatusMask* mask);
@@ -330,6 +468,10 @@ namespace dds {
 	const InstanceStateMask NOT_ALIVE_INSTANCE_STATE		= 0x006;
 	
 	class ReadCondition : Condition {
+	public:
+		ReadCondition();
+		virtual ~ReadCondition();
+		
 		SampleStateMask* get_sample_state_mask();
 		ViewStateMask* get_view_state_mask();
 		InstanceStateMask* get_instance_state_mask();
@@ -337,6 +479,10 @@ namespace dds {
 	};
 	
 	class QueryCondition : ReadCondition {
+	public:
+		QueryCondition();
+		virtual ~QueryCondition();
+		
 		char* get_query_expression();
 		ReturnCode_t get_query_parameters(
 			StringSeq* query_parameters);
@@ -347,27 +493,27 @@ namespace dds {
 	// ----------------------------------------------------------------------
 	// Qos
 	// ----------------------------------------------------------------------
-	const char* USERDATA_QOS_POLICY_NAME			= "UserData";
-	const char* DURABILITY_QOS_POLICY_NAME			= "Durability";
-	const char* PRESENTATION_QOS_POLICY_NAME		= "Presentation";
-	const char* DEADLINE_QOS_POLICY_NAME			= "Deadline";
-	const char* LATENCYBUDGET_QOS_POLICY_NAME		= "LatencyBudget";
-	const char* OWNERSHIP_QOS_POLICY_NAME			= "Ownership";
-	const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME		= "OwnershipStrength";
-	const char* LIVELINESS_QOS_POLICY_NAME			= "Liveliness";
-	const char* TIMEBASEDFILTER_QOS_POLICY_NAME		= "TimeBasedFilter";
-	const char* PARTITION_QOS_POLICY_NAME			= "Partition";
-	const char* RELIABILITY_QOS_POLICY_NAME			= "Reliability";
-	const char* DESTINATIONORDER_QOS_POLICY_NAME		= "DestinationOrder";
-	const char* HISTORY_QOS_POLICY_NAME			= "History";
-	const char* RESOURCELIMITS_QOS_POLICY_NAME		= "ResourceLimits";
-	const char* ENTITYFACTORY_QOS_POLICY_NAME		= "EntityFactory";
-	const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME		= "WriterDataLifecycle";
-	const char* READERDATALIFECYCLE_QOS_POLICY_NAME		= "ReaderDataLifecycle";
-	const char* TOPICDATA_QOS_POLICY_NAME			= "TopicData";
-	const char* GROUPDATA_QOS_POLICY_NAME			= "TransportPriority";
-	const char* LIFESPAN_QOS_POLICY_NAME			= "Lifespan";
-	const char* DURABILITYSERVICE_POLICY_NAME		= "DurabilityService";
+	extern const char* USERDATA_QOS_POLICY_NAME			;//= "UserData";
+	extern const char* DURABILITY_QOS_POLICY_NAME			;//= "Durability";
+	extern const char* PRESENTATION_QOS_POLICY_NAME			;//= "Presentation";
+	extern const char* DEADLINE_QOS_POLICY_NAME			;//= "Deadline";
+	extern const char* LATENCYBUDGET_QOS_POLICY_NAME		;//= "LatencyBudget";
+	extern const char* OWNERSHIP_QOS_POLICY_NAME			;//= "Ownership";
+	extern const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME		;//= "OwnershipStrength";
+	extern const char* LIVELINESS_QOS_POLICY_NAME			;//= "Liveliness";
+	extern const char* TIMEBASEDFILTER_QOS_POLICY_NAME		;//= "TimeBasedFilter";
+	extern const char* PARTITION_QOS_POLICY_NAME			;//= "Partition";
+	extern const char* RELIABILITY_QOS_POLICY_NAME			;//= "Reliability";
+	extern const char* DESTINATIONORDER_QOS_POLICY_NAME		;//= "DestinationOrder";
+	extern const char* HISTORY_QOS_POLICY_NAME			;//= "History";
+	extern const char* RESOURCELIMITS_QOS_POLICY_NAME		;//= "ResourceLimits";
+	extern const char* ENTITYFACTORY_QOS_POLICY_NAME		;//= "EntityFactory";
+	extern const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME		;//= "WriterDataLifecycle";
+	extern const char* READERDATALIFECYCLE_QOS_POLICY_NAME		;//= "ReaderDataLifecycle";
+	extern const char* TOPICDATA_QOS_POLICY_NAME			;//= "TopicData";
+	extern const char* GROUPDATA_QOS_POLICY_NAME			;//= "TransportPriority";
+	extern const char* LIFESPAN_QOS_POLICY_NAME			;//= "Lifespan";
+	extern const char* DURABILITYSERVICE_POLICY_NAME		;//= "DurabilityService";
 	const QosPolicyId_t INVALID_QOS_POLICY_ID		= 0;
 	const QosPolicyId_t USERDATA_QOS_POLICY_ID		= 1;
 	const QosPolicyId_t DURABILITY_QOS_POLICY_ID		= 2;
@@ -394,22 +540,45 @@ namespace dds {
 	
 	struct UserDataQosPolicy {
 		sequence<uint8_t> value;
+		
+		UserDataQosPolicy();
+		UserDataQosPolicy(sequence<uint8_t>* value);
+		UserDataQosPolicy(uint8_t* array, uint32_t size);
+		virtual ~UserDataQosPolicy();
 	};
 	
 	struct TopicDataQosPolicy {
 		sequence<uint8_t> value;
+		
+		TopicDataQosPolicy();
+		TopicDataQosPolicy(sequence<uint8_t>* value);
+		TopicDataQosPolicy(uint8_t* array, uint32_t size);
+		virtual ~TopicDataQosPolicy();
 	};
 	
 	struct GroupDataQosPolicy {
 		sequence<uint8_t> value;
+		
+		GroupDataQosPolicy();
+		GroupDataQosPolicy(sequence<uint8_t>* value);
+		GroupDataQosPolicy(uint8_t* array, uint32_t size);
+		virtual ~GroupDataQosPolicy();
 	};
 	
 	struct TransportPriorityQosPolicy {
 		int32_t value;
+		
+		TransportPriorityQosPolicy();
+		TransportPriorityQosPolicy(int32_t value);
+		virtual ~TransportPriorityQosPolicy();
 	};
 	
 	struct LifespanQosPolicy {
 		Duration_t duration;
+		
+		LifespanQosPolicy();
+		LifespanQosPolicy(Duration_t* duration);
+		virtual ~LifespanQosPolicy();
 	};
 	
 	enum DurabilityQosPolicyKind {
@@ -421,6 +590,10 @@ namespace dds {
 	
 	struct DurabilityQosPolicy {
 		DurabilityQosPolicyKind kind;
+		
+		DurabilityQosPolicy();
+		DurabilityQosPolicy(DurabilityQosPolicyKind* kind);
+		virtual ~DurabilityQosPolicy();
 	};
 	
 	enum PresentationQosPolicyAccessScopeKind {
@@ -433,14 +606,29 @@ namespace dds {
 		PresentationQosPolicyAccessScopeKind access_scope;
 		bool coherent_access;
 		bool ordered_access;
+		
+		PresentationQosPolicy();
+		PresentationQosPolicy(
+			PresentationQosPolicyAccessScopeKind* access_scope,
+			bool coherent_access,
+			bool ordered_access);
+		virtual ~PresentationQosPolicy();
 	};
 	
 	struct DeadlineQosPolicy {
 		Duration_t period;
+		
+		DeadlineQosPolicy();
+		DeadlineQosPolicy(Duration_t* period);
+		virtual ~DeadlineQosPolicy();
 	};
 	
 	struct LatencyBudgetQosPolicy {
 		Duration_t duration;
+		
+		LatencyBudgetQosPolicy();
+		LatencyBudgetQosPolicy(Duration_t* duration);
+		virtual ~LatencyBudgetQosPolicy();
 	};
 	
 	enum OwnershipQosPolicyKind {
@@ -450,10 +638,18 @@ namespace dds {
 	
 	struct OwnershipQosPolicy {
 		OwnershipQosPolicyKind kind;
+		
+		OwnershipQosPolicy();
+		OwnershipQosPolicy(OwnershipQosPolicyKind* kind);
+		virtual ~OwnershipQosPolicy();
 	};
 	
 	struct OwnershipStrengthQosPolicy {
 		int32_t value;
+		
+		OwnershipStrengthQosPolicy();
+		OwnershipStrengthQosPolicy(int32_t value);
+		virtual ~OwnershipStrengthQosPolicy();
 	};
 	
 	enum LivelinessQosPolicyKind {
@@ -465,14 +661,28 @@ namespace dds {
 	struct LivelinessQosPolicy {
 		LivelinessQosPolicyKind kind;
 		Duration_t lease_duration;
+		
+		LivelinessQosPolicy();
+		LivelinessQosPolicy(
+			LivelinessQosPolicyKind* kind,
+			Duration_t* lease_duration);
+		virtual ~LivelinessQosPolicy();
 	};
 	
 	struct TimeBasedFilterQosPolicy {
 		Duration_t minimum_separation;
+		
+		TimeBasedFilterQosPolicy();
+		TimeBasedFilterQosPolicy(Duration_t* minimum_separation);
+		virtual ~TimeBasedFilterQosPolicy();
 	};
 	
 	struct PartitionQosPolicy {
 		StringSeq name;
+		
+		PartitionQosPolicy();
+		PartitionQosPolicy(StringSeq* name);
+		virtual ~PartitionQosPolicy();
 	};
 	
 	enum ReliabilityQosPolicyKind {
@@ -483,6 +693,12 @@ namespace dds {
 	struct ReliabilityQosPolicy {
 		ReliabilityQosPolicyKind kind;
 		Duration_t max_blocking_time;
+		
+		ReliabilityQosPolicy();
+		ReliabilityQosPolicy(
+			ReliabilityQosPolicyKind* kind,
+			Duration_t* max_blocking_time);
+		virtual ~ReliabilityQosPolicy();
 	};
 	
 	enum DestinationOrderQosPolicyKind {
@@ -492,6 +708,10 @@ namespace dds {
 	
 	struct DestinationOrderQosPolicy {
 		DestinationOrderQosPolicyKind kind;
+		
+		DestinationOrderQosPolicy();
+		DestinationOrderQosPolicy(DestinationOrderQosPolicyKind* kind);
+		virtual ~DestinationOrderQosPolicy();
 	};
 	
 	enum HistoryQosPolicyKind {
@@ -502,25 +722,52 @@ namespace dds {
 	struct HistoryQosPolicy {
 		HistoryQosPolicyKind kind;
 		int32_t depth;
+		
+		HistoryQosPolicy();
+		HistoryQosPolicy(
+			HistoryQosPolicyKind* kind,
+			int32_t depth);
+		virtual ~HistoryQosPolicy();
 	};
 	
 	struct ResourceLimitsQosPolicy {
 		int32_t max_samples;
 		int32_t max_instances;
 		int32_t max_samples_per_instance;
+		
+		ResourceLimitsQosPolicy();
+		ResourceLimitsQosPolicy(
+			int32_t max_samples,
+			int32_t max_instances,
+			int32_t max_samples_per_instance);
+		virtual ~ResourceLimitsQosPolicy();
 	};
 	
 	struct EntityFactoryQosPolicy {
 		bool autoenable_created_entities;
+		
+		EntityFactoryQosPolicy();
+		EntityFactoryQosPolicy(bool autoenable_created_entities);
+		virtual ~EntityFactoryQosPolicy();
 	};
 	
 	struct WriterDataLifecycleQosPolicy {
 		bool autodispose_unregistered_instances;
+		
+		WriterDataLifecycleQosPolicy();
+		WriterDataLifecycleQosPolicy(bool autodispose_unregistered_instances);
+		virtual ~WriterDataLifecycleQosPolicy();
 	};
 	
 	struct ReaderDataLifecycleQosPolicy {
 		Duration_t autopurge_nowriter_samples_delay;
 		Duration_t autopurge_disposed_samples_delay;
+		
+		ReaderDataLifecycleQosPolicy();
+		ReaderDataLifecycleQosPolicy(
+			Duration_t* autopurge_nowriter_samples_delay,
+			Duration_t* autopurge_disposed_samples_delay);
+		virtual ~ReaderDataLifecycleQosPolicy();
 	};
 	
 	struct DurabilityServiceQosPolicy {
@@ -530,15 +777,35 @@ namespace dds {
 		int32_t			max_samples;
 		int32_t			max_instances;
 		int32_t			max_samples_per_instance;
+		
+		DurabilityServiceQosPolicy();
+		DurabilityServiceQosPolicy(
+			Duration_t* service_cleanup_delay,
+			HistoryQosPolicyKind* history_kind,
+			int32_t history_depth,
+			int32_t max_samples,
+			int32_t max_instances,
+			int32_t max_samples_per_instance);
+		virtual ~DurabilityServiceQosPolicy();
 	};
 	
 	struct DomainParticipantFactoryQos {
 		EntityFactoryQosPolicy	entity_factory;
+		
+		DomainParticipantFactoryQos();
+		DomainParticipantFactoryQos(EntityFactoryQosPolicy* entity_factory);
+		virtual ~DomainParticipantFactoryQos();
 	};
 	
 	struct DomainParticipantQos {
 		UserDataQosPolicy	user_data;
 		EntityFactoryQosPolicy	entity_factory;
+		
+		DomainParticipantQos();
+		DomainParticipantQos(
+			UserDataQosPolicy* user_data,
+			EntityFactoryQosPolicy* entity_factory);
+		virtual ~DomainParticipantQos();
 	};
 	
 	struct TopicQos {
@@ -555,6 +822,23 @@ namespace dds {
 		TransportPriorityQosPolicy	transport_priority;
 		LifespanQosPolicy		lifespan;
 		OwnershipQosPolicy		ownership;
+		
+		TopicQos();
+		TopicQos(
+			TopicDataQosPolicy* topic_data,
+			DurabilityQosPolicy* durability,
+			DurabilityServiceQosPolicy* durability_service,
+			DeadlineQosPolicy* deadline,
+			LatencyBudgetQosPolicy* latency_budget,
+			LivelinessQosPolicy* liveliness,
+			ReliabilityQosPolicy* reliability,
+			DestinationOrderQosPolicy* destination_order,
+			HistoryQosPolicy* history,
+			ResourceLimitsQosPolicy* resource_limits,
+			TransportPriorityQosPolicy* transport_priority,
+			LifespanQosPolicy* lifespan,
+			OwnershipQosPolicy* ownership);
+		virtual ~TopicQos();
 	};
 	
 	struct DataWriterQos {
@@ -573,6 +857,25 @@ namespace dds {
 		OwnershipQosPolicy		ownership;
 		OwnershipStrengthQosPolicy	ownership_strength;
 		WriterDataLifecycleQosPolicy	writer_data_lifecycle;
+		
+		DataWriterQos();
+		DataWriterQos(
+			DurabilityQosPolicy* durability,
+			DurabilityServiceQosPolicy* durability_service,
+			DeadlineQosPolicy* deadline,
+			LatencyBudgetQosPolicy* latency_budget,
+			LivelinessQosPolicy* liveliness,
+			ReliabilityQosPolicy* reliability,
+			DestinationOrderQosPolicy* destination_order,
+			HistoryQosPolicy* history,
+			ResourceLimitsQosPolicy* resource_limits,
+			TransportPriorityQosPolicy* transport_priority,
+			LifespanQosPolicy* lifespan,
+			UserDataQosPolicy* user_data,
+			OwnershipQosPolicy* ownership,
+			OwnershipStrengthQosPolicy* ownership_strength,
+			WriterDataLifecycleQosPolicy* writer_data_lifecycle);
+		virtual ~DataWriterQos();
 	};
 	
 	struct PublisherQos {
@@ -580,6 +883,14 @@ namespace dds {
 		PartitionQosPolicy		partition;
 		GroupDataQosPolicy		group_data;
 		EntityFactoryQosPolicy		entity_factory;
+		
+		PublisherQos();
+		PublisherQos(
+			PresentationQosPolicy* presentation,
+			PartitionQosPolicy* partition,
+			GroupDataQosPolicy* group_data,
+			EntityFactoryQosPolicy* entity_factory);
+		virtual ~PublisherQos();
 	};
 	
 	struct DataReaderQos {
@@ -595,6 +906,22 @@ namespace dds {
 		OwnershipQosPolicy		ownership;
 		TimeBasedFilterQosPolicy	time_based_filter;
 		ReaderDataLifecycleQosPolicy	reader_data_lifecycle;
+		
+		DataReaderQos();
+		DataReaderQos(
+			DurabilityQosPolicy* durability,
+			DeadlineQosPolicy* deadline,
+			LatencyBudgetQosPolicy* latency_budget,
+			LivelinessQosPolicy* liveliness,
+			ReliabilityQosPolicy* reliability,
+			DestinationOrderQosPolicy* destination_order,
+			HistoryQosPolicy* history,
+			ResourceLimitsQosPolicy* resource_limits,
+			UserDataQosPolicy* user_data,
+			OwnershipQosPolicy* ownership,
+			TimeBasedFilterQosPolicy* time_based_filter,
+			ReaderDataLifecycleQosPolicy* reader_data_lifecycle);
+		virtual ~DataReaderQos();
 	};
 	
 	struct SubscriberQos {
@@ -602,12 +929,26 @@ namespace dds {
 		PartitionQosPolicy		partition;
 		GroupDataQosPolicy		group_data;
 		EntityFactoryQosPolicy		entity_factory;
+		
+		SubscriberQos();
+		SubscriberQos(
+			PresentationQosPolicy* presentation,
+			PartitionQosPolicy* partition,
+			GroupDataQosPolicy* group_data,
+			EntityFactoryQosPolicy* entity_factory);
+		virtual ~SubscriberQos();
 	};
 	
 	// ----------------------------------------------------------------------
 	struct ParticipantBuiltinTopicData {
 		BuiltinTopicKey_t		key;
 		UserDataQosPolicy		user_data;
+		
+		ParticipantBuiltinTopicData();
+		ParticipantBuiltinTopicData(
+			BuiltinTopicKey_t key,
+			UserDataQosPolicy* user_data);
+		virtual ~ParticipantBuiltinTopicData();
 	};
 	
 	struct TopicBuiltinTopicData {
@@ -627,6 +968,26 @@ namespace dds {
 		ResourceLimitsQosPolicy		resource_limits;
 		OwnershipQosPolicy		ownership;
 		TopicDataQosPolicy		topic_data;
+		
+		TopicBuiltinTopicData();
+		TopicBuiltinTopicData(
+			BuiltinTopicKey_t key,
+			char* name,
+			char* type_name,
+			DurabilityQosPolicy* durability,
+			DurabilityServiceQosPolicy* durability_service,
+			DeadlineQosPolicy* deadline,
+			LatencyBudgetQosPolicy* latency_budget,
+			LivelinessQosPolicy* liveliness,
+			ReliabilityQosPolicy* reliability,
+			TransportPriorityQosPolicy* transport_priority,
+			LifespanQosPolicy* lifespan,
+			DestinationOrderQosPolicy* destination_order,
+			HistoryQosPolicy* history,
+			ResourceLimitsQosPolicy* resource_limits,
+			OwnershipQosPolicy* ownership,
+			TopicDataQosPolicy* topic_data);
+		virtual ~TopicBuiltinTopicData();
 	};
 	
 	struct PublicationBuiltinTopicData {
@@ -649,6 +1010,29 @@ namespace dds {
 		PartitionQosPolicy		partition;
 		TopicDataQosPolicy		topic_data;
 		GroupDataQosPolicy		group_data;
+		
+		PublicationBuiltinTopicData();
+		PublicationBuiltinTopicData(
+			BuiltinTopicKey_t key,
+			BuiltinTopicKey_t participant_key,
+			char* topic_name,
+			char* type_name,
+			DurabilityQosPolicy* durability,
+			DurabilityServiceQosPolicy* durability_service,
+			DeadlineQosPolicy* deadline,
+			LatencyBudgetQosPolicy* latency_budget,
+			LivelinessQosPolicy* liveliness,
+			ReliabilityQosPolicy* reliability,
+			LifespanQosPolicy* lifespan,
+			UserDataQosPolicy* user_data,
+			OwnershipQosPolicy* ownership,
+			OwnershipStrengthQosPolicy* ownership_strength,
+			DestinationOrderQosPolicy* destination_order,
+			PresentationQosPolicy* presentation,
+			PartitionQosPolicy* partition,
+			TopicDataQosPolicy* topic_data,
+			GroupDataQosPolicy* group_data);
+		virtual ~PublicationBuiltinTopicData();
 	};
 	
 	struct SubscriptionBuiltinTopicData {
@@ -669,10 +1053,35 @@ namespace dds {
 		PartitionQosPolicy		partition;
 		TopicDataQosPolicy		topic_data;
 		GroupDataQosPolicy		group_data;
+		
+		SubscriptionBuiltinTopicData();
+		SubscriptionBuiltinTopicData(
+			BuiltinTopicKey_t key,
+			BuiltinTopicKey_t participant_key,
+			char* topic_name,
+			char* type_name,
+			DurabilityQosPolicy* durability,
+			DeadlineQosPolicy* deadline,
+			LatencyBudgetQosPolicy* latency_budget,
+			LivelinessQosPolicy* liveliness,
+			ReliabilityQosPolicy* reliability,
+			OwnershipQosPolicy* ownership,
+			DestinationOrderQosPolicy* destination_order,
+			UserDataQosPolicy* user_data,
+			TimeBasedFilterQosPolicy* time_based_filter,
+			PresentationQosPolicy* presentation,
+			PartitionQosPolicy* partition,
+			TopicDataQosPolicy* topic_data,
+			GroupDataQosPolicy* group_data);
+		virtual ~SubscriptionBuiltinTopicData();
 	};
 	
 	// ----------------------------------------------------------------------
 	class Entity {
+	public:
+		Entity();
+		virtual ~Entity();
+		
 		// abstract ReturnCode_t set_qos(
 		// 	const EntityQos* qos);
 		// abstract ReturnCode_t get_qos(
@@ -690,6 +1099,10 @@ namespace dds {
 	
 	// ----------------------------------------------------------------------
 	class DomainParticipant : Entity {
+	public:
+		DomainParticipant();
+		virtual ~DomainParticipant();
+		
 		// Factory interfaces
 		Publisher* create_publisher(
 			const PublisherQos* qos,
@@ -779,6 +1192,10 @@ namespace dds {
 	};
 	
 	class DomainParticipantFactory {
+	public:
+		DomainParticipantFactory();
+		virtual ~DomainParticipantFactory();
+		
 		DomainParticipant* create_participant(
 			DomainId_t domain_id,
 			const DomainParticipantQos* qos,
@@ -799,6 +1216,10 @@ namespace dds {
 	};
 	
 	class TypeSupport {
+	public:
+		TypeSupport();
+		virtual ~TypeSupport();
+		
 		// abstract ReturnCode_t register_type(
 		// 	const DomainParticipant* domain,
 		// 	const char* type_name);
@@ -807,12 +1228,20 @@ namespace dds {
 	
 	// ----------------------------------------------------------------------
 	class TopicDescription {
+	public:
+		TopicDescription();
+		virtual ~TopicDescription();
+		
 		char* get_type_name();
 		char* get_name();
 		DomainParticipant* get_participant();
 	};
 	
 	class Topic : Entity, TopicDescription {
+	public:
+		Topic();
+		virtual ~Topic();
+		
 		ReturnCode_t set_qos(
 			const TopicQos* qos);
 		ReturnCode_t get_qos(
@@ -828,6 +1257,10 @@ namespace dds {
 	};
 	
 	class ContentFilteredTopic : TopicDescription {
+	public:
+		ContentFilteredTopic();
+		virtual ~ContentFilteredTopic();
+		
 		char* get_filter_expression();
 		
 		ReturnCode_t get_expression_parameters(
@@ -840,6 +1273,10 @@ namespace dds {
 	};
 	
 	class MultiTopic : TopicDescription {
+	public:
+		MultiTopic();
+		virtual ~MultiTopic();
+		
 		char* get_subscription_expression();
 		
 		ReturnCode_t get_expression_parameters(
@@ -851,6 +1288,10 @@ namespace dds {
 	
 	// ----------------------------------------------------------------------
 	class Publisher : Entity {
+	public:
+		Publisher();
+		virtual ~Publisher();
+		
 		DataWriter* create_datawriter(
 			const Topic* a_topic,
 			const DataWriterQos* qos,
@@ -886,6 +1327,10 @@ namespace dds {
 	};
 	
 	class DataWriter : Entity {
+	public:
+		DataWriter();
+		virtual ~DataWriter();
+		
 		// abstract InstanceHandle_t register_instance(
 		// 	const Data* instance_data);
 		// abstract InstanceHandle_t register_instance_w_timestamp(
@@ -949,6 +1394,10 @@ namespace dds {
 	
 	// ----------------------------------------------------------------------
 	class Subscriber : Entity {
+	public:
+		Subscriber();
+		virtual ~Subscriber();
+		
 		DataReader* create_datareader(
 			const TopicDescription* a_topic,
 			const DataReaderQos* qos,
@@ -986,6 +1435,10 @@ namespace dds {
 	};
 	
 	class DataReader : Entity {
+	public:
+		DataReader();
+		virtual ~DataReader();
+		
 		// abstract ReturnCode_t read(
 		// 	DataSeq* data_values,
 		// 	SampleInfoSeq* sample_infos,
@@ -1126,6 +1579,9 @@ namespace dds {
 		int32_t generation_rank;
 		int32_t absolute_generation_rank;
 		bool valid_data;
+		
+		SampleInfo();
+		virtual ~SampleInfo();
 	};
 	
 	typedef sequence<SampleInfo> SampleInfoSeq;
