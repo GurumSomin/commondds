@@ -86,7 +86,7 @@ namespace dds {
 		
 		BuiltinTopicKey_t();
 		BuiltinTopicKey_t(BUILTIN_TOPIC_KEY_TYPE_NATIVE value[3]);
-		~BuiltinTopicKey_t();
+		virtual ~BuiltinTopicKey_t();
 	};
 	
 	typedef sequence<InstanceHandle_t> InstanceHandleSeq;
@@ -101,7 +101,7 @@ namespace dds {
 		
 		Duration_t();
 		Duration_t(int32_t sec, uint32_t nanosec);
-		~Duration_t();
+		virtual ~Duration_t();
 	};
 	
 	struct Time_t {
@@ -110,7 +110,7 @@ namespace dds {
 		
 		Time_t();
 		Time_t(int32_t sec, uint32_t nanosec);
-		~Time_t();
+		virtual ~Time_t();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -173,7 +173,7 @@ namespace dds {
 		
 		InconsistentTopicStatus();
 		InconsistentTopicStatus(int32_t total_count, int32_t total_count_change);
-		~InconsistentTopicStatus();
+		virtual ~InconsistentTopicStatus();
 	};
 	
 	struct SampleLostStatus {
@@ -182,7 +182,7 @@ namespace dds {
 		
 		SampleLostStatus();
 		SampleLostStatus(int32_t total_count, int32_t total_count_change);
-		~SampleLostStatus();
+		virtual ~SampleLostStatus();
 	};
 	
 	enum SampleRejectedStatusKind {
@@ -204,7 +204,7 @@ namespace dds {
 			int32_t total_count_change, 
 			SampleRejectedStatusKind last_reason, 
 			InstanceHandle_t last_instance_handle);
-		~SampleRejectedStatus();
+		virtual ~SampleRejectedStatus();
 	};
 	
 	struct LivelinessLostStatus {
@@ -213,7 +213,7 @@ namespace dds {
 		
 		LivelinessLostStatus();
 		LivelinessLostStatus(int32_t total_count, int32_t total_count_change);
-		~LivelinessLostStatus();
+		virtual ~LivelinessLostStatus();
 	};
 	
 	struct LivelinessChangedStatus {
@@ -230,7 +230,7 @@ namespace dds {
 			int32_t alive_count_change, 
 			int32_t not_alive_count_change, 
 			InstanceHandle_t last_publication_handle);
-		~LivelinessChangedStatus();
+		virtual ~LivelinessChangedStatus();
 	};
 	
 	struct OfferedDeadlineMissedStatus {
@@ -243,7 +243,7 @@ namespace dds {
 			int32_t total_count,
 			int32_t total_count_change,
 			InstanceHandle_t last_instance_handle);
-	 	~OfferedDeadlineMissedStatus();
+	 	virtual ~OfferedDeadlineMissedStatus();
 	};
 	
 	struct RequestedDeadlineMissedStatus {
@@ -256,7 +256,7 @@ namespace dds {
 			int32_t total_count,
 			int32_t total_count_change,
 			InstanceHandle_t last_instance_handle);
-		~RequestedDeadlineMissedStatus();
+		virtual ~RequestedDeadlineMissedStatus();
 	};
 	
 	struct QosPolicyCount {
@@ -267,7 +267,7 @@ namespace dds {
 		QosPolicyCount(
 			QosPolicyId_t policy_id,
 			int32_t count);
-		~QosPolicyCount();
+		virtual ~QosPolicyCount();
 	};
 	
 	typedef sequence<QosPolicyCount> QosPolicyCountSeq;
@@ -276,30 +276,30 @@ namespace dds {
 		int32_t			total_count;
 		int32_t			total_count_change;
 		QosPolicyId_t		last_policy_id;
-		QosPolicyCountSeq	policies;
+		QosPolicyCountSeq*	policies;
 		
 		OfferedIncompatibleQosStatus();
 		OfferedIncompatibleQosStatus(
 			int32_t total_count,
 			int32_t total_count_change,
 			QosPolicyId_t last_policy_id,
-			QosPolicyCountSeq policies);
-		~OfferedIncompatibleQosStatus();
+			QosPolicyCountSeq* policies);
+		virtual ~OfferedIncompatibleQosStatus();
 	};
 	
 	struct RequestedIncompatibleQosStatus {
 		int32_t			total_count;
 		int32_t			total_count_change;
 		QosPolicyId_t		last_policy_id;
-		QosPolicyCountSeq	policies;
+		QosPolicyCountSeq*	policies;
 		
 		RequestedIncompatibleQosStatus();
 		RequestedIncompatibleQosStatus(
 			int32_t total_count,
 			int32_t total_count_change,
 			QosPolicyId_t last_policy_id,
-			QosPolicyCountSeq policies);
-		~RequestedIncompatibleQosStatus();
+			QosPolicyCountSeq* policies);
+		virtual ~RequestedIncompatibleQosStatus();
 	};
 	
 	struct PublicationMatchedStatus {
@@ -316,7 +316,7 @@ namespace dds {
 			int32_t current_count,
 			int32_t current_count_change,
 			InstanceHandle_t last_subscription_handle);
-		~PublicationMatchedStatus();
+		virtual ~PublicationMatchedStatus();
 	};
 	
 	struct SubscriptionMatchedStatus {
@@ -333,7 +333,7 @@ namespace dds {
 			int32_t current_count,
 			int32_t current_count_change,
 			InstanceHandle_t last_publication_handle);
-		~SubscriptionMatchedStatus();
+		virtual ~SubscriptionMatchedStatus();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -353,14 +353,18 @@ namespace dds {
 	
 	typedef sequence<DataReader> DataReaderSeq;
 	
-	class Listener {};
+	class Listener {
+	public:
+		Listener();
+		virtual ~Listener();
+	};
 	
 	class TopicListener : Listener {
 	public:
 		TopicListener();
 		virtual ~TopicListener();
 		
-		void on_inconsistent_topic(const Topic* the_topic, 
+		virtual void on_inconsistent_topic(const Topic* the_topic, 
 			const InconsistentTopicStatus* status);
 	};
 	
@@ -369,21 +373,24 @@ namespace dds {
 		DataWriterListener();
 		virtual ~DataWriterListener();
 		
-		void on_offered_deadline_missed(
+		virtual void on_offered_deadline_missed(
 			const DataWriter* writer, 
 			const OfferedDeadlineMissedStatus* status);
-		void on_offered_incompatible_qos(
+		virtual void on_offered_incompatible_qos(
 			const DataWriter* writer, 
 			const OfferedIncompatibleQosStatus* status);
-		void on_liveliness_lost(
+		virtual void on_liveliness_lost(
 			const DataWriter* writer, 
 			const LivelinessLostStatus* status);
-		void on_publication_matched(
+		virtual void on_publication_matched(
 			const DataWriter* writer, 
 			const PublicationMatchedStatus* status);
 	};
 	
 	class PublisherListener : DataWriterListener {
+	public:
+		PublisherListener();
+		virtual ~PublisherListener();
 	};
 	
 	class DataReaderListener : Listener {
@@ -391,24 +398,24 @@ namespace dds {
 		DataReaderListener();
 		virtual ~DataReaderListener();
 		
-		void on_requested_deadline_missed(
+		virtual void on_requested_deadline_missed(
 			const DataReader* the_reader, 
 			const RequestedDeadlineMissedStatus* status);
-		void on_requested_incompatible_qos(
+		virtual void on_requested_incompatible_qos(
 			const DataReader* the_reader, 
 			const RequestedIncompatibleQosStatus* status);
-		void on_sample_rejected(
+		virtual void on_sample_rejected(
 			const DataReader* the_reader,
 			const SampleRejectedStatus* status);
-		void on_liveliness_changed(
+		virtual void on_liveliness_changed(
 			const DataReader* the_reader,
 			const LivelinessChangedStatus* status);
-		void on_data_available(
+		virtual void on_data_available(
 			const DataReader* the_reader);
-		void on_subscription_matched(
+		virtual void on_subscription_matched(
 			const DataReader* the_reader,
 			const SubscriptionMatchedStatus* status);
-		void on_sample_lost(
+		virtual void on_sample_lost(
 			const DataReader* the_reader,
 			const SampleLostStatus* status);
 	};
@@ -418,7 +425,7 @@ namespace dds {
 		SubscriberListener();
 		virtual ~SubscriberListener();
 		
-		void on_data_on_readers(
+		virtual void on_data_on_readers(
 			const Subscriber* the_subscriber);
 	};
 	
@@ -439,7 +446,7 @@ namespace dds {
 		Condition();
 		virtual ~Condition();
 		
-		bool get_trigger_value();
+		virtual bool get_trigger_value();
 	};
 	
 	typedef sequence<Condition> ConditionSeq;
