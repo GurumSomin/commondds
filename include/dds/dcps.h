@@ -2,6 +2,8 @@
 #define __DDS_DSCP_H__
 
 #include <stdint.h>
+#include <malloc.h>
+#include <iostream>
 
 #define DOMAINID_TYPE_NATIVE		int32_t
 #define HANDLE_TYPE_NATIVE		int32_t
@@ -27,13 +29,53 @@ namespace dds {
 		
 		T* buffer;
 		
-		sequence();
-		sequence(T* array, uint32_t size);
-		virtual ~sequence();
+		sequence() {
+			maximum = 0;
+			length = 0;
+			buffer = NULL;
+		}
 		
-		bool add(T value);
-		T& operator[](uint32_t index);
-		const T& operator[](uint32_t index) const;
+		sequence(uint32_t size) {
+			maximum = size;
+			length = 0;
+			buffer = (T*)malloc(sizeof(T) * size);
+		}
+		
+		sequence(T* array, uint32_t size) {
+			maximum = size;
+			length = size;
+			buffer = (T*)malloc(sizeof(T) * size);
+			memcpy(buffer, array, sizeof(T) * size);
+		}
+		
+		~sequence() {
+			free(buffer);
+		}
+		
+		bool add(T value) {
+			if(length < maximum) {
+				buffer[length++] = value;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		T& operator[](uint32_t index) {
+			return buffer[index];
+		}
+		
+		const T& operator[](uint32_t index) const {
+			return buffer[index];
+		}
+		
+		friend std::ostream& operator<<(std::ostream& os, const sequence<T>& seq) {
+			os << &seq;
+		}
+		
+		friend std::ostream& operator<<(std::ostream& os, const sequence<T>* seq) {
+			os << "sequence[maximum=" << seq->maximum << ", length=" << seq->length << "]";
+		}
 	};
 	
 	typedef DOMAINID_TYPE_NATIVE DomainId_t;
@@ -41,10 +83,10 @@ namespace dds {
 	 
 	struct BuiltinTopicKey_t {
 		BUILTIN_TOPIC_KEY_TYPE_NATIVE value[3];
-
+		
 		BuiltinTopicKey_t();
 		BuiltinTopicKey_t(BUILTIN_TOPIC_KEY_TYPE_NATIVE value[3]);
-		virtual ~BuiltinTopicKey_t();
+		~BuiltinTopicKey_t();
 	};
 	
 	typedef sequence<InstanceHandle_t> InstanceHandleSeq;
@@ -59,7 +101,7 @@ namespace dds {
 		
 		Duration_t();
 		Duration_t(int32_t sec, uint32_t nanosec);
-		virtual ~Duration_t();
+		~Duration_t();
 	};
 	
 	struct Time_t {
@@ -68,7 +110,7 @@ namespace dds {
 		
 		Time_t();
 		Time_t(int32_t sec, uint32_t nanosec);
-		virtual ~Time_t();
+		~Time_t();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -131,7 +173,7 @@ namespace dds {
 		
 		InconsistentTopicStatus();
 		InconsistentTopicStatus(int32_t total_count, int32_t total_count_change);
-		virtual ~InconsistentTopicStatus();
+		~InconsistentTopicStatus();
 	};
 	
 	struct SampleLostStatus {
@@ -140,7 +182,7 @@ namespace dds {
 		
 		SampleLostStatus();
 		SampleLostStatus(int32_t total_count, int32_t total_count_change);
-		virtual ~SampleLostStatus();
+		~SampleLostStatus();
 	};
 	
 	enum SampleRejectedStatusKind {
@@ -162,7 +204,7 @@ namespace dds {
 			int32_t total_count_change, 
 			SampleRejectedStatusKind last_reason, 
 			InstanceHandle_t last_instance_handle);
-		virtual ~SampleRejectedStatus();
+		~SampleRejectedStatus();
 	};
 	
 	struct LivelinessLostStatus {
@@ -171,7 +213,7 @@ namespace dds {
 		
 		LivelinessLostStatus();
 		LivelinessLostStatus(int32_t total_count, int32_t total_count_change);
-		virtual ~LivelinessLostStatus();
+		~LivelinessLostStatus();
 	};
 	
 	struct LivelinessChangedStatus {
@@ -188,7 +230,7 @@ namespace dds {
 			int32_t alive_count_change, 
 			int32_t not_alive_count_change, 
 			InstanceHandle_t last_publication_handle);
-		virtual ~LivelinessChangedStatus();
+		~LivelinessChangedStatus();
 	};
 	
 	struct OfferedDeadlineMissedStatus {
@@ -201,7 +243,7 @@ namespace dds {
 			int32_t total_count,
 			int32_t total_count_change,
 			InstanceHandle_t last_instance_handle);
-	 	virtual ~OfferedDeadlineMissedStatus();
+	 	~OfferedDeadlineMissedStatus();
 	};
 	
 	struct RequestedDeadlineMissedStatus {
@@ -214,7 +256,7 @@ namespace dds {
 			int32_t total_count,
 			int32_t total_count_change,
 			InstanceHandle_t last_instance_handle);
-		virtual ~RequestedDeadlineMissedStatus();
+		~RequestedDeadlineMissedStatus();
 	};
 	
 	struct QosPolicyCount {
@@ -225,7 +267,7 @@ namespace dds {
 		QosPolicyCount(
 			QosPolicyId_t policy_id,
 			int32_t count);
-		virtual ~QosPolicyCount();
+		~QosPolicyCount();
 	};
 	
 	typedef sequence<QosPolicyCount> QosPolicyCountSeq;
@@ -242,7 +284,7 @@ namespace dds {
 			int32_t total_count_change,
 			QosPolicyId_t last_policy_id,
 			QosPolicyCountSeq policies);
-		virtual ~OfferedIncompatibleQosStatus();
+		~OfferedIncompatibleQosStatus();
 	};
 	
 	struct RequestedIncompatibleQosStatus {
@@ -257,7 +299,7 @@ namespace dds {
 			int32_t total_count_change,
 			QosPolicyId_t last_policy_id,
 			QosPolicyCountSeq policies);
-		virtual ~RequestedIncompatibleQosStatus();
+		~RequestedIncompatibleQosStatus();
 	};
 	
 	struct PublicationMatchedStatus {
@@ -274,7 +316,7 @@ namespace dds {
 			int32_t current_count,
 			int32_t current_count_change,
 			InstanceHandle_t last_subscription_handle);
-		virtual ~PublicationMatchedStatus();
+		~PublicationMatchedStatus();
 	};
 	
 	struct SubscriptionMatchedStatus {
@@ -291,7 +333,7 @@ namespace dds {
 			int32_t current_count,
 			int32_t current_count_change,
 			InstanceHandle_t last_publication_handle);
-		virtual ~SubscriptionMatchedStatus();
+		~SubscriptionMatchedStatus();
 	};
 	
 	// ----------------------------------------------------------------------

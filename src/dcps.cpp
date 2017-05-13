@@ -1,48 +1,15 @@
 #include <stddef.h>
 #include <malloc.h>
-#include "dscp.h"
+
+#include <dds/dcps.h>
+
+#define DEBUG	1
+
+#if DEBUG
+#include <iostream>
+#endif
 
 namespace dds {
-
-template<typename T>
-sequence<T>::sequence() {
-	maximum = 0;
-	length = 0;
-	buffer = NULL;
-}
-
-template<typename T>
-sequence<T>::sequence(T* array, uint32_t size) {
-	maximum = size;
-	length = size;
-	buffer = malloc(sizeof(T) * size);
-	memcpy(buffer, array, sizeof(T) * size);
-}
-
-template<typename T>
-sequence<T>::~sequence() {
-	free(buffer);
-}
-
-template<typename T>
-bool sequence<T>::add(T value) {
-	if(length < maximum) {
-		buffer[length++] = value;
-		return true;
-	} else {
-		return false;
-	}
-}
-
-template<typename T>
-T& sequence<T>::operator[](uint32_t index) {
-	return buffer[index];
-}
-
-template<typename T>
-const T& sequence<T>::operator[](uint32_t index) const {
-	return buffer[index];
-}
 
 BuiltinTopicKey_t::BuiltinTopicKey_t() {
 	for(int i = 0; i < 3; i++)
