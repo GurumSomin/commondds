@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <malloc.h>
+#include <string.h>
 #include <iostream>
 
 #define DOMAINID_TYPE_NATIVE		int32_t
@@ -542,27 +543,28 @@ namespace dds {
 	// ----------------------------------------------------------------------
 	// Qos
 	// ----------------------------------------------------------------------
-	extern const char* USERDATA_QOS_POLICY_NAME			;//= "UserData";
-	extern const char* DURABILITY_QOS_POLICY_NAME			;//= "Durability";
-	extern const char* PRESENTATION_QOS_POLICY_NAME			;//= "Presentation";
-	extern const char* DEADLINE_QOS_POLICY_NAME			;//= "Deadline";
-	extern const char* LATENCYBUDGET_QOS_POLICY_NAME		;//= "LatencyBudget";
-	extern const char* OWNERSHIP_QOS_POLICY_NAME			;//= "Ownership";
-	extern const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME		;//= "OwnershipStrength";
-	extern const char* LIVELINESS_QOS_POLICY_NAME			;//= "Liveliness";
-	extern const char* TIMEBASEDFILTER_QOS_POLICY_NAME		;//= "TimeBasedFilter";
-	extern const char* PARTITION_QOS_POLICY_NAME			;//= "Partition";
-	extern const char* RELIABILITY_QOS_POLICY_NAME			;//= "Reliability";
-	extern const char* DESTINATIONORDER_QOS_POLICY_NAME		;//= "DestinationOrder";
-	extern const char* HISTORY_QOS_POLICY_NAME			;//= "History";
-	extern const char* RESOURCELIMITS_QOS_POLICY_NAME		;//= "ResourceLimits";
-	extern const char* ENTITYFACTORY_QOS_POLICY_NAME		;//= "EntityFactory";
-	extern const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME		;//= "WriterDataLifecycle";
-	extern const char* READERDATALIFECYCLE_QOS_POLICY_NAME		;//= "ReaderDataLifecycle";
-	extern const char* TOPICDATA_QOS_POLICY_NAME			;//= "TopicData";
-	extern const char* GROUPDATA_QOS_POLICY_NAME			;//= "TransportPriority";
-	extern const char* LIFESPAN_QOS_POLICY_NAME			;//= "Lifespan";
-	extern const char* DURABILITYSERVICE_POLICY_NAME		;//= "DurabilityService";
+	extern const char* USERDATA_QOS_POLICY_NAME;		//= "UserData";
+	extern const char* DURABILITY_QOS_POLICY_NAME;		//= "Durability";
+	extern const char* PRESENTATION_QOS_POLICY_NAME;	//= "Presentation";
+	extern const char* DEADLINE_QOS_POLICY_NAME;		//= "Deadline";
+	extern const char* LATENCYBUDGET_QOS_POLICY_NAME;	//= "LatencyBudget";
+	extern const char* OWNERSHIP_QOS_POLICY_NAME;		//= "Ownership";
+	extern const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME;	//= "OwnershipStrength";
+	extern const char* LIVELINESS_QOS_POLICY_NAME;		//= "Liveliness";
+	extern const char* TIMEBASEDFILTER_QOS_POLICY_NAME;	//= "TimeBasedFilter";
+	extern const char* PARTITION_QOS_POLICY_NAME;		//= "Partition";
+	extern const char* RELIABILITY_QOS_POLICY_NAME;		//= "Reliability";
+	extern const char* DESTINATIONORDER_QOS_POLICY_NAME;	//= "DestinationOrder";
+	extern const char* HISTORY_QOS_POLICY_NAME;		//= "History";
+	extern const char* RESOURCELIMITS_QOS_POLICY_NAME;	//= "ResourceLimits";
+	extern const char* ENTITYFACTORY_QOS_POLICY_NAME;	//= "EntityFactory";
+	extern const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME;	//= "WriterDataLifecycle";
+	extern const char* READERDATALIFECYCLE_QOS_POLICY_NAME;	//= "ReaderDataLifecycle";
+	extern const char* TOPICDATA_QOS_POLICY_NAME;		//= "TopicData";
+	extern const char* GROUPDATA_QOS_POLICY_NAME;		//= "TransportPriority";
+	extern const char* LIFESPAN_QOS_POLICY_NAME;		//= "Lifespan";
+	extern const char* DURABILITYSERVICE_POLICY_NAME;	//= "DurabilityService";
+	
 	const QosPolicyId_t INVALID_QOS_POLICY_ID		= 0;
 	const QosPolicyId_t USERDATA_QOS_POLICY_ID		= 1;
 	const QosPolicyId_t DURABILITY_QOS_POLICY_ID		= 2;
@@ -588,7 +590,7 @@ namespace dds {
 	const QosPolicyId_t DURABILITYSERVICE_QOS_POLICY_ID	= 22;
 	
 	struct UserDataQosPolicy {
-		sequence<uint8_t> value;
+		sequence<uint8_t>* value;
 		
 		UserDataQosPolicy();
 		UserDataQosPolicy(sequence<uint8_t>* value);
@@ -597,7 +599,7 @@ namespace dds {
 	};
 	
 	struct TopicDataQosPolicy {
-		sequence<uint8_t> value;
+		sequence<uint8_t>* value;
 		
 		TopicDataQosPolicy();
 		TopicDataQosPolicy(sequence<uint8_t>* value);
@@ -606,7 +608,7 @@ namespace dds {
 	};
 	
 	struct GroupDataQosPolicy {
-		sequence<uint8_t> value;
+		sequence<uint8_t>* value;
 		
 		GroupDataQosPolicy();
 		GroupDataQosPolicy(sequence<uint8_t>* value);
@@ -623,10 +625,11 @@ namespace dds {
 	};
 	
 	struct LifespanQosPolicy {
-		Duration_t duration;
+		Duration_t* duration;
 		
 		LifespanQosPolicy();
 		LifespanQosPolicy(Duration_t* duration);
+		LifespanQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~LifespanQosPolicy();
 	};
 	
@@ -641,7 +644,7 @@ namespace dds {
 		DurabilityQosPolicyKind kind;
 		
 		DurabilityQosPolicy();
-		DurabilityQosPolicy(DurabilityQosPolicyKind* kind);
+		DurabilityQosPolicy(DurabilityQosPolicyKind kind);
 		virtual ~DurabilityQosPolicy();
 	};
 	
@@ -658,25 +661,27 @@ namespace dds {
 		
 		PresentationQosPolicy();
 		PresentationQosPolicy(
-			PresentationQosPolicyAccessScopeKind* access_scope,
+			PresentationQosPolicyAccessScopeKind access_scope,
 			bool coherent_access,
 			bool ordered_access);
 		virtual ~PresentationQosPolicy();
 	};
 	
 	struct DeadlineQosPolicy {
-		Duration_t period;
+		Duration_t* period;
 		
 		DeadlineQosPolicy();
 		DeadlineQosPolicy(Duration_t* period);
+		DeadlineQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~DeadlineQosPolicy();
 	};
 	
 	struct LatencyBudgetQosPolicy {
-		Duration_t duration;
+		Duration_t* duration;
 		
 		LatencyBudgetQosPolicy();
 		LatencyBudgetQosPolicy(Duration_t* duration);
+		LatencyBudgetQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~LatencyBudgetQosPolicy();
 	};
 	
@@ -689,7 +694,7 @@ namespace dds {
 		OwnershipQosPolicyKind kind;
 		
 		OwnershipQosPolicy();
-		OwnershipQosPolicy(OwnershipQosPolicyKind* kind);
+		OwnershipQosPolicy(OwnershipQosPolicyKind kind);
 		virtual ~OwnershipQosPolicy();
 	};
 	
@@ -709,25 +714,29 @@ namespace dds {
 	
 	struct LivelinessQosPolicy {
 		LivelinessQosPolicyKind kind;
-		Duration_t lease_duration;
+		Duration_t* lease_duration;
 		
 		LivelinessQosPolicy();
 		LivelinessQosPolicy(
-			LivelinessQosPolicyKind* kind,
+			LivelinessQosPolicyKind kind,
 			Duration_t* lease_duration);
+		LivelinessQosPolicy(
+			LivelinessQosPolicyKind kind,
+			int32_t lease_duration_sec, uint32_t lease_duration_nanosec);
 		virtual ~LivelinessQosPolicy();
 	};
 	
 	struct TimeBasedFilterQosPolicy {
-		Duration_t minimum_separation;
+		Duration_t* minimum_separation;
 		
 		TimeBasedFilterQosPolicy();
 		TimeBasedFilterQosPolicy(Duration_t* minimum_separation);
+		TimeBasedFilterQosPolicy(int32_t minimum_separation_sec, int32_t minimum_separation_nanosec);
 		virtual ~TimeBasedFilterQosPolicy();
 	};
 	
 	struct PartitionQosPolicy {
-		StringSeq name;
+		StringSeq* name;
 		
 		PartitionQosPolicy();
 		PartitionQosPolicy(StringSeq* name);
@@ -741,12 +750,15 @@ namespace dds {
 	
 	struct ReliabilityQosPolicy {
 		ReliabilityQosPolicyKind kind;
-		Duration_t max_blocking_time;
+		Duration_t* max_blocking_time;
 		
 		ReliabilityQosPolicy();
 		ReliabilityQosPolicy(
-			ReliabilityQosPolicyKind* kind,
+			ReliabilityQosPolicyKind kind,
 			Duration_t* max_blocking_time);
+		ReliabilityQosPolicy(
+			ReliabilityQosPolicyKind kind,
+			int32_t max_blocking_time_sec, int32_t max_blocking_time_nanosec);
 		virtual ~ReliabilityQosPolicy();
 	};
 	
@@ -759,7 +771,7 @@ namespace dds {
 		DestinationOrderQosPolicyKind kind;
 		
 		DestinationOrderQosPolicy();
-		DestinationOrderQosPolicy(DestinationOrderQosPolicyKind* kind);
+		DestinationOrderQosPolicy(DestinationOrderQosPolicyKind kind);
 		virtual ~DestinationOrderQosPolicy();
 	};
 	
@@ -774,7 +786,7 @@ namespace dds {
 		
 		HistoryQosPolicy();
 		HistoryQosPolicy(
-			HistoryQosPolicyKind* kind,
+			HistoryQosPolicyKind kind,
 			int32_t depth);
 		virtual ~HistoryQosPolicy();
 	};
@@ -809,18 +821,23 @@ namespace dds {
 	};
 	
 	struct ReaderDataLifecycleQosPolicy {
-		Duration_t autopurge_nowriter_samples_delay;
-		Duration_t autopurge_disposed_samples_delay;
+		Duration_t* autopurge_nowriter_samples_delay;
+		Duration_t* autopurge_disposed_samples_delay;
 		
 		ReaderDataLifecycleQosPolicy();
 		ReaderDataLifecycleQosPolicy(
 			Duration_t* autopurge_nowriter_samples_delay,
 			Duration_t* autopurge_disposed_samples_delay);
+		ReaderDataLifecycleQosPolicy(
+			int32_t autopurge_nowriter_samples_delay_sec,
+			int32_t autopurge_nowriter_samples_delay_nanosec,
+			int32_t autopurge_disposed_samples_delay_sec,
+			int32_t autopurge_disposed_samples_delay_nanosec);
 		virtual ~ReaderDataLifecycleQosPolicy();
 	};
 	
 	struct DurabilityServiceQosPolicy {
-		Duration_t		service_cleanup_delay;
+		Duration_t*		service_cleanup_delay;
 		HistoryQosPolicyKind	history_kind;
 		int32_t			history_depth;
 		int32_t			max_samples;
@@ -830,7 +847,7 @@ namespace dds {
 		DurabilityServiceQosPolicy();
 		DurabilityServiceQosPolicy(
 			Duration_t* service_cleanup_delay,
-			HistoryQosPolicyKind* history_kind,
+			HistoryQosPolicyKind history_kind,
 			int32_t history_depth,
 			int32_t max_samples,
 			int32_t max_instances,
@@ -839,7 +856,7 @@ namespace dds {
 	};
 	
 	struct DomainParticipantFactoryQos {
-		EntityFactoryQosPolicy	entity_factory;
+		EntityFactoryQosPolicy*	entity_factory;
 		
 		DomainParticipantFactoryQos();
 		DomainParticipantFactoryQos(EntityFactoryQosPolicy* entity_factory);
