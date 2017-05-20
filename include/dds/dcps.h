@@ -6,22 +6,22 @@
 #include <string.h>
 #include <iostream>
 
-#define DOMAINID_TYPE_NATIVE			int32_t
-#define HANDLE_TYPE_NATIVE				int32_t
-#define HANDLE_NIL_NATIVE				0
-#define BUILTIN_TOPIC_KEY_TYPE_NATIVE	int32_t
-
-#define TheParticipantFactory
-#define PARTICIPANT_QOS_DEFAULT
-#define TOPIC_QOS_DEFAULT
-#define PUBLISHER_QOS_DEFAULT
-#define SUBSCRIBER_QOS_DEFAULT
-#define DATAWRITER_QOS_DEFAULT
-#define DATAREADER_QOS_DEFAULT
-#define DATAWRITER_QOS_USE_TOPIC_QOS
-#define DATAREADER_QOS_USE_TOPIC_QOS
-
 namespace dds {
+	#define DOMAINID_TYPE_NATIVE			int32_t
+	#define HANDLE_TYPE_NATIVE				int32_t
+	#define HANDLE_NIL_NATIVE				0
+	#define BUILTIN_TOPIC_KEY_TYPE_NATIVE	int32_t
+	
+	#define TheParticipantFactory
+	#define PARTICIPANT_QOS_DEFAULT
+	#define TOPIC_QOS_DEFAULT
+	#define PUBLISHER_QOS_DEFAULT
+	#define SUBSCRIBER_QOS_DEFAULT
+	#define DATAWRITER_QOS_DEFAULT
+	#define DATAREADER_QOS_DEFAULT
+	#define DATAWRITER_QOS_USE_TOPIC_QOS
+	#define DATAREADER_QOS_USE_TOPIC_QOS
+
 	// IDL
 	template<typename T>
 	struct sequence {
@@ -94,7 +94,7 @@ namespace dds {
 	
 	typedef int32_t ReturnCode_t;
 	typedef int32_t QosPolicyId_t;
-	typedef sequence<char*> StringSeq;
+	typedef sequence<std::string*> StringSeq;
 	
 	struct Duration_t {
 		int32_t sec;
@@ -533,7 +533,7 @@ namespace dds {
 		QueryCondition();
 		virtual ~QueryCondition();
 		
-		char* get_query_expression();
+		std::string* get_query_expression();
 		ReturnCode_t get_query_parameters(
 			StringSeq* query_parameters);
 		ReturnCode_t set_query_parameters(
@@ -543,27 +543,27 @@ namespace dds {
 	// ----------------------------------------------------------------------
 	// Qos
 	// ----------------------------------------------------------------------
-	extern const char* USERDATA_QOS_POLICY_NAME;			//= "UserData";
-	extern const char* DURABILITY_QOS_POLICY_NAME;			//= "Durability";
-	extern const char* PRESENTATION_QOS_POLICY_NAME;		//= "Presentation";
-	extern const char* DEADLINE_QOS_POLICY_NAME;			//= "Deadline";
-	extern const char* LATENCYBUDGET_QOS_POLICY_NAME;		//= "LatencyBudget";
-	extern const char* OWNERSHIP_QOS_POLICY_NAME;			//= "Ownership";
-	extern const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME;	//= "OwnershipStrength";
-	extern const char* LIVELINESS_QOS_POLICY_NAME;			//= "Liveliness";
-	extern const char* TIMEBASEDFILTER_QOS_POLICY_NAME;		//= "TimeBasedFilter";
-	extern const char* PARTITION_QOS_POLICY_NAME;			//= "Partition";
-	extern const char* RELIABILITY_QOS_POLICY_NAME;			//= "Reliability";
-	extern const char* DESTINATIONORDER_QOS_POLICY_NAME;	//= "DestinationOrder";
-	extern const char* HISTORY_QOS_POLICY_NAME;				//= "History";
-	extern const char* RESOURCELIMITS_QOS_POLICY_NAME;		//= "ResourceLimits";
-	extern const char* ENTITYFACTORY_QOS_POLICY_NAME;		//= "EntityFactory";
-	extern const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME;	//= "WriterDataLifecycle";
-	extern const char* READERDATALIFECYCLE_QOS_POLICY_NAME;	//= "ReaderDataLifecycle";
-	extern const char* TOPICDATA_QOS_POLICY_NAME;			//= "TopicData";
-	extern const char* GROUPDATA_QOS_POLICY_NAME;			//= "TransportPriority";
-	extern const char* LIFESPAN_QOS_POLICY_NAME;			//= "Lifespan";
-	extern const char* DURABILITYSERVICE_POLICY_NAME;		//= "DurabilityService";
+	extern const std::string* USERDATA_QOS_POLICY_NAME;				//= "UserData";
+	extern const std::string* DURABILITY_QOS_POLICY_NAME;			//= "Durability";
+	extern const std::string* PRESENTATION_QOS_POLICY_NAME;			//= "Presentation";
+	extern const std::string* DEADLINE_QOS_POLICY_NAME;				//= "Deadline";
+	extern const std::string* LATENCYBUDGET_QOS_POLICY_NAME;		//= "LatencyBudget";
+	extern const std::string* OWNERSHIP_QOS_POLICY_NAME;			//= "Ownership";
+	extern const std::string* OWNERSHIPSTRENGTH_QOS_POLICY_NAME;	//= "OwnershipStrength";
+	extern const std::string* LIVELINESS_QOS_POLICY_NAME;			//= "Liveliness";
+	extern const std::string* TIMEBASEDFILTER_QOS_POLICY_NAME;		//= "TimeBasedFilter";
+	extern const std::string* PARTITION_QOS_POLICY_NAME;			//= "Partition";
+	extern const std::string* RELIABILITY_QOS_POLICY_NAME;			//= "Reliability";
+	extern const std::string* DESTINATIONORDER_QOS_POLICY_NAME;		//= "DestinationOrder";
+	extern const std::string* HISTORY_QOS_POLICY_NAME;				//= "History";
+	extern const std::string* RESOURCELIMITS_QOS_POLICY_NAME;		//= "ResourceLimits";
+	extern const std::string* ENTITYFACTORY_QOS_POLICY_NAME;		//= "EntityFactory";
+	extern const std::string* WRITERDATALIFECYCLE_QOS_POLICY_NAME;	//= "WriterDataLifecycle";
+	extern const std::string* READERDATALIFECYCLE_QOS_POLICY_NAME;	//= "ReaderDataLifecycle";
+	extern const std::string* TOPICDATA_QOS_POLICY_NAME;			//= "TopicData";
+	extern const std::string* GROUPDATA_QOS_POLICY_NAME;			//= "TransportPriority";
+	extern const std::string* LIFESPAN_QOS_POLICY_NAME;				//= "Lifespan";
+	extern const std::string* DURABILITYSERVICE_POLICY_NAME;		//= "DurabilityService";
 	
 	const QosPolicyId_t INVALID_QOS_POLICY_ID				= 0;
 	const QosPolicyId_t USERDATA_QOS_POLICY_ID				= 1;
@@ -1007,8 +1007,8 @@ namespace dds {
 	
 	struct TopicBuiltinTopicData {
 		BuiltinTopicKey_t			key;
-		char*						name;
-		char*						type_name;
+		std::string*				name;
+		std::string*				type_name;
 		DurabilityQosPolicy*		durability;
 		DurabilityServiceQosPolicy*	durability_service;
 		DeadlineQosPolicy*			deadline;
@@ -1026,8 +1026,8 @@ namespace dds {
 		TopicBuiltinTopicData();
 		TopicBuiltinTopicData(
 			BuiltinTopicKey_t key,
-			char* name,
-			char* type_name,
+			std::string* name,
+			std::string* type_name,
 			DurabilityQosPolicy* durability,
 			DurabilityServiceQosPolicy* durability_service,
 			DeadlineQosPolicy* deadline,
@@ -1047,8 +1047,8 @@ namespace dds {
 	struct PublicationBuiltinTopicData {
 		BuiltinTopicKey_t			key;
 		BuiltinTopicKey_t			participant_key;
-		char*						topic_name;
-		char*						type_name;
+		std::string*				topic_name;
+		std::string*				type_name;
 		DurabilityQosPolicy*		durability;
 		DurabilityServiceQosPolicy*	durability_service;
 		DeadlineQosPolicy*			deadline;
@@ -1069,8 +1069,8 @@ namespace dds {
 		PublicationBuiltinTopicData(
 			BuiltinTopicKey_t key,
 			BuiltinTopicKey_t participant_key,
-			char* topic_name,
-			char* type_name,
+			std::string* topic_name,
+			std::string* type_name,
 			DurabilityQosPolicy* durability,
 			DurabilityServiceQosPolicy* durability_service,
 			DeadlineQosPolicy* deadline,
@@ -1092,8 +1092,8 @@ namespace dds {
 	struct SubscriptionBuiltinTopicData {
 		BuiltinTopicKey_t			key;
 		BuiltinTopicKey_t			participant_key;
-		char*						topic_name;
-		char*						type_name;
+		std::string*				topic_name;
+		std::string*				type_name;
 		DurabilityQosPolicy*		durability;
 		DeadlineQosPolicy*			deadline;
 		LatencyBudgetQosPolicy*		latency_budget;
@@ -1112,8 +1112,8 @@ namespace dds {
 		SubscriptionBuiltinTopicData(
 			BuiltinTopicKey_t key,
 			BuiltinTopicKey_t participant_key,
-			char* topic_name,
-			char* type_name,
+			std::string* topic_name,
+			std::string* type_name,
 			DurabilityQosPolicy* durability,
 			DeadlineQosPolicy* deadline,
 			LatencyBudgetQosPolicy* latency_budget,
@@ -1172,29 +1172,29 @@ namespace dds {
 			const Subscriber* s);
 		Subscriber* get_builtin_subscriber();
 		Topic* create_topic(
-			const char* topic_name,
-			const char* type_name,
+			const std::string* topic_name,
+			const std::string* type_name,
 			const TopicQos* qos,
 			const TopicListener* a_listener,
 			const StatusMask* mask);
 		ReturnCode_t delete_topic(
 			const Topic* a_topic);
 		Topic* find_topic(
-			const char* topic_name,
+			const std::string* topic_name,
 			const Duration_t* timeout);
 		TopicDescription* lookup_topicdescription(
-			const char* name);
+			const std::string* name);
 		ContentFilteredTopic* create_contentfilteredtopic(
-			const char* name,
+			const std::string* name,
 			const Topic* related_topic,
-			const char* filter_expression,
+			const std::string* filter_expression,
 			const StringSeq* expression_parameters);
 		ReturnCode_t delete_contentfilteredtopic(
 			const ContentFilteredTopic* a_contentfilteredtopic);
 		MultiTopic* create_multitopic(
-			const char* name,
-			const char* type_name,
-			const char* subscription_expression,
+			const std::string* name,
+			const std::string* type_name,
+			const std::string* subscription_expression,
 			const StringSeq* expression_parameters);
 		ReturnCode_t delete_multitopic(
 			const MultiTopic* a_multitopic);
@@ -1246,26 +1246,36 @@ namespace dds {
 	};
 	
 	class DomainParticipantFactory {
+	private:
+		static DomainParticipantFactory*	instance;
+		static std::string*					home_path;
+		static std::string*					config_path;
+		static void*						config;
+
 	public:
+		static DomainParticipantFactory* get_instance();
+
+	protected:
 		DomainParticipantFactory();
 		virtual ~DomainParticipantFactory();
 		
-		DomainParticipant* create_participant(
+	public:
+		virtual DomainParticipant* create_participant(
 			DomainId_t domain_id,
 			const DomainParticipantQos* qos,
 			const DomainParticipantListener* a_listener,
 			const StatusMask* mask);
-		ReturnCode_t delete_participant(
+		virtual ReturnCode_t delete_participant(
 			const DomainParticipant* a_participant);
-		DomainParticipant* lookup_participant(
+		virtual DomainParticipant* lookup_participant(
 			DomainId_t domain_id);
-		ReturnCode_t set_default_participant_qos(
+		virtual ReturnCode_t set_default_participant_qos(
 			const DomainParticipantQos* qos);
-		ReturnCode_t get_default_participant_qos(
+		virtual ReturnCode_t get_default_participant_qos(
 			DomainParticipantQos* qos);
-		ReturnCode_t set_qos(
+		virtual ReturnCode_t set_qos(
 			const DomainParticipantFactoryQos* qos);
-		ReturnCode_t get_qos(
+		virtual ReturnCode_t get_qos(
 			DomainParticipantFactoryQos* qos);
 	};
 	
@@ -1276,8 +1286,8 @@ namespace dds {
 		
 		// abstract ReturnCode_t register_type(
 		// 	const DomainParticipant* domain,
-		// 	const char* type_name);
-		// abstract char* get_type_name();
+		// 	const std::string* type_name);
+		// abstract std::string* get_type_name();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -1286,8 +1296,8 @@ namespace dds {
 		TopicDescription();
 		virtual ~TopicDescription();
 		
-		char* get_type_name();
-		char* get_name();
+		std::string* get_type_name();
+		std::string* get_name();
 		DomainParticipant* get_participant();
 	};
 	
@@ -1315,7 +1325,7 @@ namespace dds {
 		ContentFilteredTopic();
 		virtual ~ContentFilteredTopic();
 		
-		char* get_filter_expression();
+		std::string* get_filter_expression();
 		
 		ReturnCode_t get_expression_parameters(
 			StringSeq* expression_parameters);
@@ -1331,7 +1341,7 @@ namespace dds {
 		MultiTopic();
 		virtual ~MultiTopic();
 		
-		char* get_subscription_expression();
+		std::string* get_subscription_expression();
 		
 		ReturnCode_t get_expression_parameters(
 			StringSeq* expression_parameters);
@@ -1354,7 +1364,7 @@ namespace dds {
 		ReturnCode_t delete_datawriter(
 			const DataWriter* a_datawriter);
 		DataWriter* lookup_datawriter(
-			const char* topic_name);
+			const std::string* topic_name);
 		ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
 			const PublisherQos* qos);
@@ -1461,7 +1471,7 @@ namespace dds {
 			const DataReader* a_datareader);
 		ReturnCode_t delete_contained_entities();
 		DataReader* lookup_datareader(
-			const char* topic_name);
+			const std::string* topic_name);
 		ReturnCode_t get_datareaders(
 			DataReaderSeq* readers,
 			const SampleStateMask* sample_states,
@@ -1584,7 +1594,7 @@ namespace dds {
 			const SampleStateMask* sample_states,
 			const ViewStateMask* view_states,
 			const InstanceStateMask* instance_states,
-			const char* query_expression,
+			const std::string* query_expression,
 			const StringSeq* query_parameters);
 		ReturnCode_t delete_readcondition(
 			const ReadCondition* a_condition);

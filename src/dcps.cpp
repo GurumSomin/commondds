@@ -1,11 +1,19 @@
 #include <stddef.h>
 #include <malloc.h>
 
+#include <cstdlib>
+#include <fstream>
+#include <stdexcept>
+
+#include <json/json.h>
+
 #include <dds/dcps.h>
+#include <dds/connext.h>
 
 #define DEBUG	1
 
 #if DEBUG
+#include <stdio.h>
 #include <iostream>
 #endif
 
@@ -418,7 +426,7 @@ QueryCondition::QueryCondition() {
 QueryCondition::~QueryCondition() {
 }
 
-char* QueryCondition::get_query_expression() {
+std::string* QueryCondition::get_query_expression() {
 	return NULL;
 }
 
@@ -430,27 +438,27 @@ ReturnCode_t QueryCondition::set_query_parameters(const StringSeq* query_paramet
 	return RETCODE_ERROR;
 }
 
-const char* USERDATA_QOS_POLICY_NAME				= "UserData";
-const char* DURABILITY_QOS_POLICY_NAME				= "Durability";
-const char* PRESENTATION_QOS_POLICY_NAME			= "Presentation";
-const char* DEADLINE_QOS_POLICY_NAME				= "Deadline";
-const char* LATENCYBUDGET_QOS_POLICY_NAME			= "LatencyBudget";
-const char* OWNERSHIP_QOS_POLICY_NAME				= "Ownership";
-const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME		= "OwnershipStrength";
-const char* LIVELINESS_QOS_POLICY_NAME				= "Liveliness";
-const char* TIMEBASEDFILTER_QOS_POLICY_NAME			= "TimeBasedFilter";
-const char* PARTITION_QOS_POLICY_NAME				= "Partition";
-const char* RELIABILITY_QOS_POLICY_NAME				= "Reliability";
-const char* DESTINATIONORDER_QOS_POLICY_NAME		= "DestinationOrder";
-const char* HISTORY_QOS_POLICY_NAME					= "History";
-const char* RESOURCELIMITS_QOS_POLICY_NAME			= "ResourceLimits";
-const char* ENTITYFACTORY_QOS_POLICY_NAME			= "EntityFactory";
-const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME		= "WriterDataLifecycle";
-const char* READERDATALIFECYCLE_QOS_POLICY_NAME		= "ReaderDataLifecycle";
-const char* TOPICDATA_QOS_POLICY_NAME				= "TopicData";
-const char* GROUPDATA_QOS_POLICY_NAME				= "TransportPriority";
-const char* LIFESPAN_QOS_POLICY_NAME				= "Lifespan";
-const char* DURABILITYSERVICE_POLICY_NAME			= "DurabilityService";
+const std::string* USERDATA_QOS_POLICY_NAME				= new std::string("UserData");
+const std::string* DURABILITY_QOS_POLICY_NAME			= new std::string("Durability");
+const std::string* PRESENTATION_QOS_POLICY_NAME			= new std::string("Presentation");
+const std::string* DEADLINE_QOS_POLICY_NAME				= new std::string("Deadline");
+const std::string* LATENCYBUDGET_QOS_POLICY_NAME		= new std::string("LatencyBudget");
+const std::string* OWNERSHIP_QOS_POLICY_NAME			= new std::string("Ownership");
+const std::string* OWNERSHIPSTRENGTH_QOS_POLICY_NAME	= new std::string("OwnershipStrength");
+const std::string* LIVELINESS_QOS_POLICY_NAME			= new std::string("Liveliness");
+const std::string* TIMEBASEDFILTER_QOS_POLICY_NAME		= new std::string("TimeBasedFilter");
+const std::string* PARTITION_QOS_POLICY_NAME			= new std::string("Partition");
+const std::string* RELIABILITY_QOS_POLICY_NAME			= new std::string("Reliability");
+const std::string* DESTINATIONORDER_QOS_POLICY_NAME		= new std::string("DestinationOrder");
+const std::string* HISTORY_QOS_POLICY_NAME				= new std::string("History");
+const std::string* RESOURCELIMITS_QOS_POLICY_NAME		= new std::string("ResourceLimits");
+const std::string* ENTITYFACTORY_QOS_POLICY_NAME		= new std::string("EntityFactory");
+const std::string* WRITERDATALIFECYCLE_QOS_POLICY_NAME	= new std::string("WriterDataLifecycle");
+const std::string* READERDATALIFECYCLE_QOS_POLICY_NAME	= new std::string("ReaderDataLifecycle");
+const std::string* TOPICDATA_QOS_POLICY_NAME			= new std::string("TopicData");
+const std::string* GROUPDATA_QOS_POLICY_NAME			= new std::string("TransportPriority");
+const std::string* LIFESPAN_QOS_POLICY_NAME				= new std::string("Lifespan");
+const std::string* DURABILITYSERVICE_POLICY_NAME		= new std::string("DurabilityService");
 
 UserDataQosPolicy::UserDataQosPolicy() {
 	value = new sequence<uint8_t>();
@@ -1073,8 +1081,8 @@ TopicBuiltinTopicData::TopicBuiltinTopicData() {
 
 TopicBuiltinTopicData::TopicBuiltinTopicData(
 	BuiltinTopicKey_t key,
-	char* name,
-	char* type_name,
+	std::string* name,
+	std::string* type_name,
 	DurabilityQosPolicy* durability,
 	DurabilityServiceQosPolicy* durability_service,
 	DeadlineQosPolicy* deadline,
@@ -1148,8 +1156,8 @@ PublicationBuiltinTopicData::PublicationBuiltinTopicData() {
 PublicationBuiltinTopicData::PublicationBuiltinTopicData(
 	BuiltinTopicKey_t key,
 	BuiltinTopicKey_t participant_key,
-	char* topic_name,
-	char* type_name,
+	std::string* topic_name,
+	std::string* type_name,
 	DurabilityQosPolicy* durability,
 	DurabilityServiceQosPolicy* durability_service,
 	DeadlineQosPolicy* deadline,
@@ -1228,8 +1236,8 @@ SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData() {
 SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData(
 	BuiltinTopicKey_t key,
 	BuiltinTopicKey_t participant_key,
-	char* topic_name,
-	char* type_name,
+	std::string* topic_name,
+	std::string* type_name,
 	DurabilityQosPolicy* durability,
 	DeadlineQosPolicy* deadline,
 	LatencyBudgetQosPolicy* latency_budget,
@@ -1337,8 +1345,8 @@ Subscriber* DomainParticipant::get_builtin_subscriber() {
 }
 
 Topic* DomainParticipant::create_topic(
-	const char* topic_name,
-	const char* type_name,
+	const std::string* topic_name,
+	const std::string* type_name,
 	const TopicQos* qos,
 	const TopicListener* a_listener,
 	const StatusMask* mask) {
@@ -1350,18 +1358,18 @@ ReturnCode_t DomainParticipant::delete_topic(const Topic* a_topic) {
 	return RETCODE_ERROR;
 }
 
-Topic* DomainParticipant::find_topic(const char* topic_name, const Duration_t* timeout) {
+Topic* DomainParticipant::find_topic(const std::string* topic_name, const Duration_t* timeout) {
 	return NULL;
 }
 
-TopicDescription* DomainParticipant::lookup_topicdescription(const char* name) {
+TopicDescription* DomainParticipant::lookup_topicdescription(const std::string* name) {
 	return NULL;
 }
 
 ContentFilteredTopic* DomainParticipant::create_contentfilteredtopic(
-	const char* name,
+	const std::string* name,
 	const Topic* related_topic,
-	const char* filter_expression,
+	const std::string* filter_expression,
 	const StringSeq* expression_parameters) {
 	return NULL;
 }
@@ -1371,9 +1379,9 @@ ReturnCode_t DomainParticipant::delete_contentfilteredtopic(const ContentFiltere
 }
 
 MultiTopic* DomainParticipant::create_multitopic(
-	const char* name,
-	const char* type_name,
-	const char* subscription_expression,
+	const std::string* name,
+	const std::string* type_name,
+	const std::string* subscription_expression,
 	const StringSeq* expression_parameters) {
 
 	return NULL;
@@ -1478,6 +1486,85 @@ ReturnCode_t DomainParticipant::get_current_time(Time_t* current_time) {
 	return RETCODE_ERROR;
 }
 
+DomainParticipantFactory* DomainParticipantFactory::instance = NULL;
+std::string* DomainParticipantFactory::home_path = NULL;
+std::string* DomainParticipantFactory::config_path = NULL;
+void* DomainParticipantFactory::config = NULL;
+
+DomainParticipantFactory* DomainParticipantFactory::get_instance() {
+	if(DomainParticipantFactory::instance == NULL) {
+		char* h = std::getenv("COMMONDDS_HOME");
+		std::string& home = *new std::string("");
+		if(h != NULL) {
+			home += h;
+		} else {
+#if _WIN32 || _WIN64
+			home += std::getenv("USERPROFILE");
+			home += "\\.commondds";
+#else
+			home += std::getenv("HOME");
+			home += "/.commondds";
+#endif
+		}
+
+#if _WIN32 || _WIN64
+		std::string& config = *new std::string(home);
+		config += "\\config.json";
+#else
+		std::string& config = *new std::string(home);
+		config += "/config.json";
+#endif
+		
+#if DEBUG
+		std::cout << "home_path: " << home << std::endl;
+		std::cout << "config_path: " << config << std::endl;
+#endif
+
+		Json::Value& root = *new Json::Value();
+		Json::Reader reader;
+		try {
+			std::ifstream is(config.data());
+			reader.parse(is, root);
+			is.close();
+		} catch(std::ifstream::failure& e) {
+#if DEBUG
+			std::cout << "exception: " << e.what() << std::endl;
+#endif
+		}
+
+#if DEBUG
+		std::cout << "config: " << root << std::endl;
+#endif
+
+		// Set static variables
+		DomainParticipantFactory::home_path = &home;
+		DomainParticipantFactory::config_path = &config;
+		DomainParticipantFactory::config = &root;
+
+		// Instantiate
+		// Check primitive configurations
+		if(root["middleware"]["type"].isNull()) {
+			throw std::runtime_error("config.json: cannot find middleware.type");
+		}
+
+		if(!root["middleware"]["type"].isString()) {
+			throw std::runtime_error("config.json: middleware.type's type is not a string");
+		}
+
+		std::string type = root["middleware"]["type"].asString();
+		if(!(type == "connext" || type == "opensplice")) {
+			throw std::runtime_error("config.json: illegal middleware.type: " + type);
+		}
+
+		if(type == "connext") {
+			DomainParticipantFactory::instance = new ConnextDomainParticipantFactory();
+		}
+		// Check optional configurations
+	}
+
+	return DomainParticipantFactory::instance;
+}
+
 DomainParticipantFactory::DomainParticipantFactory() {
 }
 
@@ -1529,11 +1616,11 @@ TopicDescription::TopicDescription() {
 TopicDescription::~TopicDescription() {
 }
 
-char* TopicDescription::get_type_name() {
+std::string* TopicDescription::get_type_name() {
 	return NULL;
 }
 
-char* TopicDescription::get_name() {
+std::string* TopicDescription::get_name() {
 	return NULL;
 }
 
@@ -1573,7 +1660,7 @@ ContentFilteredTopic::ContentFilteredTopic() {
 ContentFilteredTopic::~ContentFilteredTopic() {
 }
 
-char* ContentFilteredTopic::get_filter_expression() {
+std::string* ContentFilteredTopic::get_filter_expression() {
 	return NULL;
 }
 
@@ -1595,7 +1682,7 @@ MultiTopic::MultiTopic() {
 MultiTopic::~MultiTopic() {
 }
 
-char* MultiTopic::get_subscription_expression() {
+std::string* MultiTopic::get_subscription_expression() {
 	return NULL;
 }
 
@@ -1626,7 +1713,7 @@ ReturnCode_t Publisher::delete_datawriter(const DataWriter* a_datawriter) {
 	return RETCODE_ERROR;
 }
 
-DataWriter* Publisher::lookup_datawriter(const char* topic_name) {
+DataWriter* Publisher::lookup_datawriter(const std::string* topic_name) {
 	return NULL;
 }
 
@@ -1771,7 +1858,7 @@ ReturnCode_t Subscriber::delete_contained_entities() {
 	return RETCODE_ERROR;
 }
 
-DataReader* Subscriber::lookup_datareader(const char* topic_name) {
+DataReader* Subscriber::lookup_datareader(const std::string* topic_name) {
 	return NULL;
 }
 
@@ -1846,7 +1933,7 @@ QueryCondition* DataReader::create_querycondition(
 	const SampleStateMask* sample_states,
 	const ViewStateMask* view_states,
 	const InstanceStateMask* instance_states,
-	const char* query_expression,
+	const std::string* query_expression,
 	const StringSeq* query_parameters) {
 
 	return NULL;
@@ -1966,7 +2053,5 @@ SampleInfo::SampleInfo(
 SampleInfo::~SampleInfo() {
 	delete source_timestamp;
 }
-
-
 
 }
