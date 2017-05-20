@@ -430,27 +430,27 @@ ReturnCode_t QueryCondition::set_query_parameters(const StringSeq* query_paramet
 	return RETCODE_ERROR;
 }
 
-const char* USERDATA_QOS_POLICY_NAME			= "UserData";
-const char* DURABILITY_QOS_POLICY_NAME			= "Durability";
-const char* PRESENTATION_QOS_POLICY_NAME		= "Presentation";
-const char* DEADLINE_QOS_POLICY_NAME			= "Deadline";
-const char* LATENCYBUDGET_QOS_POLICY_NAME		= "LatencyBudget";
-const char* OWNERSHIP_QOS_POLICY_NAME			= "Ownership";
+const char* USERDATA_QOS_POLICY_NAME				= "UserData";
+const char* DURABILITY_QOS_POLICY_NAME				= "Durability";
+const char* PRESENTATION_QOS_POLICY_NAME			= "Presentation";
+const char* DEADLINE_QOS_POLICY_NAME				= "Deadline";
+const char* LATENCYBUDGET_QOS_POLICY_NAME			= "LatencyBudget";
+const char* OWNERSHIP_QOS_POLICY_NAME				= "Ownership";
 const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME		= "OwnershipStrength";
-const char* LIVELINESS_QOS_POLICY_NAME			= "Liveliness";
-const char* TIMEBASEDFILTER_QOS_POLICY_NAME		= "TimeBasedFilter";
-const char* PARTITION_QOS_POLICY_NAME			= "Partition";
-const char* RELIABILITY_QOS_POLICY_NAME			= "Reliability";
+const char* LIVELINESS_QOS_POLICY_NAME				= "Liveliness";
+const char* TIMEBASEDFILTER_QOS_POLICY_NAME			= "TimeBasedFilter";
+const char* PARTITION_QOS_POLICY_NAME				= "Partition";
+const char* RELIABILITY_QOS_POLICY_NAME				= "Reliability";
 const char* DESTINATIONORDER_QOS_POLICY_NAME		= "DestinationOrder";
-const char* HISTORY_QOS_POLICY_NAME			= "History";
-const char* RESOURCELIMITS_QOS_POLICY_NAME		= "ResourceLimits";
-const char* ENTITYFACTORY_QOS_POLICY_NAME		= "EntityFactory";
+const char* HISTORY_QOS_POLICY_NAME					= "History";
+const char* RESOURCELIMITS_QOS_POLICY_NAME			= "ResourceLimits";
+const char* ENTITYFACTORY_QOS_POLICY_NAME			= "EntityFactory";
 const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME		= "WriterDataLifecycle";
 const char* READERDATALIFECYCLE_QOS_POLICY_NAME		= "ReaderDataLifecycle";
-const char* TOPICDATA_QOS_POLICY_NAME			= "TopicData";
-const char* GROUPDATA_QOS_POLICY_NAME			= "TransportPriority";
-const char* LIFESPAN_QOS_POLICY_NAME			= "Lifespan";
-const char* DURABILITYSERVICE_POLICY_NAME		= "DurabilityService";
+const char* TOPICDATA_QOS_POLICY_NAME				= "TopicData";
+const char* GROUPDATA_QOS_POLICY_NAME				= "TransportPriority";
+const char* LIFESPAN_QOS_POLICY_NAME				= "Lifespan";
+const char* DURABILITYSERVICE_POLICY_NAME			= "DurabilityService";
 
 UserDataQosPolicy::UserDataQosPolicy() {
 	value = new sequence<uint8_t>();

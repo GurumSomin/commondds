@@ -6,9 +6,9 @@
 #include <string.h>
 #include <iostream>
 
-#define DOMAINID_TYPE_NATIVE		int32_t
-#define HANDLE_TYPE_NATIVE		int32_t
-#define HANDLE_NIL_NATIVE		0
+#define DOMAINID_TYPE_NATIVE			int32_t
+#define HANDLE_TYPE_NATIVE				int32_t
+#define HANDLE_NIL_NATIVE				0
 #define BUILTIN_TOPIC_KEY_TYPE_NATIVE	int32_t
 
 #define TheParticipantFactory
@@ -117,34 +117,34 @@ namespace dds {
 	// ----------------------------------------------------------------------
 	// Pre-defined values
 	// ----------------------------------------------------------------------
-	const InstanceHandle_t HANDLE_NIL = HANDLE_NIL_NATIVE;
+	const InstanceHandle_t HANDLE_NIL				= HANDLE_NIL_NATIVE;
 	
-	const int32_t LENGTH_UNLIMITED = -1;
+	const int32_t LENGTH_UNLIMITED					= -1;
 	
-	const int32_t DURATION_INFINITE_SEC		= 0x7fffffff;
-	const uint32_t DURATION_INFINITE_NSEC		= 0x7fffffff;
+	const int32_t DURATION_INFINITE_SEC				= 0x7fffffff;
+	const uint32_t DURATION_INFINITE_NSEC			= 0x7fffffff;
 	
-	const int32_t DURATION_ZERO_SEC			= 0;
-	const uint32_t DURATION_ZERO_NSEC		= 0;
+	const int32_t DURATION_ZERO_SEC					= 0;
+	const uint32_t DURATION_ZERO_NSEC				= 0;
 	
-	const int32_t TIME_INVALID_SEC			= -1;
-	const uint32_t TIME_INVALID_NSEC		= 0xffffffff;
+	const int32_t TIME_INVALID_SEC					= -1;
+	const uint32_t TIME_INVALID_NSEC				= 0xffffffff;
 	
 	// ----------------------------------------------------------------------
 	// Return codes
 	// ----------------------------------------------------------------------
-	const ReturnCode_t RETCODE_OK			= 0;
-	const ReturnCode_t RETCODE_ERROR		= 1;
-	const ReturnCode_t RETCODE_UNSUPPORTED		= 2;
-	const ReturnCode_t RETCODE_BAD_PARAMETER	= 3;
+	const ReturnCode_t RETCODE_OK					= 0;
+	const ReturnCode_t RETCODE_ERROR				= 1;
+	const ReturnCode_t RETCODE_UNSUPPORTED			= 2;
+	const ReturnCode_t RETCODE_BAD_PARAMETER		= 3;
 	const ReturnCode_t RETCODE_PRECONDITION_NOT_MET	= 4;
-	const ReturnCode_t RETCODE_OUT_OF_RESOURCES	= 5;
-	const ReturnCode_t RETCODE_NOT_ENABLED		= 6;
-	const ReturnCode_t RETCODE_IMMUTABLE_POLICY	= 7;
+	const ReturnCode_t RETCODE_OUT_OF_RESOURCES		= 5;
+	const ReturnCode_t RETCODE_NOT_ENABLED			= 6;
+	const ReturnCode_t RETCODE_IMMUTABLE_POLICY		= 7;
 	const ReturnCode_t RETCODE_INCONSISTENT_POLICY	= 8;
-	const ReturnCode_t RETCODE_ALREADY_DELETED	= 9;
-	const ReturnCode_t RETCODE_TIMEOUT		= 10;
-	const ReturnCode_t RETCODE_NO_DATA		= 11;
+	const ReturnCode_t RETCODE_ALREADY_DELETED		= 9;
+	const ReturnCode_t RETCODE_TIMEOUT				= 10;
+	const ReturnCode_t RETCODE_NO_DATA				= 11;
 	const ReturnCode_t RETCODE_ILLEGAL_OPERATION	= 12;
 	
 	// ----------------------------------------------------------------------
@@ -154,18 +154,18 @@ namespace dds {
 	typedef uint32_t StatusKind;
 	typedef uint32_t StatusMask;	// bit-mask StatusKind
 	
-	const StatusKind INCONSISTENT_TOPIC_STATUS		= 0x0001 << 0;
+	const StatusKind INCONSISTENT_TOPIC_STATUS			= 0x0001 << 0;
 	const StatusKind OFFERED_DEADLINE_MISSED_STATUS		= 0x0001 << 1;
 	const StatusKind REQUESTED_DEADLINE_MISSED_STATUS	= 0x0001 << 2;
 	const StatusKind OFFERED_INCOMPATIBLE_QOS_STATUS	= 0x0001 << 5;
 	const StatusKind REQUESTED_INCOMPATIBLE_QOS_STATUS	= 0x0001 << 6;
-	const StatusKind SAMPLE_LOST_STATUS			= 0x0001 << 7;
-	const StatusKind SAMPLE_REJECTED_STATUS			= 0x0001 << 8;
-	const StatusKind DATA_ON_READERS_STATUS			= 0x0001 << 9;
-	const StatusKind DATA_AVAILABLE_STATUS			= 0x0001 << 10;
-	const StatusKind LIVELINESS_LOST_STATUS			= 0x0001 << 11;
-	const StatusKind LIVELINESS_CHANGED_STATUS		= 0x0001 << 12;
-	const StatusKind PUBLICATION_MATCHED_STATUS		= 0x0001 << 13;
+	const StatusKind SAMPLE_LOST_STATUS					= 0x0001 << 7;
+	const StatusKind SAMPLE_REJECTED_STATUS				= 0x0001 << 8;
+	const StatusKind DATA_ON_READERS_STATUS				= 0x0001 << 9;
+	const StatusKind DATA_AVAILABLE_STATUS				= 0x0001 << 10;
+	const StatusKind LIVELINESS_LOST_STATUS				= 0x0001 << 11;
+	const StatusKind LIVELINESS_CHANGED_STATUS			= 0x0001 << 12;
+	const StatusKind PUBLICATION_MATCHED_STATUS			= 0x0001 << 13;
 	const StatusKind SUBSCRIPTION_MATCHED_STATUS		= 0x0001 << 14;
 	
 	struct InconsistentTopicStatus {
@@ -194,10 +194,10 @@ namespace dds {
 	};
 	
 	struct SampleRejectedStatus {
-		int32_t				total_count;
-		int32_t				total_count_change;
+		int32_t						total_count;
+		int32_t						total_count_change;
 		SampleRejectedStatusKind	last_reason;
-		InstanceHandle_t		last_instance_handle;
+		InstanceHandle_t			last_instance_handle;
 		
 		SampleRejectedStatus();
 		SampleRejectedStatus(
@@ -218,10 +218,10 @@ namespace dds {
 	};
 	
 	struct LivelinessChangedStatus {
-		int32_t			alive_count;
-		int32_t			not_alive_count;
-		int32_t			alive_count_change;
-		int32_t			not_alive_count_change;
+		int32_t				alive_count;
+		int32_t				not_alive_count;
+		int32_t				alive_count_change;
+		int32_t				not_alive_count_change;
 		InstanceHandle_t	last_publication_handle;
 		
 		LivelinessChangedStatus();
@@ -235,8 +235,8 @@ namespace dds {
 	};
 	
 	struct OfferedDeadlineMissedStatus {
-		int32_t			total_count;
-		int32_t			total_count_change;
+		int32_t				total_count;
+		int32_t				total_count_change;
 		InstanceHandle_t	last_instance_handle;
 		
 	 	OfferedDeadlineMissedStatus();
@@ -248,8 +248,8 @@ namespace dds {
 	};
 	
 	struct RequestedDeadlineMissedStatus {
-		int32_t			total_count;
-		int32_t			total_count_change;
+		int32_t				total_count;
+		int32_t				total_count_change;
 		InstanceHandle_t	last_instance_handle;
 		
 		RequestedDeadlineMissedStatus();
@@ -261,7 +261,7 @@ namespace dds {
 	};
 	
 	struct QosPolicyCount {
-		QosPolicyId_t		policy_id;
+		QosPolicyId_t	policy_id;
 		int32_t			count;
 		
 		QosPolicyCount();
@@ -274,8 +274,8 @@ namespace dds {
 	typedef sequence<QosPolicyCount> QosPolicyCountSeq;
 	
 	struct OfferedIncompatibleQosStatus {
-		int32_t			total_count;
-		int32_t			total_count_change;
+		int32_t				total_count;
+		int32_t				total_count_change;
 		QosPolicyId_t		last_policy_id;
 		QosPolicyCountSeq*	policies;
 		
@@ -289,8 +289,8 @@ namespace dds {
 	};
 	
 	struct RequestedIncompatibleQosStatus {
-		int32_t			total_count;
-		int32_t			total_count_change;
+		int32_t				total_count;
+		int32_t				total_count_change;
 		QosPolicyId_t		last_policy_id;
 		QosPolicyCountSeq*	policies;
 		
@@ -304,10 +304,10 @@ namespace dds {
 	};
 	
 	struct PublicationMatchedStatus {
-		int32_t			total_count;
-		int32_t			total_count_change;
-		int32_t			current_count;
-		int32_t			current_count_change;
+		int32_t				total_count;
+		int32_t				total_count_change;
+		int32_t				current_count;
+		int32_t				current_count_change;
 		InstanceHandle_t	last_subscription_handle;
 		
 		PublicationMatchedStatus();
@@ -321,10 +321,10 @@ namespace dds {
 	};
 	
 	struct SubscriptionMatchedStatus {
-		int32_t			total_count;
-		int32_t			total_count_change;
-		int32_t			current_count;
-		int32_t			current_count_change;
+		int32_t				total_count;
+		int32_t				total_count_change;
+		int32_t				current_count;
+		int32_t				current_count_change;
 		InstanceHandle_t	last_publication_handle;
 		
 		SubscriptionMatchedStatus();
@@ -490,32 +490,32 @@ namespace dds {
 	
 	// Sample states to support reads
 	typedef uint32_t SampleStateKind;
-	const SampleStateKind READ_SAMPLE_STATE				= 0x0001 << 0;
-	const SampleStateKind NOT_READ_SAMPLE_STATE			= 0x0001 << 1;
+	const SampleStateKind READ_SAMPLE_STATE						= 0x0001 << 0;
+	const SampleStateKind NOT_READ_SAMPLE_STATE					= 0x0001 << 1;
 	
 	// This is a bit-mask SampleStateKind
 	typedef uint32_t SampleStateMask;
-	const SampleStateMask ANY_SAMPLE_STATE				= 0xffff;
+	const SampleStateMask ANY_SAMPLE_STATE						= 0xffff;
 	
 	// View states to support reads
 	typedef uint32_t ViewStateKind;
-	const ViewStateKind NEW_VIEW_STATE				= 0x0001 << 0;
-	const ViewStateKind NOT_NEW_VIEW_STATE				= 0x0001 << 1;
+	const ViewStateKind NEW_VIEW_STATE							= 0x0001 << 0;
+	const ViewStateKind NOT_NEW_VIEW_STATE						= 0x0001 << 1;
 	
 	// This is a bit-mask ViewStateKind
 	typedef uint32_t ViewStateMask;
-	const ViewStateMask ANY_VIEW_STATE				= 0xffff;
+	const ViewStateMask ANY_VIEW_STATE							= 0xffff;
 	
 	// Instance states to support reads
 	typedef uint32_t InstanceStateKind;
-	const InstanceStateKind ALIVE_INSTANCE_STATE			= 0x0001 << 0;
+	const InstanceStateKind ALIVE_INSTANCE_STATE				= 0x0001 << 0;
 	const InstanceStateKind NOT_ALIVE_DISPOSED_INSTANCE_STATE	= 0x0001 << 1;
 	const InstanceStateKind NOT_ALIVE_NO_WRITERS_INSTANCE_STATE	= 0x0001 << 2;
 	
 	// This is a bit-mask InstanceStateKind
 	typedef uint32_t InstanceStateMask;
-	const InstanceStateMask ANY_INSTANCE_STATE			= 0xffff;
-	const InstanceStateMask NOT_ALIVE_INSTANCE_STATE		= 0x006;
+	const InstanceStateMask ANY_INSTANCE_STATE					= 0xffff;
+	const InstanceStateMask NOT_ALIVE_INSTANCE_STATE			= 0x006;
 	
 	class ReadCondition : Condition {
 	public:
@@ -543,51 +543,51 @@ namespace dds {
 	// ----------------------------------------------------------------------
 	// Qos
 	// ----------------------------------------------------------------------
-	extern const char* USERDATA_QOS_POLICY_NAME;		//= "UserData";
-	extern const char* DURABILITY_QOS_POLICY_NAME;		//= "Durability";
-	extern const char* PRESENTATION_QOS_POLICY_NAME;	//= "Presentation";
-	extern const char* DEADLINE_QOS_POLICY_NAME;		//= "Deadline";
-	extern const char* LATENCYBUDGET_QOS_POLICY_NAME;	//= "LatencyBudget";
-	extern const char* OWNERSHIP_QOS_POLICY_NAME;		//= "Ownership";
+	extern const char* USERDATA_QOS_POLICY_NAME;			//= "UserData";
+	extern const char* DURABILITY_QOS_POLICY_NAME;			//= "Durability";
+	extern const char* PRESENTATION_QOS_POLICY_NAME;		//= "Presentation";
+	extern const char* DEADLINE_QOS_POLICY_NAME;			//= "Deadline";
+	extern const char* LATENCYBUDGET_QOS_POLICY_NAME;		//= "LatencyBudget";
+	extern const char* OWNERSHIP_QOS_POLICY_NAME;			//= "Ownership";
 	extern const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME;	//= "OwnershipStrength";
-	extern const char* LIVELINESS_QOS_POLICY_NAME;		//= "Liveliness";
-	extern const char* TIMEBASEDFILTER_QOS_POLICY_NAME;	//= "TimeBasedFilter";
-	extern const char* PARTITION_QOS_POLICY_NAME;		//= "Partition";
-	extern const char* RELIABILITY_QOS_POLICY_NAME;		//= "Reliability";
+	extern const char* LIVELINESS_QOS_POLICY_NAME;			//= "Liveliness";
+	extern const char* TIMEBASEDFILTER_QOS_POLICY_NAME;		//= "TimeBasedFilter";
+	extern const char* PARTITION_QOS_POLICY_NAME;			//= "Partition";
+	extern const char* RELIABILITY_QOS_POLICY_NAME;			//= "Reliability";
 	extern const char* DESTINATIONORDER_QOS_POLICY_NAME;	//= "DestinationOrder";
-	extern const char* HISTORY_QOS_POLICY_NAME;		//= "History";
-	extern const char* RESOURCELIMITS_QOS_POLICY_NAME;	//= "ResourceLimits";
-	extern const char* ENTITYFACTORY_QOS_POLICY_NAME;	//= "EntityFactory";
+	extern const char* HISTORY_QOS_POLICY_NAME;				//= "History";
+	extern const char* RESOURCELIMITS_QOS_POLICY_NAME;		//= "ResourceLimits";
+	extern const char* ENTITYFACTORY_QOS_POLICY_NAME;		//= "EntityFactory";
 	extern const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME;	//= "WriterDataLifecycle";
 	extern const char* READERDATALIFECYCLE_QOS_POLICY_NAME;	//= "ReaderDataLifecycle";
-	extern const char* TOPICDATA_QOS_POLICY_NAME;		//= "TopicData";
-	extern const char* GROUPDATA_QOS_POLICY_NAME;		//= "TransportPriority";
-	extern const char* LIFESPAN_QOS_POLICY_NAME;		//= "Lifespan";
-	extern const char* DURABILITYSERVICE_POLICY_NAME;	//= "DurabilityService";
+	extern const char* TOPICDATA_QOS_POLICY_NAME;			//= "TopicData";
+	extern const char* GROUPDATA_QOS_POLICY_NAME;			//= "TransportPriority";
+	extern const char* LIFESPAN_QOS_POLICY_NAME;			//= "Lifespan";
+	extern const char* DURABILITYSERVICE_POLICY_NAME;		//= "DurabilityService";
 	
-	const QosPolicyId_t INVALID_QOS_POLICY_ID		= 0;
-	const QosPolicyId_t USERDATA_QOS_POLICY_ID		= 1;
-	const QosPolicyId_t DURABILITY_QOS_POLICY_ID		= 2;
-	const QosPolicyId_t PRESENTATION_QOS_POLICY_ID		= 3;
-	const QosPolicyId_t DEADLINE_QOS_POLICY_ID		= 4;
-	const QosPolicyId_t LATENCYBUDGET_QOS_POLICY_ID		= 5;
-	const QosPolicyId_t OWNERSHIP_QOS_POLICY_ID		= 6;
-	const QosPolicyId_t OWNERSHIPSTRENGTH_QOS_POLICY_ID	= 7;
-	const QosPolicyId_t LIVELINESS_QOS_POLICY_ID		= 8;
-	const QosPolicyId_t TIMEBASEDFILTER_QOS_POLICY_ID	= 9;
-	const QosPolicyId_t PARTITION_QOS_POLICY_ID		= 10;
-	const QosPolicyId_t RELIABILITY_QOS_POLICY_ID		= 11;
-	const QosPolicyId_t DESTINATIONORDER_QOS_POLICY_ID	= 12;
-	const QosPolicyId_t HISTORY_QOS_POLICY_ID		= 13;
-	const QosPolicyId_t RESOURCELIMITS_QOS_POLICY_ID	= 14;
-	const QosPolicyId_t ENTITYFACTORY_QOS_POLICY_ID		= 15;
+	const QosPolicyId_t INVALID_QOS_POLICY_ID				= 0;
+	const QosPolicyId_t USERDATA_QOS_POLICY_ID				= 1;
+	const QosPolicyId_t DURABILITY_QOS_POLICY_ID			= 2;
+	const QosPolicyId_t PRESENTATION_QOS_POLICY_ID			= 3;
+	const QosPolicyId_t DEADLINE_QOS_POLICY_ID				= 4;
+	const QosPolicyId_t LATENCYBUDGET_QOS_POLICY_ID			= 5;
+	const QosPolicyId_t OWNERSHIP_QOS_POLICY_ID				= 6;
+	const QosPolicyId_t OWNERSHIPSTRENGTH_QOS_POLICY_ID		= 7;
+	const QosPolicyId_t LIVELINESS_QOS_POLICY_ID			= 8;
+	const QosPolicyId_t TIMEBASEDFILTER_QOS_POLICY_ID		= 9;
+	const QosPolicyId_t PARTITION_QOS_POLICY_ID				= 10;
+	const QosPolicyId_t RELIABILITY_QOS_POLICY_ID			= 11;
+	const QosPolicyId_t DESTINATIONORDER_QOS_POLICY_ID		= 12;
+	const QosPolicyId_t HISTORY_QOS_POLICY_ID				= 13;
+	const QosPolicyId_t RESOURCELIMITS_QOS_POLICY_ID		= 14;
+	const QosPolicyId_t ENTITYFACTORY_QOS_POLICY_ID			= 15;
 	const QosPolicyId_t WRITERDATALIFECYCLE_QOS_POLICY_ID	= 16;
 	const QosPolicyId_t READERDATALIFECYCLE_QOS_POLICY_ID	= 17;
-	const QosPolicyId_t TOPICDATA_QOS_POLICY_ID		= 18;
-	const QosPolicyId_t GROUPDATA_QOS_POLICY_ID		= 19;
-	const QosPolicyId_t TRANSPORTPRIORITY_QOS_POLICY_ID	= 20;
-	const QosPolicyId_t LIFESPAN_QOS_POLICY_ID		= 21;
-	const QosPolicyId_t DURABILITYSERVICE_QOS_POLICY_ID	= 22;
+	const QosPolicyId_t TOPICDATA_QOS_POLICY_ID				= 18;
+	const QosPolicyId_t GROUPDATA_QOS_POLICY_ID				= 19;
+	const QosPolicyId_t TRANSPORTPRIORITY_QOS_POLICY_ID		= 20;
+	const QosPolicyId_t LIFESPAN_QOS_POLICY_ID				= 21;
+	const QosPolicyId_t DURABILITYSERVICE_QOS_POLICY_ID		= 22;
 	
 	struct UserDataQosPolicy {
 		sequence<uint8_t>* value;
@@ -825,12 +825,12 @@ namespace dds {
 	};
 	
 	struct DurabilityServiceQosPolicy {
-		Duration_t*		service_cleanup_delay;
+		Duration_t*				service_cleanup_delay;
 		HistoryQosPolicyKind	history_kind;
-		int32_t			history_depth;
-		int32_t			max_samples;
-		int32_t			max_instances;
-		int32_t			max_samples_per_instance;
+		int32_t					history_depth;
+		int32_t					max_samples;
+		int32_t					max_instances;
+		int32_t					max_samples_per_instance;
 		
 		DurabilityServiceQosPolicy();
 		DurabilityServiceQosPolicy(
@@ -852,7 +852,7 @@ namespace dds {
 	};
 	
 	struct DomainParticipantQos {
-		UserDataQosPolicy*	user_data;
+		UserDataQosPolicy*		user_data;
 		EntityFactoryQosPolicy*	entity_factory;
 		
 		DomainParticipantQos();
@@ -863,19 +863,19 @@ namespace dds {
 	};
 	
 	struct TopicQos {
-		TopicDataQosPolicy*		topic_data;
+		TopicDataQosPolicy*			topic_data;
 		DurabilityQosPolicy*		durability;
 		DurabilityServiceQosPolicy*	durability_service;
-		DeadlineQosPolicy*		deadline;
+		DeadlineQosPolicy*			deadline;
 		LatencyBudgetQosPolicy*		latency_budget;
 		LivelinessQosPolicy*		liveliness;
 		ReliabilityQosPolicy*		reliability;
 		DestinationOrderQosPolicy*	destination_order;
-		HistoryQosPolicy*		history;
+		HistoryQosPolicy*			history;
 		ResourceLimitsQosPolicy*	resource_limits;
 		TransportPriorityQosPolicy*	transport_priority;
-		LifespanQosPolicy*		lifespan;
-		OwnershipQosPolicy*		ownership;
+		LifespanQosPolicy*			lifespan;
+		OwnershipQosPolicy*			ownership;
 		
 		TopicQos();
 		TopicQos(
@@ -896,20 +896,20 @@ namespace dds {
 	};
 	
 	struct DataWriterQos {
-		DurabilityQosPolicy*		durability;
-		DurabilityServiceQosPolicy*	durability_service;
-		DeadlineQosPolicy*		deadline;
-		LatencyBudgetQosPolicy*		latency_budget;
-		LivelinessQosPolicy*		liveliness;
-		ReliabilityQosPolicy*		reliability;
-		DestinationOrderQosPolicy*	destination_order;
-		HistoryQosPolicy*		history;
+		DurabilityQosPolicy*			durability;
+		DurabilityServiceQosPolicy*		durability_service;
+		DeadlineQosPolicy*				deadline;
+		LatencyBudgetQosPolicy*			latency_budget;
+		LivelinessQosPolicy*			liveliness;
+		ReliabilityQosPolicy*			reliability;
+		DestinationOrderQosPolicy*		destination_order;
+		HistoryQosPolicy*				history;
 		ResourceLimitsQosPolicy*		resource_limits;
-		TransportPriorityQosPolicy*	transport_priority;
-		LifespanQosPolicy*		lifespan;
-		UserDataQosPolicy*		user_data;
-		OwnershipQosPolicy*		ownership;
-		OwnershipStrengthQosPolicy*	ownership_strength;
+		TransportPriorityQosPolicy*		transport_priority;
+		LifespanQosPolicy*				lifespan;
+		UserDataQosPolicy*				user_data;
+		OwnershipQosPolicy*				ownership;
+		OwnershipStrengthQosPolicy*		ownership_strength;
 		WriterDataLifecycleQosPolicy*	writer_data_lifecycle;
 		
 		DataWriterQos();
@@ -934,8 +934,8 @@ namespace dds {
 	
 	struct PublisherQos {
 		PresentationQosPolicy*		presentation;
-		PartitionQosPolicy*		partition;
-		GroupDataQosPolicy*		group_data;
+		PartitionQosPolicy*			partition;
+		GroupDataQosPolicy*			group_data;
 		EntityFactoryQosPolicy*		entity_factory;
 		
 		PublisherQos();
@@ -948,17 +948,17 @@ namespace dds {
 	};
 	
 	struct DataReaderQos {
-		DurabilityQosPolicy*		durability;
-		DeadlineQosPolicy*		deadline;
-		LatencyBudgetQosPolicy*		latency_budget;
-		LivelinessQosPolicy*		liveliness;
-		ReliabilityQosPolicy*		reliability;
-		DestinationOrderQosPolicy*	destination_order;
-		HistoryQosPolicy*		history;
-		ResourceLimitsQosPolicy*	resource_limits;
-		UserDataQosPolicy*		user_data;
-		OwnershipQosPolicy*		ownership;
-		TimeBasedFilterQosPolicy*	time_based_filter;
+		DurabilityQosPolicy*			durability;
+		DeadlineQosPolicy*				deadline;
+		LatencyBudgetQosPolicy*			latency_budget;
+		LivelinessQosPolicy*			liveliness;
+		ReliabilityQosPolicy*			reliability;
+		DestinationOrderQosPolicy*		destination_order;
+		HistoryQosPolicy*				history;
+		ResourceLimitsQosPolicy*		resource_limits;
+		UserDataQosPolicy*				user_data;
+		OwnershipQosPolicy*				ownership;
+		TimeBasedFilterQosPolicy*		time_based_filter;
 		ReaderDataLifecycleQosPolicy*	reader_data_lifecycle;
 		
 		DataReaderQos();
@@ -980,8 +980,8 @@ namespace dds {
 	
 	struct SubscriberQos {
 		PresentationQosPolicy*		presentation;
-		PartitionQosPolicy*		partition;
-		GroupDataQosPolicy*		group_data;
+		PartitionQosPolicy*			partition;
+		GroupDataQosPolicy*			group_data;
 		EntityFactoryQosPolicy*		entity_factory;
 		
 		SubscriberQos();
@@ -1006,22 +1006,22 @@ namespace dds {
 	};
 	
 	struct TopicBuiltinTopicData {
-		BuiltinTopicKey_t		key;
-		char*				name;
-		char*				type_name;
+		BuiltinTopicKey_t			key;
+		char*						name;
+		char*						type_name;
 		DurabilityQosPolicy*		durability;
 		DurabilityServiceQosPolicy*	durability_service;
-		DeadlineQosPolicy*		deadline;
+		DeadlineQosPolicy*			deadline;
 		LatencyBudgetQosPolicy*		latency_budget;
 		LivelinessQosPolicy*		liveliness;
 		ReliabilityQosPolicy*		reliability;
 		TransportPriorityQosPolicy*	transport_priority;
-		LifespanQosPolicy*		lifespan;
+		LifespanQosPolicy*			lifespan;
 		DestinationOrderQosPolicy*	destination_order;
-		HistoryQosPolicy*		history;
+		HistoryQosPolicy*			history;
 		ResourceLimitsQosPolicy*	resource_limits;
-		OwnershipQosPolicy*		ownership;
-		TopicDataQosPolicy*		topic_data;
+		OwnershipQosPolicy*			ownership;
+		TopicDataQosPolicy*			topic_data;
 		
 		TopicBuiltinTopicData();
 		TopicBuiltinTopicData(
@@ -1045,25 +1045,25 @@ namespace dds {
 	};
 	
 	struct PublicationBuiltinTopicData {
-		BuiltinTopicKey_t		key;
-		BuiltinTopicKey_t		participant_key;
-		char*				topic_name;
-		char*				type_name;
+		BuiltinTopicKey_t			key;
+		BuiltinTopicKey_t			participant_key;
+		char*						topic_name;
+		char*						type_name;
 		DurabilityQosPolicy*		durability;
 		DurabilityServiceQosPolicy*	durability_service;
-		DeadlineQosPolicy*		deadline;
+		DeadlineQosPolicy*			deadline;
 		LatencyBudgetQosPolicy*		latency_budget;
 		LivelinessQosPolicy*		liveliness;
 		ReliabilityQosPolicy*		reliability;
-		LifespanQosPolicy*		lifespan;
-		UserDataQosPolicy*		user_data;
-		OwnershipQosPolicy*		ownership;
+		LifespanQosPolicy*			lifespan;
+		UserDataQosPolicy*			user_data;
+		OwnershipQosPolicy*			ownership;
 		OwnershipStrengthQosPolicy*	ownership_strength;
 		DestinationOrderQosPolicy*	destination_order;
 		PresentationQosPolicy*		presentation;
-		PartitionQosPolicy*		partition;
-		TopicDataQosPolicy*		topic_data;
-		GroupDataQosPolicy*		group_data;
+		PartitionQosPolicy*			partition;
+		TopicDataQosPolicy*			topic_data;
+		GroupDataQosPolicy*			group_data;
 		
 		PublicationBuiltinTopicData();
 		PublicationBuiltinTopicData(
@@ -1090,23 +1090,23 @@ namespace dds {
 	};
 	
 	struct SubscriptionBuiltinTopicData {
-		BuiltinTopicKey_t		key;
-		BuiltinTopicKey_t		participant_key;
-		char*				topic_name;
-		char*				type_name;
+		BuiltinTopicKey_t			key;
+		BuiltinTopicKey_t			participant_key;
+		char*						topic_name;
+		char*						type_name;
 		DurabilityQosPolicy*		durability;
-		DeadlineQosPolicy*		deadline;
+		DeadlineQosPolicy*			deadline;
 		LatencyBudgetQosPolicy*		latency_budget;
 		LivelinessQosPolicy*		liveliness;
 		ReliabilityQosPolicy*		reliability;
-		OwnershipQosPolicy*		ownership;
+		OwnershipQosPolicy*			ownership;
 		DestinationOrderQosPolicy*	destination_order;
-		UserDataQosPolicy*		user_data;
+		UserDataQosPolicy*			user_data;
 		TimeBasedFilterQosPolicy*	time_based_filter;
 		PresentationQosPolicy*		presentation;
-		PartitionQosPolicy*		partition;
-		TopicDataQosPolicy*		topic_data;
-		GroupDataQosPolicy*		group_data;
+		PartitionQosPolicy*			partition;
+		TopicDataQosPolicy*			topic_data;
+		GroupDataQosPolicy*			group_data;
 		
 		SubscriptionBuiltinTopicData();
 		SubscriptionBuiltinTopicData(
@@ -1621,18 +1621,18 @@ namespace dds {
 	};
 	
 	struct SampleInfo {
-		SampleStateKind sample_state;
-		ViewStateKind view_state;
-		InstanceStateKind instance_state;
-		Time_t* source_timestamp;
-		InstanceHandle_t instance_handle;
-		InstanceHandle_t publication_handle;
-		int32_t disposed_generation_count;
-		int32_t no_writers_generation_count;
-		int32_t sample_rank;
-		int32_t generation_rank;
-		int32_t absolute_generation_rank;
-		bool valid_data;
+		SampleStateKind		sample_state;
+		ViewStateKind		view_state;
+		InstanceStateKind	instance_state;
+		Time_t*				source_timestamp;
+		InstanceHandle_t	instance_handle;
+		InstanceHandle_t	publication_handle;
+		int32_t				disposed_generation_count;
+		int32_t				no_writers_generation_count;
+		int32_t				sample_rank;
+		int32_t				generation_rank;
+		int32_t				absolute_generation_rank;
+		bool				valid_data;
 		
 		SampleInfo();
 		SampleInfo(
