@@ -553,6 +553,10 @@ PresentationQosPolicy::PresentationQosPolicy(PresentationQosPolicyAccessScopeKin
 PresentationQosPolicy::~PresentationQosPolicy() {
 }
 
+DeadlineQosPolicy::DeadlineQosPolicy() {
+	DeadlineQosPolicy(0, 0);
+}
+
 DeadlineQosPolicy::DeadlineQosPolicy(Duration_t* period) {
 	this->period = period;
 }
@@ -613,11 +617,6 @@ LivelinessQosPolicy::LivelinessQosPolicy(LivelinessQosPolicyKind kind, Duration_
 	this->lease_duration = lease_duration;
 }
 
-LivelinessQosPolicy::LivelinessQosPolicy(LivelinessQosPolicyKind kind, int32_t lease_duration_sec, uint32_t lease_duration_nanosec) {
-	this->kind = kind;
-	this->lease_duration = new Duration_t(lease_duration_sec, lease_duration_nanosec);
-}
-
 LivelinessQosPolicy::~LivelinessQosPolicy() {
 	delete lease_duration;
 }
@@ -628,10 +627,6 @@ TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy() {
 
 TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy(Duration_t* minimum_separation) {
 	this->minimum_separation = minimum_separation;
-}
-
-TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy(int32_t minimum_separation_sec, int32_t minimum_separation_nanosec) {
-	this->minimum_separation = new Duration_t(minimum_separation_sec, minimum_separation_nanosec);
 }
 
 TimeBasedFilterQosPolicy::~TimeBasedFilterQosPolicy() {
@@ -658,11 +653,6 @@ ReliabilityQosPolicy::ReliabilityQosPolicy() {
 ReliabilityQosPolicy::ReliabilityQosPolicy(ReliabilityQosPolicyKind kind, Duration_t* max_blocking_time) {
 	this->kind = kind;
 	this->max_blocking_time = max_blocking_time;
-}
-
-ReliabilityQosPolicy::ReliabilityQosPolicy(ReliabilityQosPolicyKind kind, int32_t max_blocking_time_sec, int32_t max_blocking_time_nanosec) {
-	this->kind = kind;
-	this->max_blocking_time = new Duration_t(max_blocking_time_sec, max_blocking_time_nanosec);
 }
 
 ReliabilityQosPolicy::~ReliabilityQosPolicy() {
@@ -743,20 +733,6 @@ ReaderDataLifecycleQosPolicy::ReaderDataLifecycleQosPolicy(
 	this->autopurge_disposed_samples_delay = autopurge_disposed_samples_delay;
 }
 
-ReaderDataLifecycleQosPolicy::ReaderDataLifecycleQosPolicy(
-	int32_t autopurge_nowriter_samples_delay_sec,
-	int32_t autopurge_nowriter_samples_delay_nanosec,
-	int32_t autopurge_disposed_samples_delay_sec,
-	int32_t autopurge_disposed_samples_delay_nanosec) {
-	
-	this->autopurge_nowriter_samples_delay = new Duration_t(
-		autopurge_nowriter_samples_delay_sec, 
-		autopurge_nowriter_samples_delay_nanosec);
-	this->autopurge_disposed_samples_delay = new Duration_t(
-		autopurge_disposed_samples_delay_sec,
-		autopurge_disposed_samples_delay_nanosec);
-}
-
 ReaderDataLifecycleQosPolicy::~ReaderDataLifecycleQosPolicy() {
 	delete autopurge_nowriter_samples_delay;
 	delete autopurge_disposed_samples_delay;
@@ -790,6 +766,1207 @@ DurabilityServiceQosPolicy::DurabilityServiceQosPolicy(
 DurabilityServiceQosPolicy::~DurabilityServiceQosPolicy() {
 	delete service_cleanup_delay;
 }
+
+DomainParticipantFactoryQos::DomainParticipantFactoryQos() {
+	entity_factory = new EntityFactoryQosPolicy();
+}
+
+DomainParticipantFactoryQos::DomainParticipantFactoryQos(EntityFactoryQosPolicy* entity_factory) {
+	this->entity_factory = entity_factory;
+}
+
+DomainParticipantFactoryQos::~DomainParticipantFactoryQos() {
+}
+
+DomainParticipantQos::DomainParticipantQos() {
+	user_data = new UserDataQosPolicy();
+	entity_factory = new EntityFactoryQosPolicy();
+}
+
+DomainParticipantQos::DomainParticipantQos(UserDataQosPolicy* user_data, EntityFactoryQosPolicy* entity_factory) {
+	this->user_data = user_data;
+	this->entity_factory = entity_factory;
+}
+
+DomainParticipantQos::~DomainParticipantQos() {
+	delete entity_factory;
+	delete user_data;
+}
+
+TopicQos::TopicQos() {
+	topic_data = new TopicDataQosPolicy();
+	durability = new DurabilityQosPolicy();
+	durability_service = new DurabilityServiceQosPolicy();
+	deadline = new DeadlineQosPolicy();
+	latency_budget = new LatencyBudgetQosPolicy();
+	liveliness = new LivelinessQosPolicy();
+	reliability = new ReliabilityQosPolicy();
+	destination_order = new DestinationOrderQosPolicy();
+	history = new HistoryQosPolicy();
+	resource_limits = new ResourceLimitsQosPolicy();
+	transport_priority = new TransportPriorityQosPolicy();
+	lifespan = new LifespanQosPolicy();
+	ownership = new OwnershipQosPolicy();
+}
+
+TopicQos::TopicQos(
+	TopicDataQosPolicy* topic_data,
+	DurabilityQosPolicy* durability,
+	DurabilityServiceQosPolicy* durability_service,
+	DeadlineQosPolicy* deadline,
+	LatencyBudgetQosPolicy* latency_budget,
+	LivelinessQosPolicy* liveliness,
+	ReliabilityQosPolicy* reliability,
+	DestinationOrderQosPolicy* destination_order,
+	HistoryQosPolicy* history,
+	ResourceLimitsQosPolicy* resource_limits,
+	TransportPriorityQosPolicy* transport_priority,
+	LifespanQosPolicy* lifespan,
+	OwnershipQosPolicy* ownership) {
+	
+	this->topic_data = topic_data;
+	this->durability = durability;
+	this->durability_service = durability_service;
+	this->deadline = deadline;
+	this->latency_budget = latency_budget;
+	this->liveliness = liveliness;
+	this->reliability = reliability;
+	this->destination_order = destination_order;
+	this->history = history;
+	this->resource_limits = resource_limits;
+	this->transport_priority = transport_priority;
+	this->lifespan = lifespan;
+	this->ownership = ownership;
+}
+
+TopicQos::~TopicQos() {
+	delete topic_data;
+	delete durability;
+	delete durability_service;
+	delete deadline;
+	delete latency_budget;
+	delete liveliness;
+	delete reliability;
+	delete destination_order;
+	delete history;
+	delete resource_limits;
+	delete transport_priority;
+	delete lifespan;
+	delete ownership;
+}
+
+DataWriterQos::DataWriterQos() {
+	durability = new DurabilityQosPolicy();
+	durability_service = new DurabilityServiceQosPolicy();
+	deadline = new DeadlineQosPolicy();
+	latency_budget = new LatencyBudgetQosPolicy();
+	liveliness = new LivelinessQosPolicy();
+	reliability = new ReliabilityQosPolicy();
+	destination_order = new DestinationOrderQosPolicy();
+	history = new HistoryQosPolicy();
+	resource_limits = new ResourceLimitsQosPolicy();
+	transport_priority = new TransportPriorityQosPolicy();
+	lifespan = new LifespanQosPolicy();
+	user_data = new UserDataQosPolicy();
+	ownership = new OwnershipQosPolicy();
+	ownership_strength = new OwnershipStrengthQosPolicy();
+	writer_data_lifecycle = new WriterDataLifecycleQosPolicy();
+}
+
+DataWriterQos::DataWriterQos(
+	DurabilityQosPolicy* durability,
+	DurabilityServiceQosPolicy* durability_service,
+	DeadlineQosPolicy* deadline,
+	LatencyBudgetQosPolicy* latency_budget,
+	LivelinessQosPolicy* liveliness,
+	ReliabilityQosPolicy* reliability,
+	DestinationOrderQosPolicy* destination_order,
+	HistoryQosPolicy* history,
+	ResourceLimitsQosPolicy* resource_limits,
+	TransportPriorityQosPolicy* transport_priority,
+	LifespanQosPolicy* lifespan,
+	UserDataQosPolicy* user_data,
+	OwnershipQosPolicy* ownership,
+	OwnershipStrengthQosPolicy* ownership_strength,
+	WriterDataLifecycleQosPolicy* writer_data_lifecycle) {
+	
+	this->durability = durability;
+	this->durability_service = durability_service;
+	this->deadline = deadline;
+	this->latency_budget = latency_budget;
+	this->liveliness = liveliness;
+	this->reliability = reliability;
+	this->destination_order = destination_order;
+	this->history = history;
+	this->resource_limits = resource_limits;
+	this->transport_priority = transport_priority;
+	this->lifespan = lifespan;
+	this->user_data = user_data;
+	this->ownership = ownership;
+	this->ownership_strength = ownership_strength;
+	this->writer_data_lifecycle = writer_data_lifecycle;
+}
+
+DataWriterQos::~DataWriterQos() {
+	delete durability;
+	delete durability_service;
+	delete deadline;
+	delete latency_budget;
+	delete liveliness;
+	delete reliability;
+	delete destination_order;
+	delete history;
+	delete resource_limits;
+	delete transport_priority;
+	delete lifespan;
+	delete user_data;
+	delete ownership;
+	delete ownership_strength;
+	delete writer_data_lifecycle;
+}
+
+PublisherQos::PublisherQos() {
+	presentation = new PresentationQosPolicy();
+	partition = new PartitionQosPolicy();
+	group_data = new GroupDataQosPolicy();
+	entity_factory = new EntityFactoryQosPolicy();
+}
+
+PublisherQos::PublisherQos(
+	PresentationQosPolicy* presentation,
+	PartitionQosPolicy* partition,
+	GroupDataQosPolicy* group_data,
+	EntityFactoryQosPolicy* entity_factory) {
+	
+	this->presentation = presentation;
+	this->partition = partition;
+	this->group_data = group_data;
+	this->entity_factory = entity_factory;
+}
+
+PublisherQos::~PublisherQos() {
+	delete presentation;
+	delete partition;
+	delete group_data;
+	delete entity_factory;
+}
+
+DataReaderQos::DataReaderQos() {
+	durability = new DurabilityQosPolicy();
+	deadline = new DeadlineQosPolicy();
+	latency_budget = new LatencyBudgetQosPolicy();
+	liveliness = new LivelinessQosPolicy();
+	reliability = new ReliabilityQosPolicy();
+	destination_order = new DestinationOrderQosPolicy();
+	history = new HistoryQosPolicy();
+	resource_limits = new ResourceLimitsQosPolicy();
+	user_data = new UserDataQosPolicy();
+	ownership = new OwnershipQosPolicy();
+	time_based_filter = new TimeBasedFilterQosPolicy();
+	reader_data_lifecycle = new ReaderDataLifecycleQosPolicy();
+}
+
+DataReaderQos::DataReaderQos(
+	DurabilityQosPolicy* durability,
+	DeadlineQosPolicy* deadline,
+	LatencyBudgetQosPolicy* latency_budget,
+	LivelinessQosPolicy* liveliness,
+	ReliabilityQosPolicy* reliability,
+	DestinationOrderQosPolicy* destination_order,
+	HistoryQosPolicy* history,
+	ResourceLimitsQosPolicy* resource_limits,
+	UserDataQosPolicy* user_data,
+	OwnershipQosPolicy* ownership,
+	TimeBasedFilterQosPolicy* time_based_filter,
+	ReaderDataLifecycleQosPolicy* reader_data_lifecycle) {
+	
+	this->durability = durability;
+	this->deadline = deadline;
+	this->latency_budget = latency_budget;
+	this->liveliness = liveliness;
+	this->reliability = reliability;
+	this->destination_order = destination_order;
+	this->history = history;
+	this->resource_limits = resource_limits;
+	this->user_data = user_data;
+	this->ownership = ownership;
+	this->time_based_filter = time_based_filter;
+	this->reader_data_lifecycle = reader_data_lifecycle;
+}
+
+DataReaderQos::~DataReaderQos() {
+	delete durability;
+	delete deadline;
+	delete latency_budget;
+	delete liveliness;
+	delete reliability;
+	delete destination_order;
+	delete history;
+	delete resource_limits;
+	delete user_data;
+	delete ownership;
+	delete time_based_filter;
+	delete reader_data_lifecycle;
+}
+
+SubscriberQos::SubscriberQos() {
+	presentation = new PresentationQosPolicy();
+	partition = new PartitionQosPolicy();
+	group_data = new GroupDataQosPolicy();
+	entity_factory = new EntityFactoryQosPolicy();
+}
+
+SubscriberQos::SubscriberQos(
+	PresentationQosPolicy* presentation,
+	PartitionQosPolicy* partition,
+	GroupDataQosPolicy* group_data,
+	EntityFactoryQosPolicy* entity_factory) {
+	
+	this->presentation = presentation;
+	this->partition = partition;
+	this->group_data = group_data;
+	this->entity_factory = entity_factory;
+}
+
+SubscriberQos::~SubscriberQos() {
+	delete presentation;
+	delete partition;
+	delete group_data;
+	delete entity_factory;
+}
+
+ParticipantBuiltinTopicData::ParticipantBuiltinTopicData() {
+	key = HANDLE_NIL;
+	user_data = new UserDataQosPolicy();
+}
+
+ParticipantBuiltinTopicData::ParticipantBuiltinTopicData(
+	BuiltinTopicKey_t key,
+	UserDataQosPolicy* user_data) {
+
+	this->key = key;
+	this->user_data = user_data;
+}
+
+ParticipantBuiltinTopicData::~ParticipantBuiltinTopicData() {
+	delete user_data;
+}
+
+TopicBuiltinTopicData::TopicBuiltinTopicData() {
+	key = HANDLE_NIL;
+	name = NULL;
+	type_name = NULL;
+	durability = new DurabilityQosPolicy();
+	durability_service = new DurabilityServiceQosPolicy();
+	deadline = new DeadlineQosPolicy();
+	latency_budget = new LatencyBudgetQosPolicy();
+	liveliness = new LivelinessQosPolicy();
+	reliability = new ReliabilityQosPolicy();
+	transport_priority = new TransportPriorityQosPolicy();
+	lifespan = new LifespanQosPolicy();
+	destination_order = new DestinationOrderQosPolicy();
+	history = new HistoryQosPolicy();
+	resource_limits = new ResourceLimitsQosPolicy();
+	ownership = new OwnershipQosPolicy();
+	topic_data = new TopicDataQosPolicy();
+}
+
+TopicBuiltinTopicData::TopicBuiltinTopicData(
+	BuiltinTopicKey_t key,
+	char* name,
+	char* type_name,
+	DurabilityQosPolicy* durability,
+	DurabilityServiceQosPolicy* durability_service,
+	DeadlineQosPolicy* deadline,
+	LatencyBudgetQosPolicy* latency_budget,
+	LivelinessQosPolicy* liveliness,
+	ReliabilityQosPolicy* reliability,
+	TransportPriorityQosPolicy* transport_priority,
+	LifespanQosPolicy* lifespan,
+	DestinationOrderQosPolicy* destination_order,
+	HistoryQosPolicy* history,
+	ResourceLimitsQosPolicy* resource_limits,
+	OwnershipQosPolicy* ownership,
+	TopicDataQosPolicy* topic_data) {
+	
+	this->key = key;
+	this->name = name;
+	this->type_name = type_name;
+	this->durability = durability;
+	this->durability_service = durability_service;
+	this->deadline = deadline;
+	this->latency_budget = latency_budget;
+	this->liveliness = liveliness;
+	this->reliability = reliability;
+	this->transport_priority = transport_priority;
+	this->lifespan = lifespan;
+	this->destination_order = destination_order;
+	this->history = history;
+	this->resource_limits = resource_limits;
+	this->ownership = ownership;
+	this->topic_data = topic_data;
+}
+
+TopicBuiltinTopicData::~TopicBuiltinTopicData() {
+	delete durability;
+	delete durability_service;
+	delete deadline;
+	delete latency_budget;
+	delete liveliness;
+	delete reliability;
+	delete transport_priority;
+	delete lifespan;
+	delete destination_order;
+	delete history;
+	delete resource_limits;
+	delete ownership;
+	delete topic_data;
+}
+
+PublicationBuiltinTopicData::PublicationBuiltinTopicData() {
+	key = HANDLE_NIL;
+	participant_key = HANDLE_NIL;
+	topic_name = NULL;
+	type_name = NULL;
+	durability = new DurabilityQosPolicy();
+	durability_service = new DurabilityServiceQosPolicy();
+	deadline = new DeadlineQosPolicy();
+	latency_budget = new LatencyBudgetQosPolicy();
+	liveliness = new LivelinessQosPolicy();
+	reliability = new ReliabilityQosPolicy();
+	lifespan = new LifespanQosPolicy();
+	user_data = new UserDataQosPolicy();
+	ownership = new OwnershipQosPolicy();
+	ownership_strength = new OwnershipStrengthQosPolicy();
+	destination_order = new DestinationOrderQosPolicy();
+	presentation = new PresentationQosPolicy();
+	partition = new PartitionQosPolicy();
+	topic_data = new TopicDataQosPolicy();
+	group_data = new GroupDataQosPolicy();
+}
+
+PublicationBuiltinTopicData::PublicationBuiltinTopicData(
+	BuiltinTopicKey_t key,
+	BuiltinTopicKey_t participant_key,
+	char* topic_name,
+	char* type_name,
+	DurabilityQosPolicy* durability,
+	DurabilityServiceQosPolicy* durability_service,
+	DeadlineQosPolicy* deadline,
+	LatencyBudgetQosPolicy* latency_budget,
+	LivelinessQosPolicy* liveliness,
+	ReliabilityQosPolicy* reliability,
+	LifespanQosPolicy* lifespan,
+	UserDataQosPolicy* user_data,
+	OwnershipQosPolicy* ownership,
+	OwnershipStrengthQosPolicy* ownership_strength,
+	DestinationOrderQosPolicy* destination_order,
+	PresentationQosPolicy* presentation,
+	PartitionQosPolicy* partition,
+	TopicDataQosPolicy* topic_data,
+	GroupDataQosPolicy* group_data) {
+	
+	this->key = key;
+	this->participant_key = participant_key;
+	this->topic_name = topic_name;
+	this->type_name = type_name;
+	this->durability = durability;
+	this->durability_service = durability_service;
+	this->deadline = deadline;
+	this->latency_budget = latency_budget;
+	this->liveliness = liveliness;
+	this->reliability = reliability;
+	this->lifespan = lifespan;
+	this->user_data = user_data;
+	this->ownership = ownership;
+	this->ownership_strength = ownership_strength;
+	this->destination_order = destination_order;
+	this->presentation = presentation;
+	this->partition = partition;
+	this->topic_data = topic_data;
+	this->group_data = group_data;
+}
+
+PublicationBuiltinTopicData::~PublicationBuiltinTopicData() {
+	delete durability;
+	delete durability_service;
+	delete deadline;
+	delete latency_budget;
+	delete liveliness;
+	delete reliability;
+	delete lifespan;
+	delete user_data;
+	delete ownership;
+	delete ownership_strength;
+	delete destination_order;
+	delete presentation;
+	delete partition;
+	delete topic_data;
+	delete group_data;
+}
+
+SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData() {
+	key = HANDLE_NIL;
+	participant_key = HANDLE_NIL;
+	topic_name = NULL;
+	type_name = NULL;
+	durability = new DurabilityQosPolicy();
+	deadline = new DeadlineQosPolicy();
+	latency_budget = new LatencyBudgetQosPolicy();
+	liveliness = new LivelinessQosPolicy();
+	reliability = new ReliabilityQosPolicy();
+	ownership = new OwnershipQosPolicy();
+	destination_order = new DestinationOrderQosPolicy();
+	user_data = new UserDataQosPolicy();
+	time_based_filter = new TimeBasedFilterQosPolicy();
+	presentation = new PresentationQosPolicy();
+	partition = new PartitionQosPolicy();
+	topic_data = new TopicDataQosPolicy();
+	group_data = new GroupDataQosPolicy();
+}
+
+SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData(
+	BuiltinTopicKey_t key,
+	BuiltinTopicKey_t participant_key,
+	char* topic_name,
+	char* type_name,
+	DurabilityQosPolicy* durability,
+	DeadlineQosPolicy* deadline,
+	LatencyBudgetQosPolicy* latency_budget,
+	LivelinessQosPolicy* liveliness,
+	ReliabilityQosPolicy* reliability,
+	OwnershipQosPolicy* ownership,
+	DestinationOrderQosPolicy* destination_order,
+	UserDataQosPolicy* user_data,
+	TimeBasedFilterQosPolicy* time_based_filter,
+	PresentationQosPolicy* presentation,
+	PartitionQosPolicy* partition,
+	TopicDataQosPolicy* topic_data,
+	GroupDataQosPolicy* group_data) {
+
+	this->key = key;
+	this->participant_key = participant_key;
+	this->topic_name = topic_name;
+	this->type_name = type_name;
+	this->durability = durability;
+	this->deadline = deadline;
+	this->latency_budget = latency_budget;
+	this->liveliness = liveliness;
+	this->reliability = reliability;
+	this->ownership = ownership;
+	this->destination_order = destination_order;
+	this->user_data = user_data;
+	this->time_based_filter = time_based_filter;
+	this->presentation = presentation;
+	this->partition = partition;
+	this->topic_data = topic_data;
+	this->group_data = group_data;
+}
+
+SubscriptionBuiltinTopicData::~SubscriptionBuiltinTopicData() {
+	delete durability;
+	delete deadline;
+	delete latency_budget;
+	delete liveliness;
+	delete reliability;
+	delete ownership;
+	delete destination_order;
+	delete user_data;
+	delete time_based_filter;
+	delete presentation;
+	delete partition;
+	delete topic_data;
+	delete group_data;
+}
+
+Entity::Entity() {
+}
+
+Entity::~Entity() {
+}
+
+ReturnCode_t Entity::enable() {
+	return RETCODE_ERROR;
+}
+
+StatusCondition* Entity::get_statuscondition() {
+	return NULL;
+}
+
+StatusMask* Entity::get_status_changes() {
+	return NULL;
+}
+
+InstanceHandle_t Entity::get_instance_handle() {
+	return HANDLE_NIL;
+}
+
+DomainParticipant::DomainParticipant() {
+}
+
+DomainParticipant::~DomainParticipant() {
+}
+
+
+Publisher* DomainParticipant::create_publisher(
+	const PublisherQos* qos,
+	const PublisherListener* a_listener,
+	const StatusMask* mask) {
+
+	return NULL;
+}
+
+ReturnCode_t DomainParticipant::delete_publisher(const Publisher* p) {
+	return RETCODE_ERROR;
+}
+
+Subscriber* DomainParticipant::create_subscriber(
+	const SubscriberQos* qos,
+	const SubscriberListener* a_listener,
+	const StatusMask* mask) {
+
+	return NULL;
+}
+
+ReturnCode_t DomainParticipant::delete_subscriber(const Subscriber* s) {
+	return RETCODE_ERROR;
+}
+
+Subscriber* DomainParticipant::get_builtin_subscriber() {
+	return NULL;
+}
+
+Topic* DomainParticipant::create_topic(
+	const char* topic_name,
+	const char* type_name,
+	const TopicQos* qos,
+	const TopicListener* a_listener,
+	const StatusMask* mask) {
+
+	return NULL;
+}
+
+ReturnCode_t DomainParticipant::delete_topic(const Topic* a_topic) {
+	return RETCODE_ERROR;
+}
+
+Topic* DomainParticipant::find_topic(const char* topic_name, const Duration_t* timeout) {
+	return NULL;
+}
+
+TopicDescription* DomainParticipant::lookup_topicdescription(const char* name) {
+	return NULL;
+}
+
+ContentFilteredTopic* DomainParticipant::create_contentfilteredtopic(
+	const char* name,
+	const Topic* related_topic,
+	const char* filter_expression,
+	const StringSeq* expression_parameters) {
+	return NULL;
+}
+
+ReturnCode_t DomainParticipant::delete_contentfilteredtopic(const ContentFilteredTopic* a_contentfilteredtopic) {
+	return RETCODE_ERROR;
+}
+
+MultiTopic* DomainParticipant::create_multitopic(
+	const char* name,
+	const char* type_name,
+	const char* subscription_expression,
+	const StringSeq* expression_parameters) {
+
+	return NULL;
+}
+
+ReturnCode_t DomainParticipant::delete_multitopic(const MultiTopic* a_multitopic) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::delete_contained_entities() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::set_qos(const DomainParticipantQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_qos(DomainParticipantQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::set_listener(const DomainParticipantListener* a_listener, const StatusMask* mask) {
+	return RETCODE_ERROR;
+}
+
+DomainParticipantListener* DomainParticipant::get_listener() {
+	return NULL;
+}
+
+ReturnCode_t DomainParticipant::ignore_participant(InstanceHandle_t handle) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::ignore_topic(InstanceHandle_t handle) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::ignore_publication(InstanceHandle_t handle) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::ignore_subscription(InstanceHandle_t handle) {
+	return RETCODE_ERROR;
+}
+
+DomainId_t DomainParticipant::get_domain_id() {
+	return HANDLE_NIL;
+}
+
+ReturnCode_t DomainParticipant::assert_liveliness() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::set_default_publisher_qos(const PublisherQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_default_publisher_qos(PublisherQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::set_default_subscriber_qos(const SubscriberQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_default_subscriber_qos(SubscriberQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::set_default_topic_qos(const TopicQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_default_topic_qos(TopicQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_discovered_participants(InstanceHandleSeq* participant_handles) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_discovered_participant_data(
+	ParticipantBuiltinTopicData* participant_data,
+	InstanceHandle_t participant_handle) {
+
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_discovered_topics(InstanceHandleSeq* topic_handles) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipant::get_discovered_topic_data(TopicBuiltinTopicData* topic_data, InstanceHandle_t topic_handle) {
+	return RETCODE_ERROR;
+}
+
+bool DomainParticipant::contains_entity(InstanceHandle_t a_handle) {
+	return false;
+}
+
+ReturnCode_t DomainParticipant::get_current_time(Time_t* current_time) {
+	return RETCODE_ERROR;
+}
+
+DomainParticipantFactory::DomainParticipantFactory() {
+}
+
+DomainParticipantFactory::~DomainParticipantFactory() {
+}
+
+DomainParticipant* DomainParticipantFactory::create_participant(
+	DomainId_t domain_id,
+	const DomainParticipantQos* qos,
+	const DomainParticipantListener* a_listener,
+	const StatusMask* mask) {
+
+	return NULL;
+}
+
+ReturnCode_t DomainParticipantFactory::delete_participant(const DomainParticipant* a_participant) {
+	return RETCODE_ERROR;
+}
+
+DomainParticipant* DomainParticipantFactory::lookup_participant(DomainId_t domain_id) {
+	return NULL;
+}
+
+ReturnCode_t DomainParticipantFactory::set_default_participant_qos(const DomainParticipantQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipantFactory::get_default_participant_qos(DomainParticipantQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipantFactory::set_qos(const DomainParticipantFactoryQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DomainParticipantFactory::get_qos(DomainParticipantFactoryQos* qos) {
+	return RETCODE_ERROR;
+}
+
+TypeSupport::TypeSupport() {
+}
+
+TypeSupport::~TypeSupport() {
+}
+
+TopicDescription::TopicDescription() {
+}
+
+TopicDescription::~TopicDescription() {
+}
+
+char* TopicDescription::get_type_name() {
+	return NULL;
+}
+
+char* TopicDescription::get_name() {
+	return NULL;
+}
+
+DomainParticipant* TopicDescription::get_participant() {
+	return NULL;
+}
+
+Topic::Topic() {
+}
+
+Topic::~Topic() {
+}
+
+ReturnCode_t Topic::set_qos(const TopicQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Topic::get_qos(TopicQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Topic::set_listener(const TopicListener* a_listener, const StatusMask* mask) {
+	return RETCODE_ERROR;
+}
+
+TopicListener* Topic::get_listener() {
+	return NULL;
+}
+
+ReturnCode_t Topic::get_inconsistent_topic_status(InconsistentTopicStatus* a_status) {
+	return RETCODE_ERROR;
+}
+
+ContentFilteredTopic::ContentFilteredTopic() {
+}
+
+ContentFilteredTopic::~ContentFilteredTopic() {
+}
+
+char* ContentFilteredTopic::get_filter_expression() {
+	return NULL;
+}
+
+ReturnCode_t ContentFilteredTopic::get_expression_parameters(StringSeq* expression_parameters) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t ContentFilteredTopic::set_expression_parameters(const StringSeq* expression_parameters) {
+	return RETCODE_ERROR;
+}
+
+Topic* ContentFilteredTopic::get_related_topic() {
+	return NULL;
+}
+
+MultiTopic::MultiTopic() {
+}
+
+MultiTopic::~MultiTopic() {
+}
+
+char* MultiTopic::get_subscription_expression() {
+	return NULL;
+}
+
+ReturnCode_t MultiTopic::get_expression_parameters(StringSeq* expression_parameters) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t MultiTopic::set_expression_parameters(const StringSeq* expression_parameters) {
+	return RETCODE_ERROR;
+}
+
+Publisher::Publisher() {
+}
+
+Publisher::~Publisher() {
+}
+
+DataWriter* Publisher::create_datawriter(
+	const Topic* a_topic,
+	const DataWriterQos* qos,
+	const DataWriterListener* a_listener,
+	const StatusMask* mask) {
+
+	return NULL;
+}
+
+ReturnCode_t Publisher::delete_datawriter(const DataWriter* a_datawriter) {
+	return RETCODE_ERROR;
+}
+
+DataWriter* Publisher::lookup_datawriter(const char* topic_name) {
+	return NULL;
+}
+
+ReturnCode_t Publisher::delete_contained_entities() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::set_qos(const PublisherQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::get_qos(PublisherQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::set_listener(const PublisherListener* a_listener, const StatusMask* mask) {
+	return RETCODE_ERROR;
+}
+
+PublisherListener* Publisher::get_listener() {
+	return NULL;
+}
+
+ReturnCode_t Publisher::suspend_publications() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::resume_publications() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::begin_coherent_changes() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::end_coherent_changes() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::wait_for_acknowledgments(const Duration_t* max_wait) {
+	return RETCODE_ERROR;
+}
+
+DomainParticipant* Publisher::get_participant() {
+	return NULL;
+}
+
+ReturnCode_t Publisher::set_default_datawriter_qos(const DataWriterQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::get_default_datawriter_qos(DataWriterQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Publisher::copy_from_topic_qos(DataWriterQos* a_datawriter_qos, const TopicQos* a_topic_qos) {
+	return RETCODE_ERROR;
+}
+
+DataWriter::DataWriter() {
+}
+
+DataWriter::~DataWriter() {
+}
+
+ReturnCode_t DataWriter::set_qos(const DataWriterQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::get_qos(DataWriterQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::set_listener(const DataWriterListener* a_listener, const StatusMask* mask) {
+	return RETCODE_ERROR;
+}
+
+DataWriterListener* DataWriter::get_listener() {
+	return NULL;
+}
+
+Topic* DataWriter::get_topic() {
+	return NULL;
+}
+
+Publisher* DataWriter::get_publisher() {
+	return NULL;
+}
+
+ReturnCode_t DataWriter::wait_for_acknowledgments(const Duration_t* max_wait) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::get_liveliness_lost_status(LivelinessLostStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::get_offered_deadline_missed_status(OfferedDeadlineMissedStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::get_offered_incompatible_qos_status(OfferedIncompatibleQosStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::get_publication_matched_status(PublicationMatchedStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::assert_liveliness() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::get_matched_subscriptions(InstanceHandleSeq* subscription_handles) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataWriter::get_matched_subscription_data(SubscriptionBuiltinTopicData* subscription_data, InstanceHandle_t subscription_handle) {
+	return RETCODE_ERROR;
+}
+
+Subscriber::Subscriber() {
+}
+
+Subscriber::~Subscriber() {
+}
+
+DataReader* Subscriber::create_datareader(
+	const TopicDescription* a_topic,
+	const DataReaderQos* qos,
+	const DataReaderListener* a_listener,
+	const StatusMask* mask) {
+
+	return NULL;
+}
+
+ReturnCode_t Subscriber::delete_datareader(const DataReader* a_datareader) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::delete_contained_entities() {
+	return RETCODE_ERROR;
+}
+
+DataReader* Subscriber::lookup_datareader(const char* topic_name) {
+	return NULL;
+}
+
+ReturnCode_t Subscriber::get_datareaders(
+	DataReaderSeq* readers,
+	const SampleStateMask* sample_states,
+	const ViewStateMask* view_states,
+	const InstanceStateMask* instance_states) {
+
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::notify_datareaders() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::set_qos(const SubscriberQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::get_qos(SubscriberQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::set_listener(const SubscriberListener* a_listener, const StatusMask* mask) {
+	return RETCODE_ERROR;
+}
+
+SubscriberListener* Subscriber::get_listener() {
+	return NULL;
+}
+
+ReturnCode_t Subscriber::begin_access() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::end_access() {
+	return RETCODE_ERROR;
+}
+
+DomainParticipant* Subscriber::get_participant() {
+	return NULL;
+}
+
+ReturnCode_t Subscriber::set_default_datareader_qos(const DataReaderQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::get_default_datareader_qos(DataReaderQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t Subscriber::copy_from_topic_qos(DataReaderQos* a_datareader_qos, const TopicQos* a_topic_qos) {
+	return RETCODE_ERROR;
+}
+
+DataReader::DataReader() {
+}
+
+DataReader::~DataReader() {
+}
+
+ReadCondition* DataReader::create_readcondition(
+	const SampleStateMask* sample_states,
+	const ViewStateMask* view_states,
+	const InstanceStateMask* instance_states) {
+
+	return NULL;
+}
+
+QueryCondition* DataReader::create_querycondition(
+	const SampleStateMask* sample_states,
+	const ViewStateMask* view_states,
+	const InstanceStateMask* instance_states,
+	const char* query_expression,
+	const StringSeq* query_parameters) {
+
+	return NULL;
+}
+
+ReturnCode_t DataReader::delete_readcondition(const ReadCondition* a_condition) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::delete_contained_entities() {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::set_qos(const DataReaderQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_qos(DataReaderQos* qos) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::set_listener(const DataReaderListener* a_listener, const StatusMask* mask) {
+	return RETCODE_ERROR;
+}
+
+DataReaderListener* DataReader::get_listener() {
+	return NULL;
+}
+
+TopicDescription* DataReader::get_topicdescription() {
+	return NULL;
+}
+
+Subscriber* DataReader::get_subscriber() {
+	return NULL;
+}
+
+ReturnCode_t DataReader::get_sample_rejected_status(SampleRejectedStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_liveliness_changed_status(LivelinessChangedStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_requested_deadline_missed_status(RequestedDeadlineMissedStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_requested_incompatible_qos_status(RequestedIncompatibleQosStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_subscription_matched_status(SubscriptionMatchedStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_sample_lost_status(SampleLostStatus* status) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::wait_for_historical_data(const Duration_t* max_wait) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_matched_publications(InstanceHandleSeq* publication_handles) {
+	return RETCODE_ERROR;
+}
+
+ReturnCode_t DataReader::get_matched_publication_data(PublicationBuiltinTopicData* publication_data, InstanceHandle_t publication_handle) {
+	return RETCODE_ERROR;
+}
+
+SampleInfo::SampleInfo() {
+	sample_state = READ_SAMPLE_STATE;
+	view_state = NEW_VIEW_STATE;
+	instance_state = HANDLE_NIL;
+	source_timestamp = new Time_t();
+	instance_handle = HANDLE_NIL;
+	publication_handle = HANDLE_NIL;
+	disposed_generation_count = 0;
+	no_writers_generation_count = 0;
+	sample_rank = 0;
+	generation_rank = 0;
+	absolute_generation_rank = 0;
+	valid_data = false;
+}
+
+SampleInfo::SampleInfo(
+	SampleStateKind sample_state,
+	ViewStateKind view_state,
+	InstanceStateKind instance_state,
+	Time_t* source_timestamp,
+	InstanceHandle_t instance_handle,
+	InstanceHandle_t publication_handle,
+	int32_t disposed_generation_count,
+	int32_t no_writers_generation_count,
+	int32_t sample_rank,
+	int32_t generation_rank,
+	int32_t absolute_generation_rank,
+	bool valid_data) {
+
+	this->sample_state = sample_state;
+	this->view_state = view_state;
+	this->instance_state = instance_state;
+	this->source_timestamp = source_timestamp;
+	this->instance_handle = instance_handle;
+	this->publication_handle = publication_handle;
+	this->disposed_generation_count = disposed_generation_count;
+	this->no_writers_generation_count = no_writers_generation_count;
+	this->sample_rank = sample_rank;
+	this->generation_rank = generation_rank;
+	this->absolute_generation_rank = absolute_generation_rank;
+	this->valid_data = valid_data;
+}
+
+SampleInfo::~SampleInfo() {
+	delete source_timestamp;
+}
+
 
 
 }

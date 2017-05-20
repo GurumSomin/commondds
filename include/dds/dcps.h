@@ -720,9 +720,6 @@ namespace dds {
 		LivelinessQosPolicy(
 			LivelinessQosPolicyKind kind,
 			Duration_t* lease_duration);
-		LivelinessQosPolicy(
-			LivelinessQosPolicyKind kind,
-			int32_t lease_duration_sec, uint32_t lease_duration_nanosec);
 		virtual ~LivelinessQosPolicy();
 	};
 	
@@ -731,7 +728,6 @@ namespace dds {
 		
 		TimeBasedFilterQosPolicy();
 		TimeBasedFilterQosPolicy(Duration_t* minimum_separation);
-		TimeBasedFilterQosPolicy(int32_t minimum_separation_sec, int32_t minimum_separation_nanosec);
 		virtual ~TimeBasedFilterQosPolicy();
 	};
 	
@@ -756,9 +752,6 @@ namespace dds {
 		ReliabilityQosPolicy(
 			ReliabilityQosPolicyKind kind,
 			Duration_t* max_blocking_time);
-		ReliabilityQosPolicy(
-			ReliabilityQosPolicyKind kind,
-			int32_t max_blocking_time_sec, int32_t max_blocking_time_nanosec);
 		virtual ~ReliabilityQosPolicy();
 	};
 	
@@ -828,11 +821,6 @@ namespace dds {
 		ReaderDataLifecycleQosPolicy(
 			Duration_t* autopurge_nowriter_samples_delay,
 			Duration_t* autopurge_disposed_samples_delay);
-		ReaderDataLifecycleQosPolicy(
-			int32_t autopurge_nowriter_samples_delay_sec,
-			int32_t autopurge_nowriter_samples_delay_nanosec,
-			int32_t autopurge_disposed_samples_delay_sec,
-			int32_t autopurge_disposed_samples_delay_nanosec);
 		virtual ~ReaderDataLifecycleQosPolicy();
 	};
 	
@@ -864,8 +852,8 @@ namespace dds {
 	};
 	
 	struct DomainParticipantQos {
-		UserDataQosPolicy	user_data;
-		EntityFactoryQosPolicy	entity_factory;
+		UserDataQosPolicy*	user_data;
+		EntityFactoryQosPolicy*	entity_factory;
 		
 		DomainParticipantQos();
 		DomainParticipantQos(
@@ -875,19 +863,19 @@ namespace dds {
 	};
 	
 	struct TopicQos {
-		TopicDataQosPolicy		topic_data;
-		DurabilityQosPolicy		durability;
-		DurabilityServiceQosPolicy	durability_service;
-		DeadlineQosPolicy		deadline;
-		LatencyBudgetQosPolicy		latency_budget;
-		LivelinessQosPolicy		liveliness;
-		ReliabilityQosPolicy		reliability;
-		DestinationOrderQosPolicy	destination_order;
-		HistoryQosPolicy		history;
-		ResourceLimitsQosPolicy		resource_limits;
-		TransportPriorityQosPolicy	transport_priority;
-		LifespanQosPolicy		lifespan;
-		OwnershipQosPolicy		ownership;
+		TopicDataQosPolicy*		topic_data;
+		DurabilityQosPolicy*		durability;
+		DurabilityServiceQosPolicy*	durability_service;
+		DeadlineQosPolicy*		deadline;
+		LatencyBudgetQosPolicy*		latency_budget;
+		LivelinessQosPolicy*		liveliness;
+		ReliabilityQosPolicy*		reliability;
+		DestinationOrderQosPolicy*	destination_order;
+		HistoryQosPolicy*		history;
+		ResourceLimitsQosPolicy*	resource_limits;
+		TransportPriorityQosPolicy*	transport_priority;
+		LifespanQosPolicy*		lifespan;
+		OwnershipQosPolicy*		ownership;
 		
 		TopicQos();
 		TopicQos(
@@ -908,21 +896,21 @@ namespace dds {
 	};
 	
 	struct DataWriterQos {
-		DurabilityQosPolicy		durability;
-		DurabilityServiceQosPolicy	durability_service;
-		DeadlineQosPolicy		deadline;
-		LatencyBudgetQosPolicy		latency_budget;
-		LivelinessQosPolicy		liveliness;
-		ReliabilityQosPolicy		reliability;
-		DestinationOrderQosPolicy	destination_order;
-		HistoryQosPolicy		history;
-		ResourceLimitsQosPolicy		resource_limits;
-		TransportPriorityQosPolicy	transport_priority;
-		LifespanQosPolicy		lifespan;
-		UserDataQosPolicy		user_data;
-		OwnershipQosPolicy		ownership;
-		OwnershipStrengthQosPolicy	ownership_strength;
-		WriterDataLifecycleQosPolicy	writer_data_lifecycle;
+		DurabilityQosPolicy*		durability;
+		DurabilityServiceQosPolicy*	durability_service;
+		DeadlineQosPolicy*		deadline;
+		LatencyBudgetQosPolicy*		latency_budget;
+		LivelinessQosPolicy*		liveliness;
+		ReliabilityQosPolicy*		reliability;
+		DestinationOrderQosPolicy*	destination_order;
+		HistoryQosPolicy*		history;
+		ResourceLimitsQosPolicy*		resource_limits;
+		TransportPriorityQosPolicy*	transport_priority;
+		LifespanQosPolicy*		lifespan;
+		UserDataQosPolicy*		user_data;
+		OwnershipQosPolicy*		ownership;
+		OwnershipStrengthQosPolicy*	ownership_strength;
+		WriterDataLifecycleQosPolicy*	writer_data_lifecycle;
 		
 		DataWriterQos();
 		DataWriterQos(
@@ -945,10 +933,10 @@ namespace dds {
 	};
 	
 	struct PublisherQos {
-		PresentationQosPolicy		presentation;
-		PartitionQosPolicy		partition;
-		GroupDataQosPolicy		group_data;
-		EntityFactoryQosPolicy		entity_factory;
+		PresentationQosPolicy*		presentation;
+		PartitionQosPolicy*		partition;
+		GroupDataQosPolicy*		group_data;
+		EntityFactoryQosPolicy*		entity_factory;
 		
 		PublisherQos();
 		PublisherQos(
@@ -960,18 +948,18 @@ namespace dds {
 	};
 	
 	struct DataReaderQos {
-		DurabilityQosPolicy		durability;
-		DeadlineQosPolicy		deadline;
-		LatencyBudgetQosPolicy		latency_budget;
-		LivelinessQosPolicy		liveliness;
-		ReliabilityQosPolicy		reliability;
-		DestinationOrderQosPolicy	destination_order;
-		HistoryQosPolicy		history;
-		ResourceLimitsQosPolicy		resource_limits;
-		UserDataQosPolicy		user_data;
-		OwnershipQosPolicy		ownership;
-		TimeBasedFilterQosPolicy	time_based_filter;
-		ReaderDataLifecycleQosPolicy	reader_data_lifecycle;
+		DurabilityQosPolicy*		durability;
+		DeadlineQosPolicy*		deadline;
+		LatencyBudgetQosPolicy*		latency_budget;
+		LivelinessQosPolicy*		liveliness;
+		ReliabilityQosPolicy*		reliability;
+		DestinationOrderQosPolicy*	destination_order;
+		HistoryQosPolicy*		history;
+		ResourceLimitsQosPolicy*	resource_limits;
+		UserDataQosPolicy*		user_data;
+		OwnershipQosPolicy*		ownership;
+		TimeBasedFilterQosPolicy*	time_based_filter;
+		ReaderDataLifecycleQosPolicy*	reader_data_lifecycle;
 		
 		DataReaderQos();
 		DataReaderQos(
@@ -991,10 +979,10 @@ namespace dds {
 	};
 	
 	struct SubscriberQos {
-		PresentationQosPolicy		presentation;
-		PartitionQosPolicy		partition;
-		GroupDataQosPolicy		group_data;
-		EntityFactoryQosPolicy		entity_factory;
+		PresentationQosPolicy*		presentation;
+		PartitionQosPolicy*		partition;
+		GroupDataQosPolicy*		group_data;
+		EntityFactoryQosPolicy*		entity_factory;
 		
 		SubscriberQos();
 		SubscriberQos(
@@ -1008,7 +996,7 @@ namespace dds {
 	// ----------------------------------------------------------------------
 	struct ParticipantBuiltinTopicData {
 		BuiltinTopicKey_t		key;
-		UserDataQosPolicy		user_data;
+		UserDataQosPolicy*		user_data;
 		
 		ParticipantBuiltinTopicData();
 		ParticipantBuiltinTopicData(
@@ -1021,19 +1009,19 @@ namespace dds {
 		BuiltinTopicKey_t		key;
 		char*				name;
 		char*				type_name;
-		DurabilityQosPolicy		durability;
-		DurabilityServiceQosPolicy	durability_service;
-		DeadlineQosPolicy		deadline;
-		LatencyBudgetQosPolicy		latency_budget;
-		LivelinessQosPolicy		liveliness;
-		ReliabilityQosPolicy		reliability;
-		TransportPriorityQosPolicy	transport_priority;
-		LifespanQosPolicy		lifespan;
-		DestinationOrderQosPolicy	destination_order;
-		HistoryQosPolicy		history;
-		ResourceLimitsQosPolicy		resource_limits;
-		OwnershipQosPolicy		ownership;
-		TopicDataQosPolicy		topic_data;
+		DurabilityQosPolicy*		durability;
+		DurabilityServiceQosPolicy*	durability_service;
+		DeadlineQosPolicy*		deadline;
+		LatencyBudgetQosPolicy*		latency_budget;
+		LivelinessQosPolicy*		liveliness;
+		ReliabilityQosPolicy*		reliability;
+		TransportPriorityQosPolicy*	transport_priority;
+		LifespanQosPolicy*		lifespan;
+		DestinationOrderQosPolicy*	destination_order;
+		HistoryQosPolicy*		history;
+		ResourceLimitsQosPolicy*	resource_limits;
+		OwnershipQosPolicy*		ownership;
+		TopicDataQosPolicy*		topic_data;
 		
 		TopicBuiltinTopicData();
 		TopicBuiltinTopicData(
@@ -1061,21 +1049,21 @@ namespace dds {
 		BuiltinTopicKey_t		participant_key;
 		char*				topic_name;
 		char*				type_name;
-		DurabilityQosPolicy		durability;
-		DurabilityServiceQosPolicy	durability_service;
-		DeadlineQosPolicy		deadline;
-		LatencyBudgetQosPolicy		latency_budget;
-		LivelinessQosPolicy		liveliness;
-		ReliabilityQosPolicy		reliability;
-		LifespanQosPolicy		lifespan;
-		UserDataQosPolicy		user_data;
-		OwnershipQosPolicy		ownership;
-		OwnershipStrengthQosPolicy	ownership_strength;
-		DestinationOrderQosPolicy	destination_order;
-		PresentationQosPolicy		presentation;
-		PartitionQosPolicy		partition;
-		TopicDataQosPolicy		topic_data;
-		GroupDataQosPolicy		group_data;
+		DurabilityQosPolicy*		durability;
+		DurabilityServiceQosPolicy*	durability_service;
+		DeadlineQosPolicy*		deadline;
+		LatencyBudgetQosPolicy*		latency_budget;
+		LivelinessQosPolicy*		liveliness;
+		ReliabilityQosPolicy*		reliability;
+		LifespanQosPolicy*		lifespan;
+		UserDataQosPolicy*		user_data;
+		OwnershipQosPolicy*		ownership;
+		OwnershipStrengthQosPolicy*	ownership_strength;
+		DestinationOrderQosPolicy*	destination_order;
+		PresentationQosPolicy*		presentation;
+		PartitionQosPolicy*		partition;
+		TopicDataQosPolicy*		topic_data;
+		GroupDataQosPolicy*		group_data;
 		
 		PublicationBuiltinTopicData();
 		PublicationBuiltinTopicData(
@@ -1106,19 +1094,19 @@ namespace dds {
 		BuiltinTopicKey_t		participant_key;
 		char*				topic_name;
 		char*				type_name;
-		DurabilityQosPolicy		durability;
-		DeadlineQosPolicy		deadline;
-		LatencyBudgetQosPolicy		latency_budget;
-		LivelinessQosPolicy		liveliness;
-		ReliabilityQosPolicy		reliability;
-		OwnershipQosPolicy		ownership;
-		DestinationOrderQosPolicy	destination_order;
-		UserDataQosPolicy		user_data;
-		TimeBasedFilterQosPolicy	time_based_filter;
-		PresentationQosPolicy		presentation;
-		PartitionQosPolicy		partition;
-		TopicDataQosPolicy		topic_data;
-		GroupDataQosPolicy		group_data;
+		DurabilityQosPolicy*		durability;
+		DeadlineQosPolicy*		deadline;
+		LatencyBudgetQosPolicy*		latency_budget;
+		LivelinessQosPolicy*		liveliness;
+		ReliabilityQosPolicy*		reliability;
+		OwnershipQosPolicy*		ownership;
+		DestinationOrderQosPolicy*	destination_order;
+		UserDataQosPolicy*		user_data;
+		TimeBasedFilterQosPolicy*	time_based_filter;
+		PresentationQosPolicy*		presentation;
+		PartitionQosPolicy*		partition;
+		TopicDataQosPolicy*		topic_data;
+		GroupDataQosPolicy*		group_data;
 		
 		SubscriptionBuiltinTopicData();
 		SubscriptionBuiltinTopicData(
@@ -1157,10 +1145,10 @@ namespace dds {
 		// 	const StatusMask* mask);
 		// abstract Listener* get_listener();
 		
-		ReturnCode_t enable();
-		StatusCondition* get_statuscondition();
-		StatusMask* get_status_changes();
-		InstanceHandle_t get_instance_handle();
+		virtual ReturnCode_t enable();
+		virtual StatusCondition* get_statuscondition();
+		virtual StatusMask* get_status_changes();
+		virtual InstanceHandle_t get_instance_handle();
 	};
 	
 	// ----------------------------------------------------------------------
@@ -1636,7 +1624,7 @@ namespace dds {
 		SampleStateKind sample_state;
 		ViewStateKind view_state;
 		InstanceStateKind instance_state;
-		Time_t source_timestamp;
+		Time_t* source_timestamp;
 		InstanceHandle_t instance_handle;
 		InstanceHandle_t publication_handle;
 		int32_t disposed_generation_count;
@@ -1647,6 +1635,19 @@ namespace dds {
 		bool valid_data;
 		
 		SampleInfo();
+		SampleInfo(
+			SampleStateKind sample_state,
+			ViewStateKind view_state,
+			InstanceStateKind instance_state,
+			Time_t* source_timestamp,
+			InstanceHandle_t instance_handle,
+			InstanceHandle_t publication_handle,
+			int32_t disposed_generation_count,
+			int32_t no_writers_generation_count,
+			int32_t sample_rank,
+			int32_t generation_rank,
+			int32_t absolute_generation_rank,
+			bool valid_data);
 		virtual ~SampleInfo();
 	};
 	
