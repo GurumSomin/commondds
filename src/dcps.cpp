@@ -19,6 +19,16 @@
 
 namespace dds {
 
+const HANDLE_TYPE_NATIVE HANDLE_NIL_NATIVE			= 0;
+const DomainParticipantQos* PARTICIPANT_QOS_DEFAULT	= NULL;
+const TopicQos* TOPIC_QOS_DEFAULT					= NULL;
+const PublisherQos* PUBLISHER_QOS_DEFAULT			= NULL;
+const SubscriberQos* SUBSCRIBER_QOS_DEFAULT			= NULL;
+const DataWriterQos* DATAWRITER_QOS_DEFAULT			= NULL;
+const DataReaderQos* DATAREADER_QOS_DEFAULT			= NULL;
+const DataWriterQos* DATAWRITER_QOS_USE_TOPIC_QOS	= NULL;
+const DataReaderQos* DATAREADER_QOS_USE_TOPIC_QOS	= NULL;
+
 BuiltinTopicKey_t::BuiltinTopicKey_t() {
 	for(int i = 0; i < 3; i++)
 		this->value[i] = 0;
@@ -55,6 +65,47 @@ Time_t::Time_t(int32_t sec, uint32_t nanosec) {
 
 Time_t::~Time_t() {
 }
+
+const InstanceHandle_t HANDLE_NIL				= HANDLE_NIL_NATIVE;
+
+const int32_t LENGTH_UNLIMITED					= -1;
+
+const int32_t DURATION_INFINITE_SEC				= 0x7fffffff;
+const uint32_t DURATION_INFINITE_NSEC			= 0x7fffffff;
+
+const int32_t DURATION_ZERO_SEC					= 0;
+const uint32_t DURATION_ZERO_NSEC				= 0;
+
+const int32_t TIME_INVALID_SEC					= -1;
+const uint32_t TIME_INVALID_NSEC				= 0xffffffff;
+
+const ReturnCode_t RETCODE_OK					= 0;
+const ReturnCode_t RETCODE_ERROR				= 1;
+const ReturnCode_t RETCODE_UNSUPPORTED			= 2;
+const ReturnCode_t RETCODE_BAD_PARAMETER		= 3;
+const ReturnCode_t RETCODE_PRECONDITION_NOT_MET	= 4;
+const ReturnCode_t RETCODE_OUT_OF_RESOURCES		= 5;
+const ReturnCode_t RETCODE_NOT_ENABLED			= 6;
+const ReturnCode_t RETCODE_IMMUTABLE_POLICY		= 7;
+const ReturnCode_t RETCODE_INCONSISTENT_POLICY	= 8;
+const ReturnCode_t RETCODE_ALREADY_DELETED		= 9;
+const ReturnCode_t RETCODE_TIMEOUT				= 10;
+const ReturnCode_t RETCODE_NO_DATA				= 11;
+const ReturnCode_t RETCODE_ILLEGAL_OPERATION	= 12;
+
+const StatusKind INCONSISTENT_TOPIC_STATUS			= 0x0001 << 0;
+const StatusKind OFFERED_DEADLINE_MISSED_STATUS		= 0x0001 << 1;
+const StatusKind REQUESTED_DEADLINE_MISSED_STATUS	= 0x0001 << 2;
+const StatusKind OFFERED_INCOMPATIBLE_QOS_STATUS	= 0x0001 << 5;
+const StatusKind REQUESTED_INCOMPATIBLE_QOS_STATUS	= 0x0001 << 6;
+const StatusKind SAMPLE_LOST_STATUS					= 0x0001 << 7;
+const StatusKind SAMPLE_REJECTED_STATUS				= 0x0001 << 8;
+const StatusKind DATA_ON_READERS_STATUS				= 0x0001 << 9;
+const StatusKind DATA_AVAILABLE_STATUS				= 0x0001 << 10;
+const StatusKind LIVELINESS_LOST_STATUS				= 0x0001 << 11;
+const StatusKind LIVELINESS_CHANGED_STATUS			= 0x0001 << 12;
+const StatusKind PUBLICATION_MATCHED_STATUS			= 0x0001 << 13;
+const StatusKind SUBSCRIPTION_MATCHED_STATUS		= 0x0001 << 14;
 
 InconsistentTopicStatus::InconsistentTopicStatus() {
 	InconsistentTopicStatus(0, 0);
@@ -426,7 +477,7 @@ QueryCondition::QueryCondition() {
 QueryCondition::~QueryCondition() {
 }
 
-std::string* QueryCondition::get_query_expression() {
+const char* QueryCondition::get_query_expression() {
 	return NULL;
 }
 
@@ -438,27 +489,51 @@ ReturnCode_t QueryCondition::set_query_parameters(const StringSeq* query_paramet
 	return RETCODE_ERROR;
 }
 
-const std::string* USERDATA_QOS_POLICY_NAME				= new std::string("UserData");
-const std::string* DURABILITY_QOS_POLICY_NAME			= new std::string("Durability");
-const std::string* PRESENTATION_QOS_POLICY_NAME			= new std::string("Presentation");
-const std::string* DEADLINE_QOS_POLICY_NAME				= new std::string("Deadline");
-const std::string* LATENCYBUDGET_QOS_POLICY_NAME		= new std::string("LatencyBudget");
-const std::string* OWNERSHIP_QOS_POLICY_NAME			= new std::string("Ownership");
-const std::string* OWNERSHIPSTRENGTH_QOS_POLICY_NAME	= new std::string("OwnershipStrength");
-const std::string* LIVELINESS_QOS_POLICY_NAME			= new std::string("Liveliness");
-const std::string* TIMEBASEDFILTER_QOS_POLICY_NAME		= new std::string("TimeBasedFilter");
-const std::string* PARTITION_QOS_POLICY_NAME			= new std::string("Partition");
-const std::string* RELIABILITY_QOS_POLICY_NAME			= new std::string("Reliability");
-const std::string* DESTINATIONORDER_QOS_POLICY_NAME		= new std::string("DestinationOrder");
-const std::string* HISTORY_QOS_POLICY_NAME				= new std::string("History");
-const std::string* RESOURCELIMITS_QOS_POLICY_NAME		= new std::string("ResourceLimits");
-const std::string* ENTITYFACTORY_QOS_POLICY_NAME		= new std::string("EntityFactory");
-const std::string* WRITERDATALIFECYCLE_QOS_POLICY_NAME	= new std::string("WriterDataLifecycle");
-const std::string* READERDATALIFECYCLE_QOS_POLICY_NAME	= new std::string("ReaderDataLifecycle");
-const std::string* TOPICDATA_QOS_POLICY_NAME			= new std::string("TopicData");
-const std::string* GROUPDATA_QOS_POLICY_NAME			= new std::string("TransportPriority");
-const std::string* LIFESPAN_QOS_POLICY_NAME				= new std::string("Lifespan");
-const std::string* DURABILITYSERVICE_POLICY_NAME		= new std::string("DurabilityService");
+const char* USERDATA_QOS_POLICY_NAME			= "UserData";
+const char* DURABILITY_QOS_POLICY_NAME			= "Durability";
+const char* PRESENTATION_QOS_POLICY_NAME		= "Presentation";
+const char* DEADLINE_QOS_POLICY_NAME			= "Deadline";
+const char* LATENCYBUDGET_QOS_POLICY_NAME		= "LatencyBudget";
+const char* OWNERSHIP_QOS_POLICY_NAME			= "Ownership";
+const char* OWNERSHIPSTRENGTH_QOS_POLICY_NAME	= "OwnershipStrength";
+const char* LIVELINESS_QOS_POLICY_NAME			= "Liveliness";
+const char* TIMEBASEDFILTER_QOS_POLICY_NAME		= "TimeBasedFilter";
+const char* PARTITION_QOS_POLICY_NAME			= "Partition";
+const char* RELIABILITY_QOS_POLICY_NAME			= "Reliability";
+const char* DESTINATIONORDER_QOS_POLICY_NAME	= "DestinationOrder";
+const char* HISTORY_QOS_POLICY_NAME				= "History";
+const char* RESOURCELIMITS_QOS_POLICY_NAME		= "ResourceLimits";
+const char* ENTITYFACTORY_QOS_POLICY_NAME		= "EntityFactory";
+const char* WRITERDATALIFECYCLE_QOS_POLICY_NAME	= "WriterDataLifecycle";
+const char* READERDATALIFECYCLE_QOS_POLICY_NAME	= "ReaderDataLifecycle";
+const char* TOPICDATA_QOS_POLICY_NAME			= "TopicData";
+const char* GROUPDATA_QOS_POLICY_NAME			= "TransportPriority";
+const char* LIFESPAN_QOS_POLICY_NAME			= "Lifespan";
+const char* DURABILITYSERVICE_POLICY_NAME		= "DurabilityService";
+
+const QosPolicyId_t INVALID_QOS_POLICY_ID				= 0;
+const QosPolicyId_t USERDATA_QOS_POLICY_ID				= 1;
+const QosPolicyId_t DURABILITY_QOS_POLICY_ID			= 2;
+const QosPolicyId_t PRESENTATION_QOS_POLICY_ID			= 3;
+const QosPolicyId_t DEADLINE_QOS_POLICY_ID				= 4;
+const QosPolicyId_t LATENCYBUDGET_QOS_POLICY_ID			= 5;
+const QosPolicyId_t OWNERSHIP_QOS_POLICY_ID				= 6;
+const QosPolicyId_t OWNERSHIPSTRENGTH_QOS_POLICY_ID		= 7;
+const QosPolicyId_t LIVELINESS_QOS_POLICY_ID			= 8;
+const QosPolicyId_t TIMEBASEDFILTER_QOS_POLICY_ID		= 9;
+const QosPolicyId_t PARTITION_QOS_POLICY_ID				= 10;
+const QosPolicyId_t RELIABILITY_QOS_POLICY_ID			= 11;
+const QosPolicyId_t DESTINATIONORDER_QOS_POLICY_ID		= 12;
+const QosPolicyId_t HISTORY_QOS_POLICY_ID				= 13;
+const QosPolicyId_t RESOURCELIMITS_QOS_POLICY_ID		= 14;
+const QosPolicyId_t ENTITYFACTORY_QOS_POLICY_ID			= 15;
+const QosPolicyId_t WRITERDATALIFECYCLE_QOS_POLICY_ID	= 16;
+const QosPolicyId_t READERDATALIFECYCLE_QOS_POLICY_ID	= 17;
+const QosPolicyId_t TOPICDATA_QOS_POLICY_ID				= 18;
+const QosPolicyId_t GROUPDATA_QOS_POLICY_ID				= 19;
+const QosPolicyId_t TRANSPORTPRIORITY_QOS_POLICY_ID		= 20;
+const QosPolicyId_t LIFESPAN_QOS_POLICY_ID				= 21;
+const QosPolicyId_t DURABILITYSERVICE_QOS_POLICY_ID		= 22;
 
 UserDataQosPolicy::UserDataQosPolicy() {
 	value = new sequence<uint8_t>();
@@ -1081,8 +1156,8 @@ TopicBuiltinTopicData::TopicBuiltinTopicData() {
 
 TopicBuiltinTopicData::TopicBuiltinTopicData(
 	BuiltinTopicKey_t key,
-	std::string* name,
-	std::string* type_name,
+	const char* name,
+	const char* type_name,
 	DurabilityQosPolicy* durability,
 	DurabilityServiceQosPolicy* durability_service,
 	DeadlineQosPolicy* deadline,
@@ -1098,8 +1173,8 @@ TopicBuiltinTopicData::TopicBuiltinTopicData(
 	TopicDataQosPolicy* topic_data) {
 	
 	this->key = key;
-	this->name = name;
-	this->type_name = type_name;
+	this->name = strdup(name);
+	this->type_name = strdup(type_name);
 	this->durability = durability;
 	this->durability_service = durability_service;
 	this->deadline = deadline;
@@ -1116,6 +1191,8 @@ TopicBuiltinTopicData::TopicBuiltinTopicData(
 }
 
 TopicBuiltinTopicData::~TopicBuiltinTopicData() {
+	free(this->name);
+	free(this->type_name);
 	delete durability;
 	delete durability_service;
 	delete deadline;
@@ -1156,8 +1233,8 @@ PublicationBuiltinTopicData::PublicationBuiltinTopicData() {
 PublicationBuiltinTopicData::PublicationBuiltinTopicData(
 	BuiltinTopicKey_t key,
 	BuiltinTopicKey_t participant_key,
-	std::string* topic_name,
-	std::string* type_name,
+	const char* topic_name,
+	const char* type_name,
 	DurabilityQosPolicy* durability,
 	DurabilityServiceQosPolicy* durability_service,
 	DeadlineQosPolicy* deadline,
@@ -1176,8 +1253,8 @@ PublicationBuiltinTopicData::PublicationBuiltinTopicData(
 	
 	this->key = key;
 	this->participant_key = participant_key;
-	this->topic_name = topic_name;
-	this->type_name = type_name;
+	this->topic_name = strdup(topic_name);
+	this->type_name = strdup(type_name);
 	this->durability = durability;
 	this->durability_service = durability_service;
 	this->deadline = deadline;
@@ -1196,6 +1273,8 @@ PublicationBuiltinTopicData::PublicationBuiltinTopicData(
 }
 
 PublicationBuiltinTopicData::~PublicationBuiltinTopicData() {
+	free(this->topic_name);
+	free(this->type_name);
 	delete durability;
 	delete durability_service;
 	delete deadline;
@@ -1236,8 +1315,8 @@ SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData() {
 SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData(
 	BuiltinTopicKey_t key,
 	BuiltinTopicKey_t participant_key,
-	std::string* topic_name,
-	std::string* type_name,
+	const char* topic_name,
+	const char* type_name,
 	DurabilityQosPolicy* durability,
 	DeadlineQosPolicy* deadline,
 	LatencyBudgetQosPolicy* latency_budget,
@@ -1254,8 +1333,8 @@ SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData(
 
 	this->key = key;
 	this->participant_key = participant_key;
-	this->topic_name = topic_name;
-	this->type_name = type_name;
+	this->topic_name = strdup(topic_name);
+	this->type_name = strdup(type_name);
 	this->durability = durability;
 	this->deadline = deadline;
 	this->latency_budget = latency_budget;
@@ -1272,6 +1351,8 @@ SubscriptionBuiltinTopicData::SubscriptionBuiltinTopicData(
 }
 
 SubscriptionBuiltinTopicData::~SubscriptionBuiltinTopicData() {
+	free(this->topic_name);
+	free(this->type_name);
 	delete durability;
 	delete deadline;
 	delete latency_budget;
@@ -1300,6 +1381,23 @@ ReturnCode_t Entity::enable() {
 StatusCondition* Entity::get_statuscondition() {
 	return NULL;
 }
+
+const SampleStateKind READ_SAMPLE_STATE						= 0x0001 << 0;
+const SampleStateKind NOT_READ_SAMPLE_STATE					= 0x0001 << 1;
+
+const SampleStateMask ANY_SAMPLE_STATE						= 0xffff;
+
+const ViewStateKind NEW_VIEW_STATE							= 0x0001 << 0;
+const ViewStateKind NOT_NEW_VIEW_STATE						= 0x0001 << 1;
+
+const ViewStateMask ANY_VIEW_STATE							= 0xffff;
+
+const InstanceStateKind ALIVE_INSTANCE_STATE				= 0x0001 << 0;
+const InstanceStateKind NOT_ALIVE_DISPOSED_INSTANCE_STATE	= 0x0001 << 1;
+const InstanceStateKind NOT_ALIVE_NO_WRITERS_INSTANCE_STATE	= 0x0001 << 2;
+
+const InstanceStateMask ANY_INSTANCE_STATE					= 0xffff;
+const InstanceStateMask NOT_ALIVE_INSTANCE_STATE			= 0x006;
 
 StatusMask Entity::get_status_changes() {
 	return 0;
@@ -1345,8 +1443,8 @@ Subscriber* DomainParticipant::get_builtin_subscriber() {
 }
 
 Topic* DomainParticipant::create_topic(
-	const std::string* topic_name,
-	const std::string* type_name,
+	const char* topic_name,
+	const char* type_name,
 	const TopicQos* qos,
 	const TopicListener* a_listener,
 	const StatusMask mask) {
@@ -1358,18 +1456,18 @@ ReturnCode_t DomainParticipant::delete_topic(const Topic* a_topic) {
 	return RETCODE_ERROR;
 }
 
-Topic* DomainParticipant::find_topic(const std::string* topic_name, const Duration_t* timeout) {
+Topic* DomainParticipant::find_topic(const char* topic_name, const Duration_t* timeout) {
 	return NULL;
 }
 
-TopicDescription* DomainParticipant::lookup_topicdescription(const std::string* name) {
+TopicDescription* DomainParticipant::lookup_topicdescription(const char* name) {
 	return NULL;
 }
 
 ContentFilteredTopic* DomainParticipant::create_contentfilteredtopic(
-	const std::string* name,
+	const char* name,
 	const Topic* related_topic,
-	const std::string* filter_expression,
+	const char* filter_expression,
 	const StringSeq* expression_parameters) {
 	return NULL;
 }
@@ -1379,9 +1477,9 @@ ReturnCode_t DomainParticipant::delete_contentfilteredtopic(const ContentFiltere
 }
 
 MultiTopic* DomainParticipant::create_multitopic(
-	const std::string* name,
-	const std::string* type_name,
-	const std::string* subscription_expression,
+	const char* name,
+	const char* type_name,
+	const char* subscription_expression,
 	const StringSeq* expression_parameters) {
 
 	return NULL;
@@ -1487,32 +1585,34 @@ ReturnCode_t DomainParticipant::get_current_time(Time_t* current_time) {
 }
 
 DomainParticipantFactory* DomainParticipantFactory::instance = NULL;
-std::string* DomainParticipantFactory::home_path = NULL;
-std::string* DomainParticipantFactory::config_path = NULL;
+char* DomainParticipantFactory::home_path = NULL;
+char* DomainParticipantFactory::config_path = NULL;
 void* DomainParticipantFactory::config = NULL;
 
 DomainParticipantFactory* DomainParticipantFactory::get_instance() {
 	if(DomainParticipantFactory::instance == NULL) {
 		char* h = std::getenv("COMMONDDS_HOME");
-		std::string& home = *new std::string("");
+		char* home = NULL;
 		if(h != NULL) {
-			home += h;
+			home = strdup(h);
 		} else {
 #if _WIN32 || _WIN64
-			home += std::getenv("USERPROFILE");
-			home += "\\.commondds";
+			h = std::getenv("USERPROFILE");
+			home = (char*)malloc(strlen(h) + 12);
+			sprintf(home, "%s\\.commondds", h);
 #else
-			home += std::getenv("HOME");
-			home += "/.commondds";
+			h = std::getenv("HOME");
+			home = (char*)malloc(strlen(h) + 12);
+			sprintf(home, "%s/.commondds", h);
 #endif
 		}
 
 #if _WIN32 || _WIN64
-		std::string& config = *new std::string(home);
-		config += "\\config.json";
+		char* config = (char*)malloc(strlen(home) + 13);
+		sprintf(config, "%s\\config.json", home);
 #else
-		std::string& config = *new std::string(home);
-		config += "/config.json";
+		char* config = (char*)malloc(strlen(home) + 13);
+		sprintf(config, "%s/config.json", home);
 #endif
 		
 #if DEBUG
@@ -1523,7 +1623,7 @@ DomainParticipantFactory* DomainParticipantFactory::get_instance() {
 		Json::Value& root = *new Json::Value();
 		Json::Reader reader;
 		try {
-			std::ifstream is(config.data());
+			std::ifstream is(config);
 			reader.parse(is, root);
 			is.close();
 		} catch(std::ifstream::failure& e) {
@@ -1537,8 +1637,8 @@ DomainParticipantFactory* DomainParticipantFactory::get_instance() {
 #endif
 
 		// Set static variables
-		DomainParticipantFactory::home_path = &home;
-		DomainParticipantFactory::config_path = &config;
+		DomainParticipantFactory::home_path = home;
+		DomainParticipantFactory::config_path = config;
 		DomainParticipantFactory::config = &root;
 
 		// Instantiate
@@ -1551,12 +1651,14 @@ DomainParticipantFactory* DomainParticipantFactory::get_instance() {
 			throw std::runtime_error("config.json: middleware.type's type is not a string");
 		}
 
-		std::string type = root["middleware"]["type"].asString();
-		if(!(type == "connext" || type == "opensplice")) {
-			throw std::runtime_error("config.json: illegal middleware.type: " + type);
+		const char* type = root["middleware"]["type"].asCString();
+		if(!(strcmp(type, "connext") == 0 || strcmp(type, "opensplice") == 0)) {
+			std::string msg = std::string("config.json: illegal middleware.type: ");
+			msg += type;
+			throw std::runtime_error(msg);
 		}
 
-		if(type == "connext") {
+		if(strcmp(type, "connext") == 0) {
 			DomainParticipantFactory::instance = new ConnextDomainParticipantFactory();
 		}
 		// Check optional configurations
@@ -1616,11 +1718,11 @@ TopicDescription::TopicDescription() {
 TopicDescription::~TopicDescription() {
 }
 
-std::string* TopicDescription::get_type_name() {
+const char* TopicDescription::get_type_name() {
 	return NULL;
 }
 
-std::string* TopicDescription::get_name() {
+const char* TopicDescription::get_name() {
 	return NULL;
 }
 
@@ -1660,7 +1762,7 @@ ContentFilteredTopic::ContentFilteredTopic() {
 ContentFilteredTopic::~ContentFilteredTopic() {
 }
 
-std::string* ContentFilteredTopic::get_filter_expression() {
+const char* ContentFilteredTopic::get_filter_expression() {
 	return NULL;
 }
 
@@ -1682,7 +1784,7 @@ MultiTopic::MultiTopic() {
 MultiTopic::~MultiTopic() {
 }
 
-std::string* MultiTopic::get_subscription_expression() {
+const char* MultiTopic::get_subscription_expression() {
 	return NULL;
 }
 
@@ -1713,7 +1815,7 @@ ReturnCode_t Publisher::delete_datawriter(const DataWriter* a_datawriter) {
 	return RETCODE_ERROR;
 }
 
-DataWriter* Publisher::lookup_datawriter(const std::string* topic_name) {
+DataWriter* Publisher::lookup_datawriter(const char* topic_name) {
 	return NULL;
 }
 
@@ -1858,7 +1960,7 @@ ReturnCode_t Subscriber::delete_contained_entities() {
 	return RETCODE_ERROR;
 }
 
-DataReader* Subscriber::lookup_datareader(const std::string* topic_name) {
+DataReader* Subscriber::lookup_datareader(const char* topic_name) {
 	return NULL;
 }
 
@@ -1933,7 +2035,7 @@ QueryCondition* DataReader::create_querycondition(
 	const SampleStateMask* sample_states,
 	const ViewStateMask* view_states,
 	const InstanceStateMask* instance_states,
-	const std::string* query_expression,
+	const char* query_expression,
 	const StringSeq* query_parameters) {
 
 	return NULL;

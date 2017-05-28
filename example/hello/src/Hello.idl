@@ -1,0 +1,7 @@
+module hello {
+	struct Message {
+		unsigned long		seq;
+		unsigned long long	time;
+		string				message;
+	};
+}
