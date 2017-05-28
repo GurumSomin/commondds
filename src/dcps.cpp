@@ -386,11 +386,11 @@ StatusCondition::StatusCondition() {
 StatusCondition::~StatusCondition() {
 }
 
-StatusMask* StatusCondition::get_enabled_statuses() {
-	return NULL;
+StatusMask StatusCondition::get_enabled_statuses() {
+	return 0;
 }
 
-ReturnCode_t StatusCondition::set_enabled_statuses(const StatusMask* mask) {
+ReturnCode_t StatusCondition::set_enabled_statuses(const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1301,8 +1301,8 @@ StatusCondition* Entity::get_statuscondition() {
 	return NULL;
 }
 
-StatusMask* Entity::get_status_changes() {
-	return NULL;
+StatusMask Entity::get_status_changes() {
+	return 0;
 }
 
 InstanceHandle_t Entity::get_instance_handle() {
@@ -1319,7 +1319,7 @@ DomainParticipant::~DomainParticipant() {
 Publisher* DomainParticipant::create_publisher(
 	const PublisherQos* qos,
 	const PublisherListener* a_listener,
-	const StatusMask* mask) {
+	const StatusMask mask) {
 
 	return NULL;
 }
@@ -1331,7 +1331,7 @@ ReturnCode_t DomainParticipant::delete_publisher(const Publisher* p) {
 Subscriber* DomainParticipant::create_subscriber(
 	const SubscriberQos* qos,
 	const SubscriberListener* a_listener,
-	const StatusMask* mask) {
+	const StatusMask mask) {
 
 	return NULL;
 }
@@ -1349,7 +1349,7 @@ Topic* DomainParticipant::create_topic(
 	const std::string* type_name,
 	const TopicQos* qos,
 	const TopicListener* a_listener,
-	const StatusMask* mask) {
+	const StatusMask mask) {
 
 	return NULL;
 }
@@ -1403,7 +1403,7 @@ ReturnCode_t DomainParticipant::get_qos(DomainParticipantQos* qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::set_listener(const DomainParticipantListener* a_listener, const StatusMask* mask) {
+ReturnCode_t DomainParticipant::set_listener(const DomainParticipantListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1575,7 +1575,7 @@ DomainParticipant* DomainParticipantFactory::create_participant(
 	DomainId_t domain_id,
 	const DomainParticipantQos* qos,
 	const DomainParticipantListener* a_listener,
-	const StatusMask* mask) {
+	const StatusMask mask) {
 
 	return NULL;
 }
@@ -1642,7 +1642,7 @@ ReturnCode_t Topic::get_qos(TopicQos* qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Topic::set_listener(const TopicListener* a_listener, const StatusMask* mask) {
+ReturnCode_t Topic::set_listener(const TopicListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1704,7 +1704,7 @@ DataWriter* Publisher::create_datawriter(
 	const Topic* a_topic,
 	const DataWriterQos* qos,
 	const DataWriterListener* a_listener,
-	const StatusMask* mask) {
+	const StatusMask mask) {
 
 	return NULL;
 }
@@ -1729,7 +1729,7 @@ ReturnCode_t Publisher::get_qos(PublisherQos* qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Publisher::set_listener(const PublisherListener* a_listener, const StatusMask* mask) {
+ReturnCode_t Publisher::set_listener(const PublisherListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1787,7 +1787,7 @@ ReturnCode_t DataWriter::get_qos(DataWriterQos* qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataWriter::set_listener(const DataWriterListener* a_listener, const StatusMask* mask) {
+ReturnCode_t DataWriter::set_listener(const DataWriterListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1845,7 +1845,7 @@ DataReader* Subscriber::create_datareader(
 	const TopicDescription* a_topic,
 	const DataReaderQos* qos,
 	const DataReaderListener* a_listener,
-	const StatusMask* mask) {
+	const StatusMask mask) {
 
 	return NULL;
 }
@@ -1883,7 +1883,7 @@ ReturnCode_t Subscriber::get_qos(SubscriberQos* qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Subscriber::set_listener(const SubscriberListener* a_listener, const StatusMask* mask) {
+ReturnCode_t Subscriber::set_listener(const SubscriberListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1955,7 +1955,7 @@ ReturnCode_t DataReader::get_qos(DataReaderQos* qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::set_listener(const DataReaderListener* a_listener, const StatusMask* mask) {
+ReturnCode_t DataReader::set_listener(const DataReaderListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 

@@ -7,20 +7,20 @@
 #include <iostream>
 
 namespace dds {
-	#define DOMAINID_TYPE_NATIVE			int32_t
-	#define HANDLE_TYPE_NATIVE				int32_t
-	#define HANDLE_NIL_NATIVE				0
-	#define BUILTIN_TOPIC_KEY_TYPE_NATIVE	int32_t
+	typedef int32_t	DOMAINID_TYPE_NATIVE;
+	typedef int32_t HANDLE_TYPE_NATIVE;
+	const HANDLE_TYPE_NATIVE HANDLE_NIL_NATIVE = 0;
+	typedef int32_t BUILTIN_TOPIC_KEY_TYPE_NATIVE;
 	
-	#define TheParticipantFactory
-	#define PARTICIPANT_QOS_DEFAULT
-	#define TOPIC_QOS_DEFAULT
-	#define PUBLISHER_QOS_DEFAULT
-	#define SUBSCRIBER_QOS_DEFAULT
-	#define DATAWRITER_QOS_DEFAULT
-	#define DATAREADER_QOS_DEFAULT
-	#define DATAWRITER_QOS_USE_TOPIC_QOS
-	#define DATAREADER_QOS_USE_TOPIC_QOS
+	/* #define TheParticipantFactory */
+	const DomainParticipantQos* PARTICIPANT_QOS_DEFAULT	= NULL;
+	const TopicQos* TOPIC_QOS_DEFAULT					= NULL;
+	const PublisherQos* PUBLISHER_QOS_DEFAULT			= NULL;
+	const SubscriberQos* SUBSCRIBER_QOS_DEFAULT			= NULL;
+	const DataWriterQos* DATAWRITER_QOS_DEFAULT			= NULL;
+	const DataReaderQos* DATAREADER_QOS_DEFAULT			= NULL;
+	const DataWriterQos* DATAWRITER_QOS_USE_TOPIC_QOS	= NULL;
+	const DataReaderQos* DATAREADER_QOS_USE_TOPIC_QOS	= NULL;
 
 	// IDL
 	template<typename T>
@@ -482,9 +482,9 @@ namespace dds {
 		StatusCondition();
 		virtual ~StatusCondition();
 		
-		StatusMask* get_enabled_statuses();
+		StatusMask get_enabled_statuses();
 		ReturnCode_t set_enabled_statuses(
-			const StatusMask* mask);
+			const StatusMask mask);
 		Entity* get_entity();
 	};
 	
@@ -1142,12 +1142,12 @@ namespace dds {
 		// 	EntityQos* qos);
 		// abstract ReturnCode_t set_listener(
 		// 	const Listener* l,
-		// 	const StatusMask* mask);
+		// 	const StatusMask mask);
 		// abstract Listener* get_listener();
 		
 		virtual ReturnCode_t enable();
 		virtual StatusCondition* get_statuscondition();
-		virtual StatusMask* get_status_changes();
+		virtual StatusMask get_status_changes();
 		virtual InstanceHandle_t get_instance_handle();
 	};
 	
@@ -1161,13 +1161,13 @@ namespace dds {
 		Publisher* create_publisher(
 			const PublisherQos* qos,
 			const PublisherListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		ReturnCode_t delete_publisher(
 			const Publisher* p);
 		Subscriber* create_subscriber(
 			const SubscriberQos* qos,
 			const SubscriberListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		ReturnCode_t delete_subscriber(
 			const Subscriber* s);
 		Subscriber* get_builtin_subscriber();
@@ -1176,7 +1176,7 @@ namespace dds {
 			const std::string* type_name,
 			const TopicQos* qos,
 			const TopicListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		ReturnCode_t delete_topic(
 			const Topic* a_topic);
 		Topic* find_topic(
@@ -1205,7 +1205,7 @@ namespace dds {
 			DomainParticipantQos* qos);
 		ReturnCode_t set_listener(
 			const DomainParticipantListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		DomainParticipantListener* get_listener();
 		ReturnCode_t ignore_participant(
 			InstanceHandle_t handle);
@@ -1264,7 +1264,7 @@ namespace dds {
 			DomainId_t domain_id,
 			const DomainParticipantQos* qos,
 			const DomainParticipantListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		virtual ReturnCode_t delete_participant(
 			const DomainParticipant* a_participant);
 		virtual DomainParticipant* lookup_participant(
@@ -1312,7 +1312,7 @@ namespace dds {
 			TopicQos* qos);
 		ReturnCode_t set_listener(
 			const TopicListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		TopicListener* get_listener();
 		
 		// Access the status
@@ -1360,7 +1360,7 @@ namespace dds {
 			const Topic* a_topic,
 			const DataWriterQos* qos,
 			const DataWriterListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		ReturnCode_t delete_datawriter(
 			const DataWriter* a_datawriter);
 		DataWriter* lookup_datawriter(
@@ -1372,7 +1372,7 @@ namespace dds {
 			PublisherQos* qos);
 		ReturnCode_t set_listener(
 			const PublisherListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		PublisherListener* get_listener();
 		ReturnCode_t suspend_publications();
 		ReturnCode_t resume_publications();
@@ -1433,7 +1433,7 @@ namespace dds {
 			DataWriterQos* qos);
 		ReturnCode_t set_listener(
 			const DataWriterListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		DataWriterListener* get_listener();
 		Topic* get_topic();
 		Publisher* get_publisher();
@@ -1466,7 +1466,7 @@ namespace dds {
 			const TopicDescription* a_topic,
 			const DataReaderQos* qos,
 			const DataReaderListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		ReturnCode_t delete_datareader(
 			const DataReader* a_datareader);
 		ReturnCode_t delete_contained_entities();
@@ -1484,7 +1484,7 @@ namespace dds {
 			SubscriberQos* qos);
 		ReturnCode_t set_listener(
 			const SubscriberListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		SubscriberListener* get_listener();
 		ReturnCode_t begin_access();
 		ReturnCode_t end_access();
@@ -1605,7 +1605,7 @@ namespace dds {
 			DataReaderQos* qos);
 		ReturnCode_t set_listener(
 			const DataReaderListener* a_listener,
-			const StatusMask* mask);
+			const StatusMask mask);
 		DataReaderListener* get_listener();
 		TopicDescription* get_topicdescription();
 		Subscriber* get_subscriber();
