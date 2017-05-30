@@ -6,14 +6,17 @@ CFLAGS = -Iinclude -I$(COMMONDDS_HOME)/include
 SRCS = src/Message.cpp
 OBJS = $(patsubst src/%.cpp, obj/%.o, $(SRCS))
 
-all: client
+all: pub sub
 
 COMMONDDS_HOME:
 ifndef COMMONDDS_HOME
     COMMONDDS_HOME = ../..
 endif
 
-client: $(OBJS) obj/client.o
+pub: $(OBJS) obj/pub.o
+	$(CC) $(CFLAGS) -o $@ $^ $(COMMONDDS_HOME)/libdds.a
+
+sub: $(OBJS) obj/sub.o
 	$(CC) $(CFLAGS) -o $@ $^ $(COMMONDDS_HOME)/libdds.a
 
 obj/%.o: src/%.cpp
@@ -22,4 +25,4 @@ obj/%.o: src/%.cpp
 
 clean:
 	rm -rf obj
-	rm -f client server
+	rm -f pub sub

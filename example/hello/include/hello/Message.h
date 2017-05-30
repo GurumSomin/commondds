@@ -13,14 +13,15 @@ namespace hello {
 	};
 
 	class MessageTypeSupport : dds::TypeSupport {
-	public:
+	private:
 		MessageTypeSupport();
 		virtual ~MessageTypeSupport();
 		
-		dds::ReturnCode_t register_type(
+	public:
+		static dds::ReturnCode_t register_type(
 			const dds::DomainParticipant* domain,
 			const char* type_name);
-		const char* get_type_name();
+		static const char* get_type_name();
 	};
 
 	class MessageDataWriter : dds::DataWriter {
