@@ -2,6 +2,10 @@
 objs/
 src/idl
 
+#binary
+pub
+sub
+
 #trash
 *.swp
 *~

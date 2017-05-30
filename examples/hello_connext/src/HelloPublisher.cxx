@@ -21,6 +21,7 @@ int main(int argc, const char **argv) {
 	DDS_Duration_t send_period = {0,4}; /* time (sec, usec) to pause between bursts of 10,000 samples */
 	DDS_Duration_t disc_period = {1,0};
 
+	/* --- 1. generate participant  --------------------------------------------------------- */ 
 	participant = DDSDomainParticipantFactory::get_instance()->create_participant(
 						domainId,
 						DDS_PARTICIPANT_QOS_DEFAULT,
@@ -32,11 +33,13 @@ int main(int argc, const char **argv) {
 		goto exitFn;
 	}
 
+	/* --- 2. generate publisher  ----------------------------------------------------------- */ 
 	publisher = participant->create_publisher(
 						DDS_PUBLISHER_QOS_DEFAULT,
 						NULL,
 						DDS_STATUS_MASK_NONE);
 
+	/* --- 3. register type  ---------------------------------------------------------------- */ 
 	rc = HelloWorldData_MsgTypeSupport::register_type(participant, HelloWorldData_MsgTypeSupport::get_type_name());
 
 	if(rc != DDS_RETCODE_OK ) {
@@ -44,6 +47,7 @@ int main(int argc, const char **argv) {
 		goto exitFn;
 	}
 
+	/* --- 4. generate topic  --------------------------------------------------------------- */ 
 	topic = participant->create_topic(
 			topicName,
 			HelloWorldData_MsgTypeSupport::get_type_name(),
@@ -56,6 +60,7 @@ int main(int argc, const char **argv) {
 		goto exitFn;
 	}
 
+	/* --- 5. generate datawriter  ---------------------------------------------------------- */ 
 	dataWriter = publisher->create_datawriter(
 						topic,
 						DDS_DATAWRITER_QOS_DEFAULT,
@@ -69,16 +74,19 @@ int main(int argc, const char **argv) {
 
 	NDDSUtility::sleep(disc_period);
 
+	/* --- 6. casting writer  --------------------------------------------------------------- */ 
 	helloWriter = HelloWorldData_MsgDataWriter::narrow(dataWriter);
 	if (helloWriter == NULL) {
 		goto exitFn;
 	}
 
+	/* --- allocate instance(omitted)  ------------------------------------------------------ */ 
 	instance = HelloWorldData_MsgTypeSupport::create_data_ex(DDS_BOOLEAN_FALSE);
 	if (instance == NULL) {
 		goto exitFn;
 	}
 
+	/* --- 7. send data  -------------------------------------------------------------------- */ 
 	std::cout << "Sending data..." << std::endl;
 	for(int i = 0; i < SAMPLE_LENGTH ; i++ ) {
 		instance->userId = i;
@@ -89,24 +97,26 @@ int main(int argc, const char **argv) {
 	}
 	std::cout << "done!" << std::endl;
 
-	/* --- Clean Up ------------------------------------------------------- */ 
 	if (rc != DDS_RETCODE_OK) {
 		std::cerr << "! Write error " <<  rc << std::endl;
 	}
 	NDDSUtility::sleep(send_period);
 
+	/* --- 8. Clean entities ---------------------------------------------------------------- */ 
 	rc = participant->delete_contained_entities();
 	if (rc != DDS_RETCODE_OK) {
 		std::cerr << "Deletion failed." << std::endl;
 		returnValue = false;
 	}
 
+	/* --- 9. Clean participant ------------------------------------------------------------- */ 
 	rc = DDSDomainParticipantFactory::get_instance()->delete_participant(participant);
 	if (rc != DDS_RETCODE_OK) {
 		std::cerr << "Deletion failed." << std::endl;
 		returnValue = false;
 	}
 
+	/* --- delete instance(omitted)  -------------------------------------------------------- */ 
 exitFn:
 	if (instance != NULL) {
 		HelloWorldData_MsgTypeSupport::delete_data_ex(
