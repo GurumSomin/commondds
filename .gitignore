@@ -28,10 +28,3 @@
 *.out
 *.app
 
-# compiled folder(hello_connext)
-examples/hello_connext/objs/
-examples/hello_connext/src/idl/
-
-# trash
-*.swp
-*~

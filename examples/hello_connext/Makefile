@@ -23,28 +23,28 @@ NDDSLIBS = -lnddscppz -lnddscz -lnddscorez
 
 LIBS = -L$(NDDSHOME)/lib/$(ARCH) $(NDDSLIBS) $(SYSLIBS)
 
-SOURCES = src/HelloPublisher.cpp        \
-          src/HelloSubscriber.cpp
+SOURCES = src/HelloPublisher.cpp		\
+		  src/HelloSubscriber.cpp
 
-SOURCES_IDL = src/idl/HelloWorld.cxx    \
-          src/idl/HelloWorldPlugin.cxx  \
-          src/idl/HelloWorldSupport.cxx
+SOURCES_IDL = src/idl/HelloWorld.cxx		\
+		  src/idl/HelloWorldPlugin.cxx		\
+		  src/idl/HelloWorldSupport.cxx
 
-HEADERS = include/HelloPublisher.h          \
-          include/HelloSubscriber.h
+HEADERS = include/HelloPublisher.h		\
+		  include/HelloSubscriber.h
 
-HEADERS_IDL = src/idl/HelloWorld.h      \
-          src/idl/HelloWorldPlugin.h    \
-          src/idl/HelloWorldSupport.h
+HEADERS_IDL = src/idl/HelloWorld.h		\
+		  src/idl/HelloWorldPlugin.h		\
+		  src/idl/HelloWorldSupport.h
 
-DIRECTORIES   = objs.dir
-EXECUTABLE    = HelloPublisher HelloSubscriber
+DIRECTORIES = objs.dir
+EXECUTABLE = HelloPublisher HelloSubscriber
 SOURCES_NODIR = $(notdir $(SOURCES))
 SOURCES_IDL_NODIR = $(notdir $(SOURCES_IDL))
-OBJECTS       = $(SOURCES_NODIR:%.cpp=objs/%.o) $(SOURCES_IDL_NODIR:%.cxx=objs/%.o)
+OBJECTS = $(SOURCES_NODIR:%.cpp=objs/%.o) $(SOURCES_IDL_NODIR:%.cxx=objs/%.o)
 
 
-objs/%.out: objs/%.o  objs/HelloWorld.o objs/HelloWorldPlugin.o objs/HelloWorldSupport.o
+objs/%.out: objs/%.o objs/HelloWorld.o objs/HelloWorldPlugin.o objs/HelloWorldSupport.o
 	$(CXXLD) $(CXXLDFLAGS) $^ -o $(@:%.out=%) $(LIBS)
 
 objs/HelloWorld.o: src/idl/HelloWorld.cxx $(HEADERS_IDL)

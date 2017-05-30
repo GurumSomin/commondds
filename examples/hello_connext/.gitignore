@@ -1,0 +1,7 @@
+#compiled folder
+objs/
+src/idl
+
+#trash
+*.swp
+*~
