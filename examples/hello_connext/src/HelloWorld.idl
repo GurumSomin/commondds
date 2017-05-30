@@ -1,0 +1,6 @@
+module HelloWorldData {
+	struct Msg {
+		long	 userId;
+		string	message;
+	};
+};
