@@ -8,7 +8,7 @@ OBJS = $(patsubst src/%.cpp, obj/%.o, $(SRCS))
 
 all: client
 
-COMMONDDS_HOME: 
+COMMONDDS_HOME:
 ifndef COMMONDDS_HOME
     COMMONDDS_HOME = ../..
 endif
