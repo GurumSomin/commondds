@@ -1,0 +1,11 @@
+# log
+*.log
+
+# Compiled folder
+obj/
+src/idl/
+
+# binary
+*.so
+pub
+sub
