@@ -18,8 +18,8 @@ TYPE_OBJS := $(OBJDIR)/HelloWorld.o	\
 			 $(OBJDIR)/HelloWorldSplDcps.o
 
 BIN_OBJS  := $(OBJDIR)/CheckStatus.o \
-			 $(OBJDIR)/HelloPublisher.o \
-			 $(OBJDIR)/HelloSubscriber.o
+			 $(OBJDIR)/pub.o \
+			 $(OBJDIR)/sub.o
 
 LDFLAGS 	:=	-Wl,-rpath,. \
 				-Wl,-rpath,$(OSPL_HOME)/lib
@@ -48,10 +48,10 @@ $(TARGET_TYPE): $(TYPE_OBJS)
 	$(CXX) $(TYPE_CXXFLAGS) $(LDFLAGS) -shared -o $@ $^ $(LIBs)
 
 $(TARGET_PUB): $(BIN_OBJS)
-	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/HelloSubscriber.o,$^) $(LIBS) $(TARGET_TYPE)
+	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/sub.o,$^) $(LIBS) $(TARGET_TYPE)
 
 $(TARGET_SUB): $(BIN_OBJS)
-	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/HelloPublisher.o,$^) $(LIBS) $(TARGET_TYPE)
+	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/pub.o,$^) $(LIBS) $(TARGET_TYPE)
 
 clean:
 	@rm -rf src/idl/*
