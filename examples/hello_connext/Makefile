@@ -1,15 +1,6 @@
 .PHONY: clean all COMMONDDS_HOME
-all: generate pub sub
 
-COMMONDDS_HOME:
-ifndef COMMONDDS_HOME
-    COMMONDDS_HOME = ../..
-endif
-
-NDDSHOME:
-ifndef NDDSHOME
-    NDDSHOME = $(HOME)/rti_connext_dds-5.2.3
-endif
+COMMONDDS_HOME := ../..
 
 CXX = g++
 RTI_INCLUDES = -I$(NDDSHOME)/include -I$(NDDSHOME)/include/ndds
@@ -27,11 +18,16 @@ NDDSLIBS = -lnddscppz -lnddscz -lnddscorez
 SYSLIBS = -ldl -lnsl -lm -lpthread -lrt
 LIBS = -L$(NDDSHOME)/lib/x64Linux3gcc4.8.2 $(NDDSLIBS) $(SYSLIBS)
 
+GENERATED := src/idl/HelloWorld.h
+
+all: $(GENERATED) pub sub
+
 %.o: %.cxx
 	$(CXX) $(CXXFLAGS) -c -o obj/$(notdir $@) $<
 
-generate:
-	mkdir -p src/idl
+$(GENERATED): src/HelloWorld.idl
+	@mkdir -p obj/
+	@mkdir -p src/idl
 	$(NDDSHOME)/bin/rtiddsgen -d src/idl src/HelloWorld.idl -replace -language C++
 
 pub: $(OBJS)
@@ -40,7 +36,11 @@ pub: $(OBJS)
 sub: $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $(filter-out obj/HelloPublisher.o, $(addprefix obj/,$(notdir $(OBJS)))) $(LIBS)
 
+%.o: %.cxx
+	$(CXX) $(CXXFLAGS) -c -o obj/$(notdir $@) $<
+
 clean:
-	rm -rf obj
-	rm -f pub sub
+	@rm -rf obj
+	@rm -rf src/idl/*
+	@rm -f pub sub
 
