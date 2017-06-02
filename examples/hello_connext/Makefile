@@ -1,11 +1,9 @@
 .PHONY: clean all COMMONDDS_HOME
 
-COMMONDDS_HOME := ../..
-
 CXX = g++
 RTI_INCLUDES = -I$(NDDSHOME)/include -I$(NDDSHOME)/include/ndds
 CXXFLAGS := -DRTI_UNIX -DRTI_LINUX -DRTI_64BIT -m64 -O2 -Wall
-CXXFLAGS += -Iinclude -Isrc/idl -I$(COMMONDDS_HOME)/include $(RTI_INCLUDES)
+CXXFLAGS += -Iinclude -Isrc/idl $(RTI_INCLUDES)
 
 SRCS = src/HelloPublisher.cxx		\
 	   src/HelloSubscriber.cxx		\
@@ -20,10 +18,12 @@ LIBS = -L$(NDDSHOME)/lib/x64Linux3gcc4.8.2 $(NDDSLIBS) $(SYSLIBS)
 
 GENERATED := src/idl/HelloWorld.h
 
-all: $(GENERATED) pub sub
+all: generate pub sub
 
 %.o: %.cxx
 	$(CXX) $(CXXFLAGS) -c -o obj/$(notdir $@) $<
+
+generate: $(GENERATED)
 
 $(GENERATED): src/HelloWorld.idl
 	@mkdir -p obj/
@@ -40,7 +40,6 @@ sub: $(OBJS)
 	$(CXX) $(CXXFLAGS) -c -o obj/$(notdir $@) $<
 
 clean:
-	@rm -rf obj
-	@rm -rf src/idl/*
+	@rm -rf obj src/idl
 	@rm -f pub sub
 
