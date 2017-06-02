@@ -54,7 +54,7 @@ $(TARGET_SUB): $(BIN_OBJS)
 	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/pub.o,$^) $(LIBS) $(TARGET_TYPE)
 
 clean:
-	@rm -rf src/idl/*
+	@rm -rf src/idl
 	@rm -rf $(TARGET_TYPE) $(TARGET_PUB) $(TARGET_SUB) $(OBJDIR)
 	@rm -rf `find -name "*.log"`
 
