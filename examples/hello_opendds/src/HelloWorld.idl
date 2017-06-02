@@ -1,0 +1,8 @@
+module HelloWorldData {
+#pragma DCPS_DATA_TYPE "HelloWorldData::Msg"
+#pragma DCPS_DATA_KEY "HelloWorldData::Msg userId"
+	struct Msg {
+		long userId;
+		string message;
+	};
+};
