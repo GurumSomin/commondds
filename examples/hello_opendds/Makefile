@@ -64,6 +64,16 @@ $(GENERATE): src/HelloWorld.idl
 	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/HelloWorld.idl
 	@make
 
+generate: src/HelloWorld.idl
+	@mkdir -p $(OBJDIR)
+	@mkdir -p src/idl
+	@# Generate TypeSupportor: HelloWorldTypeSupport.idl, HelloWorldTypeSupportImpl.*
+	opendds_idl $(GENERATE_FLAGS) -o src/idl src/HelloWorld.idl
+	@# Generate TypeSupport Specific Sources: HelloWorldTypeSupportC.*, HelloWorldTypeSupportS.*
+	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/idl/HelloWorldTypeSupport.idl
+	@# Generate Type Specific Sources:  HelloWorldC.* HelloWorldS.*
+	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/HelloWorld.idl
+
 $(PUB): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(INCS) $(LDFLAG) -o $@ $(filter-out obj/sub.o,$^) $(LIBS)
 
@@ -71,6 +81,6 @@ $(SUB): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(INCS) $(LDFLAG) -o $@ $(filter-out obj/pub.o,$^) $(LIBS)
 
 clean:
-	rm -f pub sub
-	rm -rf $(OBJDIR) src/idl *.log *.ior
+	@rm -f pub sub
+	@rm -rf $(OBJDIR) src/idl *.log *.ior
 

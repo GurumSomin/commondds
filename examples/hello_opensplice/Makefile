@@ -38,6 +38,11 @@ all: $(GENERATED) $(TARGET_TYPE) $(TARGET_PUB) $(TARGET_SUB)
 $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(TYPE_CXXFLAGS) -c -o $@ $<
 
+generate : src/HelloWorld.idl
+	@mkdir -p obj
+	@mkdir -p src/idl
+	$(OSPL_HOME)/bin/idlpp -d src/idl -l c++ src/HelloWorld.idl
+
 $(GENERATED): src/HelloWorld.idl
 	@mkdir -p obj
 	@mkdir -p src/idl
@@ -47,11 +52,11 @@ $(GENERATED): src/HelloWorld.idl
 $(TARGET_TYPE): $(TYPE_OBJS)
 	$(CXX) $(TYPE_CXXFLAGS) $(LDFLAGS) -shared -o $@ $^ $(LIBs)
 
-$(TARGET_PUB): $(BIN_OBJS)
-	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/sub.o,$^) $(LIBS) $(TARGET_TYPE)
+$(TARGET_PUB): $(TARGET_TYPE) $(BIN_OBJS)
+	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/sub.o $(TARGET_TYPE),$^) $(LIBS) $(TARGET_TYPE)
 
-$(TARGET_SUB): $(BIN_OBJS)
-	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/pub.o,$^) $(LIBS) $(TARGET_TYPE)
+$(TARGET_SUB): $(TARGET_TYPE) $(BIN_OBJS)
+	$(CXX) $(BIN_CXXFLAGS) $(LDFLAGS) -o $@ $(filter-out $(OBJDIR)/pub.o $(TARGET_TYPE),$^) $(LIBS) $(TARGET_TYPE)
 
 clean:
 	@rm -rf src/idl
