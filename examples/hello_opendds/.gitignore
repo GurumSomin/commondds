@@ -1,0 +1,11 @@
+#Compiled folders
+src/idl
+obj/
+
+#bin
+pub
+sub
+
+#log
+*.log
+*.ior
