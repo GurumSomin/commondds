@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <malloc.h>
+#include <dlfcn.h>
 
 #include <cstdlib>
 #include <fstream>
@@ -8,7 +9,6 @@
 #include <json/json.h>
 
 #include <dds/dcps.h>
-#include <dds/connext.h>
 
 #define DEBUG	1
 
@@ -19,6 +19,7 @@
 
 namespace dds {
 
+class DomainParticipantFactory* TheParticipantFactory = DomainParticipantFactory::get_instance();
 const HANDLE_TYPE_NATIVE HANDLE_NIL_NATIVE			= 0;
 const DomainParticipantQos* PARTICIPANT_QOS_DEFAULT	= NULL;
 const TopicQos* TOPIC_QOS_DEFAULT					= NULL;
@@ -1588,6 +1589,7 @@ DomainParticipantFactory* DomainParticipantFactory::instance = NULL;
 char* DomainParticipantFactory::home_path = NULL;
 char* DomainParticipantFactory::config_path = NULL;
 void* DomainParticipantFactory::config = NULL;
+void* DomainParticipantFactory::dl_handle = NULL;
 
 DomainParticipantFactory* DomainParticipantFactory::get_instance() {
 	if(DomainParticipantFactory::instance == NULL) {
@@ -1652,15 +1654,35 @@ DomainParticipantFactory* DomainParticipantFactory::get_instance() {
 		}
 
 		const char* type = root["middleware"]["type"].asCString();
-		if(!(strcmp(type, "connext") == 0 || strcmp(type, "opensplice") == 0)) {
-			std::string msg = std::string("config.json: illegal middleware.type: ");
-			msg += type;
+
+		std::string libname = std::string(home);
+		libname += "/libdds_";
+		libname += type;
+		libname += ".so";
+
+		DomainParticipantFactory::dl_handle = dlopen(libname.c_str(), RTLD_LAZY);
+		if(DomainParticipantFactory::dl_handle == NULL) {
+			std::string msg = std::string("config.json: cannot load library: ");
+			msg += libname;
+			msg += ", error=";
+			msg += dlerror();
+			throw std::runtime_error(msg);
+		}
+		
+		DomainParticipantFactory*(*create_DomainParticipantFactory)();
+		create_DomainParticipantFactory = (DomainParticipantFactory*(*)())dlsym(DomainParticipantFactory::dl_handle, "create_DomainParticipantFactory");
+		//*(void **)(&create_DomainParticipantFactory) = dlsym(DomainParticipantFactory::dl_handle, "create_DomainParticipantFactory");
+
+		if(create_DomainParticipantFactory == NULL) {
+			std::string msg = std::string("config.json: cannot find create_DomainParticipantFactory function from library : ");
+			msg += libname;
+			msg += ", error=";
+			msg += dlerror();
 			throw std::runtime_error(msg);
 		}
 
-		if(strcmp(type, "connext") == 0) {
-			DomainParticipantFactory::instance = new ConnextDomainParticipantFactory();
-		}
+		DomainParticipantFactory::instance = create_DomainParticipantFactory();
+
 		// Check optional configurations
 	}
 

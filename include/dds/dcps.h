@@ -13,7 +13,6 @@ namespace dds {
 
 	extern const HANDLE_TYPE_NATIVE HANDLE_NIL_NATIVE;
 	
-	/* #define TheParticipantFactory */
 	struct DomainParticipantQos;
 	struct TopicQos;
 	struct PublisherQos;
@@ -21,6 +20,7 @@ namespace dds {
 	struct DataWriterQos;
 	struct DataReaderQos;
 
+	extern class DomainParticipantFactory* TheParticipantFactory;
 	extern const DomainParticipantQos* PARTICIPANT_QOS_DEFAULT;
 	extern const TopicQos* TOPIC_QOS_DEFAULT;
 	extern const PublisherQos* PUBLISHER_QOS_DEFAULT;
@@ -80,10 +80,12 @@ namespace dds {
 		
 		friend std::ostream& operator<<(std::ostream& os, const sequence<T>& seq) {
 			os << &seq;
+			return os;
 		}
 		
 		friend std::ostream& operator<<(std::ostream& os, const sequence<T>* seq) {
 			os << "sequence[maximum=" << seq->maximum << ", length=" << seq->length << "]";
+			return os;
 		}
 	};
 	
@@ -368,7 +370,7 @@ namespace dds {
 		virtual ~Listener();
 	};
 	
-	class TopicListener : Listener {
+	class TopicListener : public Listener {
 	public:
 		TopicListener();
 		virtual ~TopicListener();
@@ -377,7 +379,7 @@ namespace dds {
 			const InconsistentTopicStatus* status);
 	};
 	
-	class DataWriterListener : Listener {
+	class DataWriterListener : public Listener {
 	public:
 		DataWriterListener();
 		virtual ~DataWriterListener();
@@ -396,13 +398,13 @@ namespace dds {
 			const PublicationMatchedStatus* status);
 	};
 	
-	class PublisherListener : DataWriterListener {
+	class PublisherListener : public DataWriterListener {
 	public:
 		PublisherListener();
 		virtual ~PublisherListener();
 	};
 	
-	class DataReaderListener : Listener {
+	class DataReaderListener : public Listener {
 	public:
 		DataReaderListener();
 		virtual ~DataReaderListener();
@@ -429,7 +431,7 @@ namespace dds {
 			const SampleLostStatus* status);
 	};
 	
-	class SubscriberListener : DataReaderListener {
+	class SubscriberListener : public DataReaderListener {
 	public:
 		SubscriberListener();
 		virtual ~SubscriberListener();
@@ -438,7 +440,7 @@ namespace dds {
 			const Subscriber* the_subscriber);
 	};
 	
-	class DomainParticipantListener : TopicListener,
+	class DomainParticipantListener : public TopicListener,
 					PublisherListener,
 					SubscriberListener {
 	public:
@@ -476,7 +478,7 @@ namespace dds {
 			ConditionSeq* attached_conditions);
 	};
 	
-	class GuardCondition : Condition {
+	class GuardCondition : public Condition {
 	public:
 		GuardCondition();
 		virtual ~GuardCondition();
@@ -485,7 +487,7 @@ namespace dds {
 			bool value);
 	};
 	
-	class StatusCondition : Condition {
+	class StatusCondition : public Condition {
 	public:
 		StatusCondition();
 		virtual ~StatusCondition();
@@ -525,7 +527,7 @@ namespace dds {
 	extern const InstanceStateMask ANY_INSTANCE_STATE;
 	extern const InstanceStateMask NOT_ALIVE_INSTANCE_STATE;
 	
-	class ReadCondition : Condition {
+	class ReadCondition : public Condition {
 	public:
 		ReadCondition();
 		virtual ~ReadCondition();
@@ -536,7 +538,7 @@ namespace dds {
 		DataReader* get_datareader();
 	};
 	
-	class QueryCondition : ReadCondition {
+	class QueryCondition : public ReadCondition {
 	public:
 		QueryCondition();
 		virtual ~QueryCondition();
@@ -1160,7 +1162,7 @@ namespace dds {
 	};
 	
 	// ----------------------------------------------------------------------
-	class DomainParticipant : Entity {
+	class DomainParticipant : public Entity {
 	public:
 		DomainParticipant();
 		virtual ~DomainParticipant();
@@ -1259,6 +1261,7 @@ namespace dds {
 		static char*						home_path;
 		static char*						config_path;
 		static void*						config;
+		static void*						dl_handle;
 
 	public:
 		static DomainParticipantFactory* get_instance();
@@ -1309,7 +1312,7 @@ namespace dds {
 		DomainParticipant* get_participant();
 	};
 	
-	class Topic : Entity, TopicDescription {
+	class Topic : public Entity, public TopicDescription {
 	public:
 		Topic();
 		virtual ~Topic();
@@ -1328,7 +1331,7 @@ namespace dds {
 			InconsistentTopicStatus* a_status);
 	};
 	
-	class ContentFilteredTopic : TopicDescription {
+	class ContentFilteredTopic : public TopicDescription {
 	public:
 		ContentFilteredTopic();
 		virtual ~ContentFilteredTopic();
@@ -1344,7 +1347,7 @@ namespace dds {
 		Topic* get_related_topic();
 	};
 	
-	class MultiTopic : TopicDescription {
+	class MultiTopic : public TopicDescription {
 	public:
 		MultiTopic();
 		virtual ~MultiTopic();
@@ -1359,7 +1362,7 @@ namespace dds {
 	};
 	
 	// ----------------------------------------------------------------------
-	class Publisher : Entity {
+	class Publisher : public Entity {
 	public:
 		Publisher();
 		virtual ~Publisher();
@@ -1398,7 +1401,7 @@ namespace dds {
 			const TopicQos* a_topic_qos);
 	};
 	
-	class DataWriter : Entity {
+	class DataWriter : public Entity {
 	public:
 		DataWriter();
 		virtual ~DataWriter();
@@ -1465,7 +1468,7 @@ namespace dds {
 	};
 	
 	// ----------------------------------------------------------------------
-	class Subscriber : Entity {
+	class Subscriber : public Entity {
 	public:
 		Subscriber();
 		virtual ~Subscriber();
@@ -1506,7 +1509,7 @@ namespace dds {
 			const TopicQos* a_topic_qos);
 	};
 	
-	class DataReader : Entity {
+	class DataReader : public Entity {
 	public:
 		DataReader();
 		virtual ~DataReader();
