@@ -863,18 +863,14 @@ DomainParticipantFactoryQos::~DomainParticipantFactoryQos() {
 }
 
 DomainParticipantQos::DomainParticipantQos() {
-	user_data = new UserDataQosPolicy();
-	entity_factory = new EntityFactoryQosPolicy();
 }
 
-DomainParticipantQos::DomainParticipantQos(UserDataQosPolicy* user_data, EntityFactoryQosPolicy* entity_factory) {
+DomainParticipantQos::DomainParticipantQos(UserDataQosPolicy& user_data, EntityFactoryQosPolicy& entity_factory) {
 	this->user_data = user_data;
 	this->entity_factory = entity_factory;
 }
 
 DomainParticipantQos::~DomainParticipantQos() {
-	delete entity_factory;
-	delete user_data;
 }
 
 TopicQos::TopicQos() {

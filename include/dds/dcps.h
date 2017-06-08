@@ -862,13 +862,13 @@ namespace dds {
 	};
 	
 	struct DomainParticipantQos {
-		UserDataQosPolicy*		user_data;
-		EntityFactoryQosPolicy*	entity_factory;
+		UserDataQosPolicy		user_data;
+		EntityFactoryQosPolicy	entity_factory;
 		
 		DomainParticipantQos();
 		DomainParticipantQos(
-			UserDataQosPolicy* user_data,
-			EntityFactoryQosPolicy* entity_factory);
+			UserDataQosPolicy& user_data,
+			EntityFactoryQosPolicy& entity_factory);
 		virtual ~DomainParticipantQos();
 	};
 	
