@@ -1,6 +1,5 @@
 #include <dds/opendds.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 namespace dds {
 
@@ -95,10 +94,12 @@ DDS::DomainParticipantQos* OpenDDSDomainParticipantQos::from(const DomainPartici
 DomainParticipantQos* OpenDDSDomainParticipantQos::to(const DDS::DomainParticipantQos* qos) {
 	DomainParticipantQos* qos2 = new DomainParticipantQos();
 
-	uint32_t length = (uint32_t) qos->user_data.value.length();
 	uint8_t* buffer = (uint8_t*) qos->user_data.value.get_buffer();
+	uint32_t length = (uint32_t) qos->user_data.value.length();
+	//uint32_t maximum = (uint32_t) qos->user_data.value.maximum;
 	bool inner_entitiy_factory = (bool) qos->entity_factory.autoenable_created_entities;
 
+	//TODO sequence maximum constructor added.
 	qos2->user_data.value =  new sequence<uint8_t>(buffer, length);
 	qos2->entity_factory.autoenable_created_entities = inner_entitiy_factory;
 	return qos2;
