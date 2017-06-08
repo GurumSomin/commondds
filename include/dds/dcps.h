@@ -57,6 +57,7 @@ namespace dds {
 			memcpy(buffer, array, sizeof(T) * size);
 		}
 		
+		//TODO sequence buffer, size, maximum constructor added.
 		~sequence() {
 			free(buffer);
 		}
@@ -852,7 +853,8 @@ namespace dds {
 			int32_t max_samples_per_instance);
 		virtual ~DurabilityServiceQosPolicy();
 	};
-	
+
+	//TODO change member pointer to value
 	struct DomainParticipantFactoryQos {
 		EntityFactoryQosPolicy*	entity_factory;
 		
@@ -862,16 +864,17 @@ namespace dds {
 	};
 	
 	struct DomainParticipantQos {
-		UserDataQosPolicy*		user_data;
-		EntityFactoryQosPolicy*	entity_factory;
+		UserDataQosPolicy		user_data;
+		EntityFactoryQosPolicy	entity_factory;
 		
 		DomainParticipantQos();
 		DomainParticipantQos(
-			UserDataQosPolicy* user_data,
-			EntityFactoryQosPolicy* entity_factory);
+			UserDataQosPolicy& user_data,
+			EntityFactoryQosPolicy& entity_factory);
 		virtual ~DomainParticipantQos();
 	};
 	
+	//TODO change member pointer to value
 	struct TopicQos {
 		TopicDataQosPolicy*			topic_data;
 		DurabilityQosPolicy*		durability;
@@ -905,6 +908,7 @@ namespace dds {
 		virtual ~TopicQos();
 	};
 	
+	//TODO change member pointer to value
 	struct DataWriterQos {
 		DurabilityQosPolicy*			durability;
 		DurabilityServiceQosPolicy*		durability_service;
@@ -942,6 +946,7 @@ namespace dds {
 		virtual ~DataWriterQos();
 	};
 	
+	//TODO change member pointer to value
 	struct PublisherQos {
 		PresentationQosPolicy*		presentation;
 		PartitionQosPolicy*			partition;
@@ -957,6 +962,7 @@ namespace dds {
 		virtual ~PublisherQos();
 	};
 	
+	//TODO change member pointer to value
 	struct DataReaderQos {
 		DurabilityQosPolicy*			durability;
 		DeadlineQosPolicy*				deadline;
@@ -988,6 +994,7 @@ namespace dds {
 		virtual ~DataReaderQos();
 	};
 	
+	//TODO change member pointer to value
 	struct SubscriberQos {
 		PresentationQosPolicy*		presentation;
 		PartitionQosPolicy*			partition;
