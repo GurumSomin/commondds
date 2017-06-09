@@ -3,7 +3,7 @@
 #include <iostream>
 #include "ccpp_dds_dcps.h"
 #include "CheckStatus.h"
-#include "ccpp_HelloWorld.h"
+#include "ccpp_Hello.h"
 #include "os.h"
 #include "orb_abstraction.h"
 
@@ -135,7 +135,7 @@ int HelloWorldDataSubscriber(int argc, char *argv[])
 			STATUS_MASK_NONE);
 	checkHandle(topic.in(), "DDS::DomainParticipant::create_topic");
 
-	// 5. Create DataReader
+	// 5. Create Reader
 	reader = subscriber->create_datareader(
 			topic.in(),
 			DATAREADER_QOS_USE_TOPIC_QOS,

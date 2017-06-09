@@ -12,8 +12,8 @@
 #include <dds/DCPS/LocalObject.h>
 #include <dds/DCPS/Definitions.h>
 
-#include "HelloWorldTypeSupportC.h"
-#include "HelloWorldTypeSupportImpl.h"
+#include "HelloTypeSupportC.h"
+#include "HelloTypeSupportImpl.h"
 
 #include <iostream>
 
@@ -120,7 +120,7 @@ int ACE_TMAIN(int argc, ACE_TCHAR *argv[])
 						ACE_TEXT(" create_topic failed!\n")), -1);
 		}
 
-		// 5. Create DataReader
+		// 5. Create Reader
 		DDS::DataReaderListener_var listener(new HelloListener());
 
 		DDS::DataReader_var reader = subscriber->create_datareader(topic,

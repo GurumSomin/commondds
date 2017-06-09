@@ -37,7 +37,7 @@ SRCS := $(notdir $(shell find -name "*.cpp"))
 OBJS := $(addprefix $(OBJDIR)/,$(SRCS:%.cpp=%.o))
 
 # IDL Generater Configurations ------------------------------------------------
-GENERATE := HelloWorldC.cpp
+GENERATE := HelloC.cpp
 GENERATE_FLAGS := -Sa -St
 GENERATE_INCS := -Wb,pre_include=ace/pre.h \
 				-Wb,post_include=ace/post.h \
@@ -53,26 +53,26 @@ all: $(GENERATE) $(PUB) $(SUB)
 $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCS) -c -o $@ $<
 
-$(GENERATE): src/HelloWorld.idl
+$(GENERATE): src/Hello.idl
 	@mkdir -p $(OBJDIR)
 	@mkdir -p src/idl
-	@# Generate TypeSupportor: HelloWorldTypeSupport.idl, HelloWorldTypeSupportImpl.*
-	opendds_idl $(GENERATE_FLAGS) -o src/idl src/HelloWorld.idl
-	@# Generate TypeSupport Specific Sources: HelloWorldTypeSupportC.*, HelloWorldTypeSupportS.*
-	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/idl/HelloWorldTypeSupport.idl
-	@# Generate Type Specific Sources:  HelloWorldC.* HelloWorldS.*
-	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/HelloWorld.idl
+	@# Generate TypeSupportor: HelloTypeSupport.idl, HelloTypeSupportImpl.*
+	opendds_idl $(GENERATE_FLAGS) -o src/idl src/Hello.idl
+	@# Generate TypeSupport Specific Sources: HelloTypeSupportC.*, HelloTypeSupportS.*
+	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/idl/HelloTypeSupport.idl
+	@# Generate Type Specific Sources:  HelloC.* HelloS.*
+	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/Hello.idl
 	@make
 
-generate: src/HelloWorld.idl
+generate: src/Hello.idl
 	@mkdir -p $(OBJDIR)
 	@mkdir -p src/idl
-	@# Generate TypeSupportor: HelloWorldTypeSupport.idl, HelloWorldTypeSupportImpl.*
-	opendds_idl $(GENERATE_FLAGS) -o src/idl src/HelloWorld.idl
-	@# Generate TypeSupport Specific Sources: HelloWorldTypeSupportC.*, HelloWorldTypeSupportS.*
-	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/idl/HelloWorldTypeSupport.idl
-	@# Generate Type Specific Sources:  HelloWorldC.* HelloWorldS.*
-	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/HelloWorld.idl
+	@# Generate TypeSupportor: HelloTypeSupport.idl, HelloTypeSupportImpl.*
+	opendds_idl $(GENERATE_FLAGS) -o src/idl src/Hello.idl
+	@# Generate TypeSupport Specific Sources: HelloTypeSupportC.*, HelloTypeSupportS.*
+	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/idl/HelloTypeSupport.idl
+	@# Generate Type Specific Sources:  HelloC.* HelloS.*
+	tao_idl $(GENERATE_INCS) $(GENERATE_FLAGS) -o src/idl src/Hello.idl
 
 $(PUB): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(INCS) $(LDFLAG) -o $@ $(filter-out obj/sub.o,$^) $(LIBS)

@@ -12,10 +12,10 @@ BIN_CXXFLAGS := -fPIC -O3 -DNDEBUG -Wall $(INCS)
 
 OBJDIR := obj
 
-TYPE_OBJS := $(OBJDIR)/HelloWorld.o	\
-			 $(OBJDIR)/HelloWorldDcps.o \
-			 $(OBJDIR)/HelloWorldDcps_impl.o \
-			 $(OBJDIR)/HelloWorldSplDcps.o
+TYPE_OBJS := $(OBJDIR)/Hello.o	\
+			 $(OBJDIR)/HelloDcps.o \
+			 $(OBJDIR)/HelloDcps_impl.o \
+			 $(OBJDIR)/HelloSplDcps.o
 
 BIN_OBJS  := $(OBJDIR)/CheckStatus.o \
 			 $(OBJDIR)/pub.o \
@@ -31,22 +31,22 @@ TARGET_TYPE := libsacpp_helloworld_types.so
 TARGET_PUB  := pub
 TARGET_SUB  := sub
 
-GENERATED := src/idl/HelloWorld.h
+GENERATED := src/idl/Hello.h
 
 all: $(GENERATED) $(TARGET_TYPE) $(TARGET_PUB) $(TARGET_SUB)
 
 $(OBJDIR)/%.o: %.cpp
 	$(CXX) $(TYPE_CXXFLAGS) -c -o $@ $<
 
-generate : src/HelloWorld.idl
+generate : src/Hello.idl
 	@mkdir -p obj
 	@mkdir -p src/idl
-	$(OSPL_HOME)/bin/idlpp -d src/idl -l c++ src/HelloWorld.idl
+	$(OSPL_HOME)/bin/idlpp -d src/idl -l c++ src/Hello.idl
 
-$(GENERATED): src/HelloWorld.idl
+$(GENERATED): src/Hello.idl
 	@mkdir -p obj
 	@mkdir -p src/idl
-	$(OSPL_HOME)/bin/idlpp -d src/idl -l c++ src/HelloWorld.idl
+	$(OSPL_HOME)/bin/idlpp -d src/idl -l c++ src/Hello.idl
 	@make # Generated code that using idlpp does not belong to the current VPATH of Make. so, recall it
 
 $(TARGET_TYPE): $(TYPE_OBJS)

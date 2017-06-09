@@ -3,8 +3,8 @@
 #include <cstdlib>
 
 #include "pub.h"
-#include "HelloWorld.h"
-#include "HelloWorldSupport.h"
+#include "Hello.h"
+#include "HelloSupport.h"
 
 int main(int argc, const char **argv) {
 	const char* topicName = "Hello IDL";
@@ -60,7 +60,7 @@ int main(int argc, const char **argv) {
 		goto exitFn;
 	}
 
-	// 5. Create DataWriter
+	// 5. Create Writer
 	dataWriter = publisher->create_datawriter(
 						topic,
 						DDS_DATAWRITER_QOS_DEFAULT,
@@ -115,7 +115,7 @@ int main(int argc, const char **argv) {
 		returnValue = false;
 	}
 
-	/* --- delete instance(omitted)  -------------------------------------------------------- */ 
+	// delete instance(omitted)
 exitFn:
 	if (instance != NULL) {
 		HelloWorldData_MsgTypeSupport::delete_data_ex(

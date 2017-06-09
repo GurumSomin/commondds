@@ -7,7 +7,7 @@
 #include <dds/DCPS/WaitSet.h>
 
 #include "dds/DCPS/StaticIncludes.h"
-#include "HelloWorldTypeSupportImpl.h"
+#include "HelloTypeSupportImpl.h"
 
 int ACE_TMAIN(int argc, ACE_TCHAR *argv[])
 {
@@ -113,12 +113,12 @@ int ACE_TMAIN(int argc, ACE_TCHAR *argv[])
 		ws->detach_condition(condition);
 
 		for (int i = 0; i < 10; ++i) {
-			// 6. Allocate Data
+			// 7. Allocate Data
 			HelloWorldData::Msg message;
 			message.userId = i;
 			message.message	= "Hello World";
 
-			// 7. Write samples
+			// 8. Write Data
 			DDS::ReturnCode_t error = message_writer->write(message, DDS::HANDLE_NIL);
 			if (error != DDS::RETCODE_OK) {
 				ACE_ERROR((LM_ERROR,
@@ -135,7 +135,7 @@ int ACE_TMAIN(int argc, ACE_TCHAR *argv[])
 						ACE_TEXT(" wait_for_acknowledgments failed!\n")), -1);
 		}
 
-		// 8. Clean-up
+		// 9. Clean-up
 		participant->delete_contained_entities();
 		dpf->delete_participant(participant);
 

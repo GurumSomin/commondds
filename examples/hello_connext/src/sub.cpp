@@ -5,8 +5,8 @@
 #include <time.h>
 #include <errno.h>
 #include "sub.h"
-#include "HelloWorld.h"
-#include "HelloWorldSupport.h"
+#include "Hello.h"
+#include "HelloSupport.h"
 
 #define POLL_PERIOD_SEC		 1
 
@@ -122,7 +122,7 @@ int main(int argc, const char **argv) {
 		return false;
 	}
 
-	// 5. Create DataReader
+	// 5. Create Reader
 	dataReader = subscriber->create_datareader(
 						topic,
 						DDS_DATAREADER_QOS_DEFAULT,
