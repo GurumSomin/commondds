@@ -20,19 +20,19 @@ namespace dds {
 
 		virtual DomainParticipant* create_participant(
 			DomainId_t domain_id,
-			const DomainParticipantQos* qos,
-			const DomainParticipantListener* a_listener,
-			const StatusMask mask);
+			 DomainParticipantQos* qos,
+			 DomainParticipantListener* a_listener,
+			 StatusMask mask);
 		virtual ReturnCode_t delete_participant(
-			const DomainParticipant* a_participant);
+			 DomainParticipant* a_participant);
 		virtual DomainParticipant* lookup_participant(
 			DomainId_t domain_id);
 		virtual ReturnCode_t set_default_participant_qos(
-			const DomainParticipantQos* qos);
+			 DomainParticipantQos* qos);
 		virtual ReturnCode_t get_default_participant_qos(
 			DomainParticipantQos* qos);
 		virtual ReturnCode_t set_qos(
-			const DomainParticipantFactoryQos* qos);
+			 DomainParticipantFactoryQos* qos);
 		virtual ReturnCode_t get_qos(
 			DomainParticipantFactoryQos* qos);
 	};
@@ -51,53 +51,53 @@ namespace dds {
 		/*
 		// Factory interfaces
 		Publisher* create_publisher(
-			const PublisherQos* qos,
-			const PublisherListener* a_listener,
-			const StatusMask mask);
+			 PublisherQos* qos,
+			 PublisherListener* a_listener,
+			 StatusMask mask);
 		ReturnCode_t delete_publisher(
-			const Publisher* p);
+			 Publisher* p);
 		Subscriber* create_subscriber(
-			const SubscriberQos* qos,
-			const SubscriberListener* a_listener,
-			const StatusMask mask);
+			 SubscriberQos* qos,
+			 SubscriberListener* a_listener,
+			 StatusMask mask);
 		ReturnCode_t delete_subscriber(
-			const Subscriber* s);
+			 Subscriber* s);
 		Subscriber* get_builtin_subscriber();
 		Topic* create_topic(
-			const char* topic_name,
-			const char* type_name,
-			const TopicQos* qos,
-			const TopicListener* a_listener,
-			const StatusMask mask);
+			 char* topic_name,
+			 char* type_name,
+			 TopicQos* qos,
+			 TopicListener* a_listener,
+			 StatusMask mask);
 		ReturnCode_t delete_topic(
-			const Topic* a_topic);
+			 Topic* a_topic);
 		Topic* find_topic(
-			const char* topic_name,
-			const Duration_t* timeout);
+			 char* topic_name,
+			 Duration_t* timeout);
 		TopicDescription* lookup_topicdescription(
-			const char* name);
+			 char* name);
 		ContentFilteredTopic* create_contentfilteredtopic(
-			const char* name,
-			const Topic* related_topic,
-			const char* filter_expression,
-			const StringSeq* expression_parameters);
+			 char* name,
+			 Topic* related_topic,
+			 char* filter_expression,
+			 StringSeq* expression_parameters);
 		ReturnCode_t delete_contentfilteredtopic(
-			const ContentFilteredTopic* a_contentfilteredtopic);
+			 ContentFilteredTopic* a_contentfilteredtopic);
 		MultiTopic* create_multitopic(
-			const char* name,
-			const char* type_name,
-			const char* subscription_expression,
-			const StringSeq* expression_parameters);
+			 char* name,
+			 char* type_name,
+			 char* subscription_expression,
+			 StringSeq* expression_parameters);
 		ReturnCode_t delete_multitopic(
-			const MultiTopic* a_multitopic);
+			 MultiTopic* a_multitopic);
 		ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
-			const DomainParticipantQos* qos);
+			 DomainParticipantQos* qos);
 		ReturnCode_t get_qos(
 			DomainParticipantQos* qos);
 		ReturnCode_t set_listener(
-			const DomainParticipantListener* a_listener,
-			const StatusMask mask);
+			 DomainParticipantListener* a_listener,
+			 StatusMask mask);
 		DomainParticipantListener* get_listener();
 		ReturnCode_t ignore_participant(
 			InstanceHandle_t handle);
@@ -110,15 +110,15 @@ namespace dds {
 		DomainId_t get_domain_id();
 		ReturnCode_t assert_liveliness();
 		ReturnCode_t set_default_publisher_qos(
-			const PublisherQos* qos);
+			 PublisherQos* qos);
 		ReturnCode_t get_default_publisher_qos(
 			PublisherQos* qos);
 		ReturnCode_t set_default_subscriber_qos(
-			const SubscriberQos* qos);
+			 SubscriberQos* qos);
 		ReturnCode_t get_default_subscriber_qos(
 			SubscriberQos* qos);
 		ReturnCode_t set_default_topic_qos(
-			const TopicQos* qos);
+			 TopicQos* qos);
 		ReturnCode_t get_default_topic_qos(
 			TopicQos* qos);
 		ReturnCode_t get_discovered_participants(
@@ -138,28 +138,22 @@ namespace dds {
 		*/
 	};
 
-	class OpenDDSDomainId_t {
-	public:
-		static DDS::DomainId_t from(const DomainId_t id);
-		static DomainId_t to(const DDS::DomainId_t id);
-	};
-
 	class OpenDDSDomainParticipantQos {
 	public:
-		static DDS::DomainParticipantQos* from(const DomainParticipantQos* qos);
-		static DomainParticipantQos* to(const DDS::DomainParticipantQos* qos);
+		static void convert(DomainParticipantQos& source, DDS::DomainParticipantQos& target);
+		static void convert(DDS::DomainParticipantQos& source, DomainParticipantQos& target);
 	};
 
 	class OpenDDSPublisherQos {
 	public:
-		static DDS::PublisherQos* from(const PublisherQos* qos);
-		static PublisherQos* to(const DDS::PublisherQos* qos);
+		static void convert(PublisherQos& source, DDS::PublisherQos& target);
+		static void convert(DDS::PublisherQos& source, PublisherQos& target);
 	};
 
 	class OpenDDSEntityFactoryQosPolicy {
 	public:
-		static DDS::EntityFactoryQosPolicy* from(const EntityFactoryQosPolicy* entity_factory);
-		static EntityFactoryQosPolicy* to(const DDS::EntityFactoryQosPolicy* entity_factory);
+		static void convert(EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target);
+		static void convert(DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target);
 	};
 
 	class OpenDDSDomainParticipantListener {
@@ -168,15 +162,10 @@ namespace dds {
 		//DDS::DomainParticipantListener instance;
 		//OpenDDSDomainParticipantListener(DDS::DomainParticipantListener instance);
 	public:
-		static DDS::DomainParticipantListener* from(const DomainParticipantListener* listener);
-		static DomainParticipantListener* to(const DDS::DomainParticipantListener* listener);
+		static void convert(DomainParticipantListener& source, DDS::DomainParticipantListener& target);
+		static void convert(DDS::DomainParticipantListener& source, DomainParticipantListener& target);
 	};
 
-	class OpenDDSStatusMask {
-	public:
-		static DDS::StatusMask from(const StatusMask mask);
-		static StatusMask to(const DDS::StatusMask mask);
-	};
 };
 
 #endif /* __DDS_OPENDDS__ */
