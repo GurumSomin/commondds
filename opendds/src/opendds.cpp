@@ -19,9 +19,9 @@ OpenDDSDomainParticipantFactory::~OpenDDSDomainParticipantFactory() {
 
 DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 	DomainId_t domain_id,
-	DomainParticipantQos* qos,
-	DomainParticipantListener* a_listener,
-	StatusMask mask) {
+	const DomainParticipantQos* qos,
+	const DomainParticipantListener* a_listener,
+	const StatusMask mask) {
 
 	DDS::DomainId_t domain_id2;
 	DDS::DomainParticipantQos qos2;
@@ -35,7 +35,7 @@ DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 	return new OpenDDSDomainParticipant(this, dp);
 }
 
-ReturnCode_t OpenDDSDomainParticipantFactory::delete_participant(DomainParticipant* a_participant) {
+ReturnCode_t OpenDDSDomainParticipantFactory::delete_participant(const DomainParticipant* a_participant) {
 	return RETCODE_ERROR;
 }
 
@@ -43,7 +43,7 @@ DomainParticipant* OpenDDSDomainParticipantFactory::lookup_participant(DomainId_
 	return NULL;
 }
 
-ReturnCode_t OpenDDSDomainParticipantFactory::set_default_participant_qos(DomainParticipantQos* qos) {
+ReturnCode_t OpenDDSDomainParticipantFactory::set_default_participant_qos(const DomainParticipantQos* qos) {
 	return RETCODE_ERROR;
 }
 
@@ -51,7 +51,7 @@ ReturnCode_t OpenDDSDomainParticipantFactory::get_default_participant_qos(Domain
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t OpenDDSDomainParticipantFactory::set_qos(DomainParticipantFactoryQos* qos) {
+ReturnCode_t OpenDDSDomainParticipantFactory::set_qos(const DomainParticipantFactoryQos* qos) {
 	return RETCODE_ERROR;
 }
 

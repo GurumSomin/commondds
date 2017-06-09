@@ -20,19 +20,19 @@ namespace dds {
 
 		virtual DomainParticipant* create_participant(
 			DomainId_t domain_id,
-			 DomainParticipantQos* qos,
-			 DomainParticipantListener* a_listener,
-			 StatusMask mask);
+			const DomainParticipantQos* qos,
+			const DomainParticipantListener* a_listener,
+			const StatusMask mask);
 		virtual ReturnCode_t delete_participant(
-			 DomainParticipant* a_participant);
+			const DomainParticipant* a_participant);
 		virtual DomainParticipant* lookup_participant(
 			DomainId_t domain_id);
 		virtual ReturnCode_t set_default_participant_qos(
-			 DomainParticipantQos* qos);
+			const DomainParticipantQos* qos);
 		virtual ReturnCode_t get_default_participant_qos(
 			DomainParticipantQos* qos);
 		virtual ReturnCode_t set_qos(
-			 DomainParticipantFactoryQos* qos);
+			const DomainParticipantFactoryQos* qos);
 		virtual ReturnCode_t get_qos(
 			DomainParticipantFactoryQos* qos);
 	};
@@ -51,53 +51,53 @@ namespace dds {
 		/*
 		// Factory interfaces
 		Publisher* create_publisher(
-			 PublisherQos* qos,
-			 PublisherListener* a_listener,
-			 StatusMask mask);
+			const PublisherQos* qos,
+			const PublisherListener* a_listener,
+			const StatusMask mask);
 		ReturnCode_t delete_publisher(
-			 Publisher* p);
+			const Publisher* p);
 		Subscriber* create_subscriber(
-			 SubscriberQos* qos,
-			 SubscriberListener* a_listener,
-			 StatusMask mask);
+			const SubscriberQos* qos,
+			const SubscriberListener* a_listener,
+			const StatusMask mask);
 		ReturnCode_t delete_subscriber(
-			 Subscriber* s);
+			const Subscriber* s);
 		Subscriber* get_builtin_subscriber();
 		Topic* create_topic(
-			 char* topic_name,
-			 char* type_name,
-			 TopicQos* qos,
-			 TopicListener* a_listener,
-			 StatusMask mask);
+			const char* topic_name,
+			const char* type_name,
+			const TopicQos* qos,
+			const TopicListener* a_listener,
+			const StatusMask mask);
 		ReturnCode_t delete_topic(
-			 Topic* a_topic);
+			const Topic* a_topic);
 		Topic* find_topic(
-			 char* topic_name,
-			 Duration_t* timeout);
+			const char* topic_name,
+			const Duration_t* timeout);
 		TopicDescription* lookup_topicdescription(
-			 char* name);
+			const char* name);
 		ContentFilteredTopic* create_contentfilteredtopic(
-			 char* name,
-			 Topic* related_topic,
-			 char* filter_expression,
-			 StringSeq* expression_parameters);
+			const char* name,
+			const Topic* related_topic,
+			const char* filter_expression,
+			const StringSeq* expression_parameters);
 		ReturnCode_t delete_contentfilteredtopic(
-			 ContentFilteredTopic* a_contentfilteredtopic);
+			const ContentFilteredTopic* a_contentfilteredtopic);
 		MultiTopic* create_multitopic(
-			 char* name,
-			 char* type_name,
-			 char* subscription_expression,
-			 StringSeq* expression_parameters);
+			const char* name,
+			const char* type_name,
+			const char* subscription_expression,
+			const StringSeq* expression_parameters);
 		ReturnCode_t delete_multitopic(
-			 MultiTopic* a_multitopic);
+			const MultiTopic* a_multitopic);
 		ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
-			 DomainParticipantQos* qos);
+			const DomainParticipantQos* qos);
 		ReturnCode_t get_qos(
 			DomainParticipantQos* qos);
 		ReturnCode_t set_listener(
-			 DomainParticipantListener* a_listener,
-			 StatusMask mask);
+			const DomainParticipantListener* a_listener,
+			const StatusMask mask);
 		DomainParticipantListener* get_listener();
 		ReturnCode_t ignore_participant(
 			InstanceHandle_t handle);
@@ -110,15 +110,15 @@ namespace dds {
 		DomainId_t get_domain_id();
 		ReturnCode_t assert_liveliness();
 		ReturnCode_t set_default_publisher_qos(
-			 PublisherQos* qos);
+			const PublisherQos* qos);
 		ReturnCode_t get_default_publisher_qos(
 			PublisherQos* qos);
 		ReturnCode_t set_default_subscriber_qos(
-			 SubscriberQos* qos);
+			const SubscriberQos* qos);
 		ReturnCode_t get_default_subscriber_qos(
 			SubscriberQos* qos);
 		ReturnCode_t set_default_topic_qos(
-			 TopicQos* qos);
+			const TopicQos* qos);
 		ReturnCode_t get_default_topic_qos(
 			TopicQos* qos);
 		ReturnCode_t get_discovered_participants(
