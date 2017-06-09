@@ -56,8 +56,14 @@ namespace dds {
 			buffer = (T*)malloc(sizeof(T) * size);
 			memcpy(buffer, array, sizeof(T) * size);
 		}
+
+		sequence(uint32_t max, uint32_t size, T* array) {
+			maximum = max;
+			length = size;
+			buffer = (T*)malloc(sizeof(T) * size);
+			memcpy(buffer, array, sizeof(T) * size);
+		}
 		
-		//TODO sequence buffer, size, maximum constructor added.
 		~sequence() {
 			free(buffer);
 		}

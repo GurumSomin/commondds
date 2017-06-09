@@ -93,12 +93,11 @@ DDS::DomainParticipantQos* OpenDDSDomainParticipantQos::from(const DomainPartici
 DomainParticipantQos* OpenDDSDomainParticipantQos::to(const DDS::DomainParticipantQos* qos) {
 	DomainParticipantQos* qos2 = new DomainParticipantQos();
 
-	uint8_t* buffer = (uint8_t*)qos->user_data.value.get_buffer();
+	uint32_t maximum = (uint32_t) qos->user_data.value.maximum();
 	uint32_t length = (uint32_t)qos->user_data.value.length();
-	//uint32_t maximum = (uint32_t) qos->user_data.value.maximum;
+	uint8_t* buffer = (uint8_t*)qos->user_data.value.get_buffer();
 
-	//TODO sequence maximum constructor added.
-	qos2->user_data.value =  new sequence<uint8_t>(buffer, length);
+	qos2->user_data.value =  new sequence<uint8_t>(maximum, length, buffer);
 	qos2->entity_factory = *(OpenDDSEntityFactoryQosPolicy::to(&qos->entity_factory));
 	return qos2;
 }
@@ -131,10 +130,41 @@ DDS::PublisherQos* from(const PublisherQos* qos) {
 
     // DDS::EntityFactoryQosPolicy entity_factory
 	qos2->entity_factory = *(OpenDDSEntityFactoryQosPolicy::from(&qos->entity_factory));
+
+	return qos2;
 }
 
 PublisherQos* to(const DDS::PublisherQos* qos) {
+	PublisherQos* qos2 = new PublisherQos();
 
+	// PresentationQosPolicy presentation
+	PresentationQosPolicyAccessScopeKind access_scope
+		= (PresentationQosPolicyAccessScopeKind)qos->presentation.access_scope;
+	bool coherent_access
+		= (bool)qos->presentation.coherent_access;
+	bool ordered_access
+		= (bool)qos->presentation.ordered_access;
+    qos2->presentation.access_scope = access_scope;
+	qos2->presentation.coherent_access = coherent_access;
+	qos2->presentation.ordered_access = ordered_access;
+
+	// PartitionQosPolicy partition
+	uint32_t maximum1 = (uint32_t)qos->partition.name.maximum();
+	uint32_t length1 = (uint32_t)qos->partition.name.length();
+	char ** buffer1 = (char **)(qos->partition.name.get_buffer());
+	qos2->partition.name = new StringSeq(maximum1, length1, buffer1);
+
+	// GroupDataQosPolicy group_data
+	uint32_t maximum2 = (uint32_t)qos->group_data.value.maximum();
+	uint32_t length2 = (uint32_t)qos->group_data.value.length();
+	uint8_t* buffer2 = (uint8_t*)qos->group_data.value.get_buffer();
+
+	qos2->group_data.value = new sequence<uint8_t>(maximum2, length2, buffer2);
+
+    // EntityFactoryQosPolicy entity_factory
+	qos2->entity_factory = *(OpenDDSEntityFactoryQosPolicy::to(&qos->entity_factory));
+
+	return qos2;
 }
 
 DDS::EntityFactoryQosPolicy* from(const EntityFactoryQosPolicy* entity_factory) {
