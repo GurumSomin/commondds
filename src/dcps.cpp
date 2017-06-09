@@ -1006,17 +1006,13 @@ DataWriterQos::~DataWriterQos() {
 }
 
 PublisherQos::PublisherQos() {
-	presentation = new PresentationQosPolicy();
-	partition = new PartitionQosPolicy();
-	group_data = new GroupDataQosPolicy();
-	entity_factory = new EntityFactoryQosPolicy();
 }
 
 PublisherQos::PublisherQos(
-	PresentationQosPolicy* presentation,
-	PartitionQosPolicy* partition,
-	GroupDataQosPolicy* group_data,
-	EntityFactoryQosPolicy* entity_factory) {
+	PresentationQosPolicy& presentation,
+	PartitionQosPolicy& partition,
+	GroupDataQosPolicy& group_data,
+	EntityFactoryQosPolicy& entity_factory) {
 	
 	this->presentation = presentation;
 	this->partition = partition;
@@ -1025,10 +1021,6 @@ PublisherQos::PublisherQos(
 }
 
 PublisherQos::~PublisherQos() {
-	delete presentation;
-	delete partition;
-	delete group_data;
-	delete entity_factory;
 }
 
 DataReaderQos::DataReaderQos() {

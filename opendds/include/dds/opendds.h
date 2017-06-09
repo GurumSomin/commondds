@@ -150,7 +150,23 @@ namespace dds {
 		static DomainParticipantQos* to(const DDS::DomainParticipantQos* qos);
 	};
 
+	class OpenDDSPublisherQos {
+	public:
+		static DDS::PublisherQos* from(const PublisherQos* qos);
+		static PublisherQos* to(const DDS::PublisherQos* qos);
+	};
+
+	class OpenDDSEntityFactoryQosPolicy {
+	public:
+		static DDS::EntityFactoryQosPolicy* from(const EntityFactoryQosPolicy* entity_factory);
+		static EntityFactoryQosPolicy* to(const DDS::EntityFactoryQosPolicy* entity_factory);
+	};
+
 	class OpenDDSDomainParticipantListener {
+	//private:
+		// TODO I don't know what to do
+		//DDS::DomainParticipantListener instance;
+		//OpenDDSDomainParticipantListener(DDS::DomainParticipantListener instance);
 	public:
 		static DDS::DomainParticipantListener* from(const DomainParticipantListener* listener);
 		static DomainParticipantListener* to(const DDS::DomainParticipantListener* listener);

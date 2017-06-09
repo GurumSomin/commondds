@@ -946,19 +946,18 @@ namespace dds {
 		virtual ~DataWriterQos();
 	};
 	
-	//TODO change member pointer to value
 	struct PublisherQos {
-		PresentationQosPolicy*		presentation;
-		PartitionQosPolicy*			partition;
-		GroupDataQosPolicy*			group_data;
-		EntityFactoryQosPolicy*		entity_factory;
+		PresentationQosPolicy		presentation;
+		PartitionQosPolicy			partition;
+		GroupDataQosPolicy			group_data;
+		EntityFactoryQosPolicy		entity_factory;
 		
 		PublisherQos();
 		PublisherQos(
-			PresentationQosPolicy* presentation,
-			PartitionQosPolicy* partition,
-			GroupDataQosPolicy* group_data,
-			EntityFactoryQosPolicy* entity_factory);
+			PresentationQosPolicy& presentation,
+			PartitionQosPolicy& partition,
+			GroupDataQosPolicy& group_data,
+			EntityFactoryQosPolicy& entity_factory);
 		virtual ~PublisherQos();
 	};
 	
