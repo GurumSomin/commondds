@@ -5,8 +5,8 @@ RTI_INCLUDES = -I$(NDDSHOME)/include -I$(NDDSHOME)/include/ndds
 CXXFLAGS := -DRTI_UNIX -DRTI_LINUX -DRTI_64BIT -m64 -O2 -Wall
 CXXFLAGS += -Iinclude -Isrc/idl $(RTI_INCLUDES)
 
-SRCS = src/HelloPublisher.cxx		\
-	   src/HelloSubscriber.cxx		\
+SRCS = src/pub.cxx		\
+	   src/sub.cxx		\
 	   src/idl/HelloWorld.cxx		\
 	   src/idl/HelloWorldPlugin.cxx	\
 	   src/idl/HelloWorldSupport.cxx
@@ -31,10 +31,10 @@ $(GENERATED): src/HelloWorld.idl
 	$(NDDSHOME)/bin/rtiddsgen -d src/idl src/HelloWorld.idl -replace -language C++
 
 pub: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(filter-out obj/HelloSubscriber.o, $(addprefix obj/,$(notdir $(OBJS)))) $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $(filter-out obj/sub.o, $(addprefix obj/,$(notdir $(OBJS)))) $(LIBS)
 
 sub: $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $@ $(filter-out obj/HelloPublisher.o, $(addprefix obj/,$(notdir $(OBJS)))) $(LIBS)
+	$(CXX) $(CXXFLAGS) -o $@ $(filter-out obj/pub.o, $(addprefix obj/,$(notdir $(OBJS)))) $(LIBS)
 
 %.o: %.cxx
 	$(CXX) $(CXXFLAGS) -c -o obj/$(notdir $@) $<
