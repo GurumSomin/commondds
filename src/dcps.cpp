@@ -540,7 +540,7 @@ UserDataQosPolicy::UserDataQosPolicy() {
 	value = new sequence<uint8_t>();
 }
 
-UserDataQosPolicy::UserDataQosPolicy(sequence<uint8_t>* value) {
+UserDataQosPolicy::UserDataQosPolicy(sequence<uint8_t> value) {
 	this->value = value;
 }
 
@@ -569,15 +569,16 @@ TopicDataQosPolicy::~TopicDataQosPolicy() {
 }
 
 GroupDataQosPolicy::GroupDataQosPolicy() {
-	value = new sequence<uint8_t>();
 }
 
-GroupDataQosPolicy::GroupDataQosPolicy(sequence<uint8_t>* value) {
+GroupDataQosPolicy::GroupDataQosPolicy(sequence<uint8_t> value) {
 	this->value = value;
 }
 
 GroupDataQosPolicy::GroupDataQosPolicy(uint8_t* array, uint32_t size) {
-	this->value = new sequence<uint8_t>(array, size);
+	this->value.set_buffer(array);
+	this->value.set_length(size);
+	this->value.set_maximum(size);
 }
 
 GroupDataQosPolicy::~GroupDataQosPolicy() {
@@ -718,15 +719,13 @@ TimeBasedFilterQosPolicy::~TimeBasedFilterQosPolicy() {
 }
 
 PartitionQosPolicy::PartitionQosPolicy() {
-	name = new StringSeq();
 }
 
-PartitionQosPolicy::PartitionQosPolicy(StringSeq* name) {
+PartitionQosPolicy::PartitionQosPolicy(StringSeq name) {
 	this->name = name;
 }
 
 PartitionQosPolicy::~PartitionQosPolicy() {
-	delete name;
 }
 
 ReliabilityQosPolicy::ReliabilityQosPolicy() {

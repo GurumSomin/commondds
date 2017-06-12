@@ -19,14 +19,12 @@ OpenDDSDomainParticipantFactory::~OpenDDSDomainParticipantFactory() {
 
 DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 	DomainId_t domain_id,
-	const DomainParticipantQos* qos,
-	const DomainParticipantListener* a_listener,
+	DomainParticipantQos* qos,
+	DomainParticipantListener* a_listener,
 	const StatusMask mask) {
 
-	DDS::DomainId_t domain_id2;
 	DDS::DomainParticipantQos qos2;
 	DDS::DomainParticipantListener *a_listener2 = NULL;
-	DDS::StatusMask mask2;
 
 	OpenDDSDomainParticipantQos::convert(*qos, qos2);
 
@@ -71,9 +69,9 @@ OpenDDSDomainParticipant::~OpenDDSDomainParticipant() {
 }
 
 void OpenDDSDomainParticipantQos::convert(DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
-	CORBA::ULong maximum = (CORBA::ULong)source.user_data.value->maximum;
-	CORBA::ULong length = (CORBA::ULong)source.user_data.value->length;
-	CORBA::Octet* buffer = (CORBA::Octet*)source.user_data.value->buffer;
+	CORBA::ULong maximum = (CORBA::ULong)source.user_data.value.maximum;
+	CORBA::ULong length = (CORBA::ULong)source.user_data.value.length;
+	CORBA::Octet* buffer = new CORBA::Octet(*(CORBA::Octet*)source.user_data.value.buffer);
 
 	target.user_data.value = DDS::OctetSeq(maximum, length, buffer);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
@@ -82,9 +80,11 @@ void OpenDDSDomainParticipantQos::convert(DomainParticipantQos& source, DDS::Dom
 void OpenDDSDomainParticipantQos::convert(DDS::DomainParticipantQos& source, DomainParticipantQos& target) {
 	uint32_t maximum = (uint32_t)source.user_data.value.maximum();
 	uint32_t length = (uint32_t)source.user_data.value.length();
-	uint8_t* buffer = (uint8_t*)source.user_data.value.get_buffer();
+	uint8_t* buffer = new uint8_t(*(uint8_t*)source.user_data.value.get_buffer());
 
-	target.user_data.value =  new sequence<uint8_t>(maximum, length, buffer);
+	target.user_data.value.set_maximum(maximum);
+	target.user_data.value.set_length(length);
+	target.user_data.value.set_buffer(buffer);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
@@ -101,15 +101,16 @@ void OpenDDSPublisherQos::convert(PublisherQos& source, DDS::PublisherQos& targe
 	target.presentation.ordered_access = ordered_access;
 
 	// DDS::PartitionQosPolicy partition
-	CORBA::ULong maximum1 = (CORBA::ULong)source.partition.name->maximum;
-	CORBA::ULong length1 = (CORBA::ULong)source.partition.name->length;
-	CORBA::Char ** buffer1 = (CORBA::Char **)source.partition.name->buffer;
+	CORBA::ULong maximum1 = (CORBA::ULong)source.partition.name.maximum;
+	CORBA::ULong length1 = (CORBA::ULong)source.partition.name.length;
+	CORBA::Char* tmp = new CORBA::Char(**(CORBA::Char**)source.partition.name.buffer);
+	CORBA::Char** buffer1 = new CORBA::Char*(tmp);
 	target.partition.name = DDS::StringSeq(maximum1, length1, buffer1, false);
 
 	// DDS::GroupDataQosPolicy group_data
-	CORBA::ULong maximum2 = (CORBA::ULong)source.group_data.value->maximum;
-	CORBA::ULong length2 = (CORBA::ULong)source.group_data.value->length;
-	CORBA::Octet* buffer2 = (CORBA::Octet*)source.group_data.value->buffer;
+	CORBA::ULong maximum2 = (CORBA::ULong)source.group_data.value.maximum;
+	CORBA::ULong length2 = (CORBA::ULong)source.group_data.value.length;
+	CORBA::Octet* buffer2 = new CORBA::Octet(*(CORBA::Octet*)source.group_data.value.buffer);
 	target.group_data.value = DDS::OctetSeq(maximum2, length2, buffer2);
 
     // DDS::EntityFactoryQosPolicy entity_factory
@@ -131,15 +132,21 @@ void OpenDDSPublisherQos::convert(DDS::PublisherQos& source, PublisherQos& targe
 	// PartitionQosPolicy partition
 	uint32_t maximum1 = (uint32_t)source.partition.name.maximum();
 	uint32_t length1 = (uint32_t)source.partition.name.length();
-	char ** buffer1 = (char **)(source.partition.name.get_buffer());
-	target.partition.name = new StringSeq(maximum1, length1, buffer1);
+	char* tmp = new char(**(char**)(source.partition.name.get_buffer()));
+	char** buffer1 = new char*(tmp);
+
+	target.partition.name.set_maximum(maximum1);
+	target.partition.name.set_length(length1);
+	target.partition.name.set_buffer(buffer1);
 
 	// GroupDataQosPolicy group_data
 	uint32_t maximum2 = (uint32_t)source.group_data.value.maximum();
 	uint32_t length2 = (uint32_t)source.group_data.value.length();
-	uint8_t* buffer2 = (uint8_t*)source.group_data.value.get_buffer();
+	uint8_t* buffer2 = new uint8_t(*(uint8_t*)source.group_data.value.get_buffer());
 
-	target.group_data.value = new sequence<uint8_t>(maximum2, length2, buffer2);
+	target.group_data.value.set_maximum(maximum2);
+	target.group_data.value.set_length(length2);
+	target.group_data.value.set_buffer(buffer2);
 
     // EntityFactoryQosPolicy entity_factory
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
