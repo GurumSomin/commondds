@@ -12,8 +12,8 @@
 #include <dds/DCPS/LocalObject.h>
 #include <dds/DCPS/Definitions.h>
 
-#include "HelloWorldTypeSupportC.h"
-#include "HelloWorldTypeSupportImpl.h"
+#include "HelloTypeSupportC.h"
+#include "HelloTypeSupportImpl.h"
 
 #include <iostream>
 
@@ -83,7 +83,20 @@ int ACE_TMAIN(int argc, ACE_TCHAR *argv[])
 						ACE_TEXT(" create_participant failed!\n")), -1);
 		}
 
-		// 2. Register Type
+		// 2. Create Subscriber
+		DDS::Subscriber_var subscriber =
+			participant->create_subscriber(SUBSCRIBER_QOS_DEFAULT,
+					0,
+					OpenDDS::DCPS::DEFAULT_STATUS_MASK);
+
+		if (!subscriber) {
+			ACE_ERROR_RETURN((LM_ERROR,
+						ACE_TEXT("ERROR: %N:%l: main() -")
+						ACE_TEXT(" create_subscriber failed!\n")), -1);
+		}
+
+
+		// 3. Register type to the DomainParticipant
 		HelloWorldData::MsgTypeSupport_var ts = new HelloWorldData::MsgTypeSupportImpl;
 
 		if (ts->register_type(participant, "") != DDS::RETCODE_OK) {
@@ -92,7 +105,7 @@ int ACE_TMAIN(int argc, ACE_TCHAR *argv[])
 						ACE_TEXT(" register_type failed!\n")), -1);
 		}
 
-		// 3. Create Topic
+		// 4. Create Topic
 		CORBA::String_var type_name = ts->get_type_name();
 		DDS::Topic_var topic =
 			participant->create_topic("HelloWorld example",
@@ -105,18 +118,6 @@ int ACE_TMAIN(int argc, ACE_TCHAR *argv[])
 			ACE_ERROR_RETURN((LM_ERROR,
 						ACE_TEXT("ERROR: %N:%l: main() -")
 						ACE_TEXT(" create_topic failed!\n")), -1);
-		}
-
-		// 4. Create Subscriber
-		DDS::Subscriber_var subscriber =
-			participant->create_subscriber(SUBSCRIBER_QOS_DEFAULT,
-					0,
-					OpenDDS::DCPS::DEFAULT_STATUS_MASK);
-
-		if (!subscriber) {
-			ACE_ERROR_RETURN((LM_ERROR,
-						ACE_TEXT("ERROR: %N:%l: main() -")
-						ACE_TEXT(" create_subscriber failed!\n")), -1);
 		}
 
 		// 5. Create Reader

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "ccpp_dds_dcps.h"
 #include "CheckStatus.h"
-#include "ccpp_HelloWorld.h"
+#include "ccpp_Hello.h"
 #include "os.h"
 
 #include "example_main.h"
@@ -62,7 +62,7 @@ int HelloWorldDataPublisher(int argc, char *argv[])
 			STATUS_MASK_NONE);
 	checkHandle(publisher.in(), "DDS::DomainParticipant::create_publisher");
 
-	// 3. Register type
+	// 3. Register type to the DomainParticipant
 	MsgTypeSupport_var ts = new MsgTypeSupport();
 	typeName = ts->get_type_name();
 	status = ts->register_type(participant.in(), typeName);
@@ -87,7 +87,7 @@ int HelloWorldDataPublisher(int argc, char *argv[])
 			STATUS_MASK_NONE);
 	checkHandle(topic.in(), "DDS::DomainParticipant::create_topic ()");
 
-	// 5. Create DataWriter
+	// 5. Create Writer
 	status = publisher->get_default_datawriter_qos(dw_qos);
 	checkStatus(status, "DDS::DomainParticipant::get_default_publisher_qos");
 	status = publisher->copy_from_topic_qos(dw_qos, reliable_topic_qos);

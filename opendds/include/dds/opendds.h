@@ -20,8 +20,8 @@ namespace dds {
 
 		virtual DomainParticipant* create_participant(
 			DomainId_t domain_id,
-			const DomainParticipantQos* qos,
-			const DomainParticipantListener* a_listener,
+			DomainParticipantQos* qos,
+			DomainParticipantListener* a_listener,
 			const StatusMask mask);
 		virtual ReturnCode_t delete_participant(
 			const DomainParticipant* a_participant);
@@ -138,29 +138,34 @@ namespace dds {
 		*/
 	};
 
-	class OpenDDSDomainId_t {
-	public:
-		static DDS::DomainId_t from(const DomainId_t id);
-		static DomainId_t to(const DDS::DomainId_t id);
-	};
-
 	class OpenDDSDomainParticipantQos {
 	public:
-		static DDS::DomainParticipantQos* from(const DomainParticipantQos* qos);
-		static DomainParticipantQos* to(const DDS::DomainParticipantQos* qos);
+		static void convert(DomainParticipantQos& source, DDS::DomainParticipantQos& target);
+		static void convert(DDS::DomainParticipantQos& source, DomainParticipantQos& target);
+	};
+
+	class OpenDDSPublisherQos {
+	public:
+		static void convert(PublisherQos& source, DDS::PublisherQos& target);
+		static void convert(DDS::PublisherQos& source, PublisherQos& target);
+	};
+
+	class OpenDDSEntityFactoryQosPolicy {
+	public:
+		static void convert(EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target);
+		static void convert(DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target);
 	};
 
 	class OpenDDSDomainParticipantListener {
+	//private:
+		// TODO I don't know what to do
+		//DDS::DomainParticipantListener instance;
+		//OpenDDSDomainParticipantListener(DDS::DomainParticipantListener instance);
 	public:
-		static DDS::DomainParticipantListener* from(const DomainParticipantListener* listener);
-		static DomainParticipantListener* to(const DDS::DomainParticipantListener* listener);
+		static void convert(DomainParticipantListener& source, DDS::DomainParticipantListener& target);
+		static void convert(DDS::DomainParticipantListener& source, DomainParticipantListener& target);
 	};
 
-	class OpenDDSStatusMask {
-	public:
-		static DDS::StatusMask from(const StatusMask mask);
-		static StatusMask to(const DDS::StatusMask mask);
-	};
 };
 
 #endif /* __DDS_OPENDDS__ */

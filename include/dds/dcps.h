@@ -21,7 +21,7 @@ namespace dds {
 	struct DataReaderQos;
 
 	extern class DomainParticipantFactory* TheParticipantFactory;
-	extern const DomainParticipantQos* PARTICIPANT_QOS_DEFAULT;
+	extern const DomainParticipantQos PARTICIPANT_QOS_DEFAULT;
 	extern const TopicQos* TOPIC_QOS_DEFAULT;
 	extern const PublisherQos* PUBLISHER_QOS_DEFAULT;
 	extern const SubscriberQos* SUBSCRIBER_QOS_DEFAULT;
@@ -56,8 +56,27 @@ namespace dds {
 			buffer = (T*)malloc(sizeof(T) * size);
 			memcpy(buffer, array, sizeof(T) * size);
 		}
+
+		sequence(uint32_t max, uint32_t size, T* array) {
+			maximum = max;
+			length = size;
+			buffer = (T*)malloc(sizeof(T) * size);
+			memcpy(buffer, array, sizeof(T) * size);
+		}
+
+		void set_maximum(uint32_t max) {
+			maximum = max;
+		}
+
+		void set_length(uint32_t len) {
+			length = len;
+		}
+
+		void set_buffer(T* buf) {
+			delete buffer;
+			buffer = new T(*buf);
+		}
 		
-		//TODO sequence buffer, size, maximum constructor added.
 		~sequence() {
 			free(buffer);
 		}
@@ -601,10 +620,10 @@ namespace dds {
 	extern const QosPolicyId_t DURABILITYSERVICE_QOS_POLICY_ID;
 	
 	struct UserDataQosPolicy {
-		sequence<uint8_t>* value;
+		sequence<uint8_t> value;
 		
 		UserDataQosPolicy();
-		UserDataQosPolicy(sequence<uint8_t>* value);
+		UserDataQosPolicy(sequence<uint8_t> value);
 		UserDataQosPolicy(uint8_t* array, uint32_t size);
 		virtual ~UserDataQosPolicy();
 	};
@@ -619,10 +638,10 @@ namespace dds {
 	};
 	
 	struct GroupDataQosPolicy {
-		sequence<uint8_t>* value;
+		sequence<uint8_t> value;
 		
 		GroupDataQosPolicy();
-		GroupDataQosPolicy(sequence<uint8_t>* value);
+		GroupDataQosPolicy(sequence<uint8_t> value);
 		GroupDataQosPolicy(uint8_t* array, uint32_t size);
 		virtual ~GroupDataQosPolicy();
 	};
@@ -743,10 +762,10 @@ namespace dds {
 	};
 	
 	struct PartitionQosPolicy {
-		StringSeq* name;
+		StringSeq name;
 		
 		PartitionQosPolicy();
-		PartitionQosPolicy(StringSeq* name);
+		PartitionQosPolicy(StringSeq name);
 		virtual ~PartitionQosPolicy();
 	};
 	
@@ -946,19 +965,18 @@ namespace dds {
 		virtual ~DataWriterQos();
 	};
 	
-	//TODO change member pointer to value
 	struct PublisherQos {
-		PresentationQosPolicy*		presentation;
-		PartitionQosPolicy*			partition;
-		GroupDataQosPolicy*			group_data;
-		EntityFactoryQosPolicy*		entity_factory;
+		PresentationQosPolicy		presentation;
+		PartitionQosPolicy			partition;
+		GroupDataQosPolicy			group_data;
+		EntityFactoryQosPolicy		entity_factory;
 		
 		PublisherQos();
 		PublisherQos(
-			PresentationQosPolicy* presentation,
-			PartitionQosPolicy* partition,
-			GroupDataQosPolicy* group_data,
-			EntityFactoryQosPolicy* entity_factory);
+			PresentationQosPolicy& presentation,
+			PartitionQosPolicy& partition,
+			GroupDataQosPolicy& group_data,
+			EntityFactoryQosPolicy& entity_factory);
 		virtual ~PublisherQos();
 	};
 	

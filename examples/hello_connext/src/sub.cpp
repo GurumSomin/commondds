@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <errno.h>
-#include "HelloSubscriber.h"
-#include "HelloWorld.h"
-#include "HelloWorldSupport.h"
+#include "sub.h"
+#include "Hello.h"
+#include "HelloSupport.h"
 
 #define POLL_PERIOD_SEC		 1
 
@@ -24,14 +24,14 @@ public:
 		DDS_SampleInfoSeq infoSeq;
 		DDS_ReturnCode_t rc;
 
-	/* --- 6. casting reader  ------------------------------------------------------------- */ 
+		// 6. Casting Reader
 		HelloWorldData_MsgDataReader *helloReader = HelloWorldData_MsgDataReader::narrow(reader);
 		if (helloReader == NULL) {
 			std::cerr << "! Unable to narrow data reader" << std::endl;
 			return;
 		}
 
-	/* --- 7. take data  ------------------------------------------------------------------- */ 
+		// 7. Take Data
 		rc = helloReader->take(
 							dataSeq,
 							infoSeq,
@@ -54,7 +54,7 @@ public:
 			}
 		}
 
-	/* --- 8. return data  ------------------------------------------------------------------ */ 
+		// 8. Deallocate data
 		rc = helloReader->return_loan(dataSeq, infoSeq);
 		if (rc != DDS_RETCODE_OK) {
 			std::cerr << "! Unable to return loan, error "
@@ -78,7 +78,7 @@ int main(int argc, const char **argv) {
 	DDS_Duration_t disc_period = {1, 0};
 	DDS_ReturnCode_t rc;
 
-	/* --- 1. generate participant  ------------------------------------------------------ */ 
+	// 1. Create DomainParticipant
 	participant = DDSDomainParticipantFactory::get_instance()->create_participant(
 		  domainId,
 		  DDS_PARTICIPANT_QOS_DEFAULT,
@@ -90,7 +90,7 @@ int main(int argc, const char **argv) {
 	   return false;
 	}
 
-	/* --- 2. generate subscriber  ------------------------------------------------------- */ 
+	// 2. Create Subscriber
 	subscriber = participant->create_subscriber(
 						DDS_SUBSCRIBER_QOS_DEFAULT,
 						NULL,
@@ -101,7 +101,7 @@ int main(int argc, const char **argv) {
 		return false;
 	}
 
-	/* --- 3. register type  ------------------------------------------------------------- */ 
+	// 3. Register type to the DomainParticipant
 	rc = HelloWorldData_MsgTypeSupport::register_type(participant, HelloWorldData_MsgTypeSupport::get_type_name());
 
 	if(rc != DDS_RETCODE_OK ) {
@@ -109,7 +109,7 @@ int main(int argc, const char **argv) {
 		return false;
 	}
 
-	/* --- 4. generate topic  ------------------------------------------------------------ */ 
+	// 4. Create Topic
 	topic = participant->create_topic(
 			topicName,
 			HelloWorldData_MsgTypeSupport::get_type_name(),
@@ -122,7 +122,7 @@ int main(int argc, const char **argv) {
 		return false;
 	}
 
-	/* --- 5. generate datareader  -------------------------------------------------------- */ 
+	// 5. Create Reader
 	dataReader = subscriber->create_datareader(
 						topic,
 						DDS_DATAREADER_QOS_DEFAULT,
@@ -134,7 +134,7 @@ int main(int argc, const char **argv) {
 		return false;
 	}
 
-	/* --- polling for take...  ----------------------------------------------------------- */ 
+	//  polling for take...
 	NDDSUtility::sleep(disc_period);
 
 	for(;;) {
@@ -144,7 +144,7 @@ int main(int argc, const char **argv) {
 		}
 	}
 
-	/* --- 8. Clean entities -------------------------------------------------------------- */ 
+	// 9. cleanup
 	int main_result = 0;
 
 	std::cout << "Exiting..." << std::endl;
@@ -156,7 +156,6 @@ int main(int argc, const char **argv) {
 			main_result = 1;
 		 }
 
-	/* --- 9. Clean participant ----------------------------------------------------------- */ 
 		 rc = DDSDomainParticipantFactory::get_instance()->
 						 delete_participant(participant);
 		 if (rc != DDS_RETCODE_OK) {
