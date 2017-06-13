@@ -64,19 +64,6 @@ namespace dds {
 			memcpy(buffer, array, sizeof(T) * size);
 		}
 
-		void set_maximum(uint32_t max) {
-			maximum = max;
-		}
-
-		void set_length(uint32_t len) {
-			length = len;
-		}
-
-		void set_buffer(T* buf) {
-			delete buffer;
-			buffer = new T(*buf);
-		}
-		
 		~sequence() {
 			free(buffer);
 		}
@@ -873,95 +860,92 @@ namespace dds {
 		virtual ~DurabilityServiceQosPolicy();
 	};
 
-	//TODO change member pointer to value
 	struct DomainParticipantFactoryQos {
-		EntityFactoryQosPolicy*	entity_factory;
-		
+		EntityFactoryQosPolicy entity_factory;
+
 		DomainParticipantFactoryQos();
-		DomainParticipantFactoryQos(EntityFactoryQosPolicy* entity_factory);
+		DomainParticipantFactoryQos(EntityFactoryQosPolicy& entity_factory);
 		virtual ~DomainParticipantFactoryQos();
 	};
-	
+
 	struct DomainParticipantQos {
 		UserDataQosPolicy		user_data;
 		EntityFactoryQosPolicy	entity_factory;
-		
+
 		DomainParticipantQos();
 		DomainParticipantQos(
 			UserDataQosPolicy& user_data,
 			EntityFactoryQosPolicy& entity_factory);
 		virtual ~DomainParticipantQos();
 	};
-	
-	//TODO change member pointer to value
+
 	struct TopicQos {
-		TopicDataQosPolicy*			topic_data;
-		DurabilityQosPolicy*		durability;
-		DurabilityServiceQosPolicy*	durability_service;
-		DeadlineQosPolicy*			deadline;
-		LatencyBudgetQosPolicy*		latency_budget;
-		LivelinessQosPolicy*		liveliness;
-		ReliabilityQosPolicy*		reliability;
-		DestinationOrderQosPolicy*	destination_order;
-		HistoryQosPolicy*			history;
-		ResourceLimitsQosPolicy*	resource_limits;
-		TransportPriorityQosPolicy*	transport_priority;
-		LifespanQosPolicy*			lifespan;
-		OwnershipQosPolicy*			ownership;
+		TopicDataQosPolicy			topic_data;
+		DurabilityQosPolicy		durability;
+		DurabilityServiceQosPolicy	durability_service;
+		DeadlineQosPolicy			deadline;
+		LatencyBudgetQosPolicy		latency_budget;
+		LivelinessQosPolicy		liveliness;
+		ReliabilityQosPolicy		reliability;
+		DestinationOrderQosPolicy	destination_order;
+		HistoryQosPolicy			history;
+		ResourceLimitsQosPolicy	resource_limits;
+		TransportPriorityQosPolicy	transport_priority;
+		LifespanQosPolicy			lifespan;
+		OwnershipQosPolicy			ownership;
 		
 		TopicQos();
 		TopicQos(
-			TopicDataQosPolicy* topic_data,
-			DurabilityQosPolicy* durability,
-			DurabilityServiceQosPolicy* durability_service,
-			DeadlineQosPolicy* deadline,
-			LatencyBudgetQosPolicy* latency_budget,
-			LivelinessQosPolicy* liveliness,
-			ReliabilityQosPolicy* reliability,
-			DestinationOrderQosPolicy* destination_order,
-			HistoryQosPolicy* history,
-			ResourceLimitsQosPolicy* resource_limits,
-			TransportPriorityQosPolicy* transport_priority,
-			LifespanQosPolicy* lifespan,
-			OwnershipQosPolicy* ownership);
+			TopicDataQosPolicy& topic_data,
+			DurabilityQosPolicy& durability,
+			DurabilityServiceQosPolicy& durability_service,
+			DeadlineQosPolicy& deadline,
+			LatencyBudgetQosPolicy& latency_budget,
+			LivelinessQosPolicy& liveliness,
+			ReliabilityQosPolicy& reliability,
+			DestinationOrderQosPolicy& destination_order,
+			HistoryQosPolicy& history,
+			ResourceLimitsQosPolicy& resource_limits,
+			TransportPriorityQosPolicy& transport_priority,
+			LifespanQosPolicy& lifespan,
+			OwnershipQosPolicy& ownership);
 		virtual ~TopicQos();
 	};
 	
-	//TODO change member pointer to value
 	struct DataWriterQos {
-		DurabilityQosPolicy*			durability;
-		DurabilityServiceQosPolicy*		durability_service;
-		DeadlineQosPolicy*				deadline;
-		LatencyBudgetQosPolicy*			latency_budget;
-		LivelinessQosPolicy*			liveliness;
-		ReliabilityQosPolicy*			reliability;
-		DestinationOrderQosPolicy*		destination_order;
-		HistoryQosPolicy*				history;
-		ResourceLimitsQosPolicy*		resource_limits;
-		TransportPriorityQosPolicy*		transport_priority;
-		LifespanQosPolicy*				lifespan;
-		UserDataQosPolicy*				user_data;
-		OwnershipQosPolicy*				ownership;
-		OwnershipStrengthQosPolicy*		ownership_strength;
-		WriterDataLifecycleQosPolicy*	writer_data_lifecycle;
-		
+		DurabilityQosPolicy			durability;
+		DurabilityServiceQosPolicy		durability_service;
+		DeadlineQosPolicy				deadline;
+		LatencyBudgetQosPolicy			latency_budget;
+		LivelinessQosPolicy			liveliness;
+		ReliabilityQosPolicy			reliability;
+		DestinationOrderQosPolicy		destination_order;
+		HistoryQosPolicy				history;
+		ResourceLimitsQosPolicy		resource_limits;
+		TransportPriorityQosPolicy		transport_priority;
+		LifespanQosPolicy				lifespan;
+		UserDataQosPolicy				user_data;
+		OwnershipQosPolicy				ownership;
+		OwnershipStrengthQosPolicy		ownership_strength;
+		WriterDataLifecycleQosPolicy	writer_data_lifecycle;
+
 		DataWriterQos();
 		DataWriterQos(
-			DurabilityQosPolicy* durability,
-			DurabilityServiceQosPolicy* durability_service,
-			DeadlineQosPolicy* deadline,
-			LatencyBudgetQosPolicy* latency_budget,
-			LivelinessQosPolicy* liveliness,
-			ReliabilityQosPolicy* reliability,
-			DestinationOrderQosPolicy* destination_order,
-			HistoryQosPolicy* history,
-			ResourceLimitsQosPolicy* resource_limits,
-			TransportPriorityQosPolicy* transport_priority,
-			LifespanQosPolicy* lifespan,
-			UserDataQosPolicy* user_data,
-			OwnershipQosPolicy* ownership,
-			OwnershipStrengthQosPolicy* ownership_strength,
-			WriterDataLifecycleQosPolicy* writer_data_lifecycle);
+			DurabilityQosPolicy& durability,
+			DurabilityServiceQosPolicy& durability_service,
+			DeadlineQosPolicy& deadline,
+			LatencyBudgetQosPolicy& latency_budget,
+			LivelinessQosPolicy& liveliness,
+			ReliabilityQosPolicy& reliability,
+			DestinationOrderQosPolicy& destination_order,
+			HistoryQosPolicy& history,
+			ResourceLimitsQosPolicy& resource_limits,
+			TransportPriorityQosPolicy& transport_priority,
+			LifespanQosPolicy& lifespan,
+			UserDataQosPolicy& user_data,
+			OwnershipQosPolicy& ownership,
+			OwnershipStrengthQosPolicy& ownership_strength,
+			WriterDataLifecycleQosPolicy& writer_data_lifecycle);
 		virtual ~DataWriterQos();
 	};
 	
@@ -980,51 +964,49 @@ namespace dds {
 		virtual ~PublisherQos();
 	};
 	
-	//TODO change member pointer to value
 	struct DataReaderQos {
-		DurabilityQosPolicy*			durability;
-		DeadlineQosPolicy*				deadline;
-		LatencyBudgetQosPolicy*			latency_budget;
-		LivelinessQosPolicy*			liveliness;
-		ReliabilityQosPolicy*			reliability;
-		DestinationOrderQosPolicy*		destination_order;
-		HistoryQosPolicy*				history;
-		ResourceLimitsQosPolicy*		resource_limits;
-		UserDataQosPolicy*				user_data;
-		OwnershipQosPolicy*				ownership;
-		TimeBasedFilterQosPolicy*		time_based_filter;
-		ReaderDataLifecycleQosPolicy*	reader_data_lifecycle;
+		DurabilityQosPolicy			durability;
+		DeadlineQosPolicy				deadline;
+		LatencyBudgetQosPolicy			latency_budget;
+		LivelinessQosPolicy			liveliness;
+		ReliabilityQosPolicy			reliability;
+		DestinationOrderQosPolicy		destination_order;
+		HistoryQosPolicy				history;
+		ResourceLimitsQosPolicy		resource_limits;
+		UserDataQosPolicy				user_data;
+		OwnershipQosPolicy				ownership;
+		TimeBasedFilterQosPolicy		time_based_filter;
+		ReaderDataLifecycleQosPolicy	reader_data_lifecycle;
 		
 		DataReaderQos();
 		DataReaderQos(
-			DurabilityQosPolicy* durability,
-			DeadlineQosPolicy* deadline,
-			LatencyBudgetQosPolicy* latency_budget,
-			LivelinessQosPolicy* liveliness,
-			ReliabilityQosPolicy* reliability,
-			DestinationOrderQosPolicy* destination_order,
-			HistoryQosPolicy* history,
-			ResourceLimitsQosPolicy* resource_limits,
-			UserDataQosPolicy* user_data,
-			OwnershipQosPolicy* ownership,
-			TimeBasedFilterQosPolicy* time_based_filter,
-			ReaderDataLifecycleQosPolicy* reader_data_lifecycle);
+			DurabilityQosPolicy& durability,
+			DeadlineQosPolicy& deadline,
+			LatencyBudgetQosPolicy& latency_budget,
+			LivelinessQosPolicy& liveliness,
+			ReliabilityQosPolicy& reliability,
+			DestinationOrderQosPolicy& destination_order,
+			HistoryQosPolicy& history,
+			ResourceLimitsQosPolicy& resource_limits,
+			UserDataQosPolicy& user_data,
+			OwnershipQosPolicy& ownership,
+			TimeBasedFilterQosPolicy& time_based_filter,
+			ReaderDataLifecycleQosPolicy& reader_data_lifecycle);
 		virtual ~DataReaderQos();
 	};
 	
-	//TODO change member pointer to value
 	struct SubscriberQos {
-		PresentationQosPolicy*		presentation;
-		PartitionQosPolicy*			partition;
-		GroupDataQosPolicy*			group_data;
-		EntityFactoryQosPolicy*		entity_factory;
+		PresentationQosPolicy		presentation;
+		PartitionQosPolicy			partition;
+		GroupDataQosPolicy			group_data;
+		EntityFactoryQosPolicy		entity_factory;
 		
 		SubscriberQos();
 		SubscriberQos(
-			PresentationQosPolicy* presentation,
-			PartitionQosPolicy* partition,
-			GroupDataQosPolicy* group_data,
-			EntityFactoryQosPolicy* entity_factory);
+			PresentationQosPolicy& presentation,
+			PartitionQosPolicy& partition,
+			GroupDataQosPolicy& group_data,
+			EntityFactoryQosPolicy& entity_factory);
 		virtual ~SubscriberQos();
 	};
 	

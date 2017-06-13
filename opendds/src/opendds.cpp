@@ -1,5 +1,7 @@
 #include <dds/opendds.h>
-#include <stdio.h>
+
+#include <cstdio>
+#include <cstring>
 
 namespace dds {
 
@@ -19,8 +21,8 @@ OpenDDSDomainParticipantFactory::~OpenDDSDomainParticipantFactory() {
 
 DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 	DomainId_t domain_id,
-	DomainParticipantQos* qos,
-	DomainParticipantListener* a_listener,
+	const DomainParticipantQos* qos,
+	const DomainParticipantListener* a_listener,
 	const StatusMask mask) {
 
 	DDS::DomainParticipantQos qos2;
@@ -68,27 +70,27 @@ OpenDDSDomainParticipant::OpenDDSDomainParticipant(
 OpenDDSDomainParticipant::~OpenDDSDomainParticipant() {
 }
 
-void OpenDDSDomainParticipantQos::convert(DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
+void OpenDDSDomainParticipantQos::convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
 	CORBA::ULong maximum = (CORBA::ULong)source.user_data.value.maximum;
 	CORBA::ULong length = (CORBA::ULong)source.user_data.value.length;
-	CORBA::Octet* buffer = new CORBA::Octet(*(CORBA::Octet*)source.user_data.value.buffer);
+	CORBA::Octet* buffer = new CORBA::Octet[maximum];
+	std::memcpy(buffer, source.user_data.value.buffer, maximum);
 
 	target.user_data.value = DDS::OctetSeq(maximum, length, buffer);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSDomainParticipantQos::convert(DDS::DomainParticipantQos& source, DomainParticipantQos& target) {
+void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& source, DomainParticipantQos& target) {
 	uint32_t maximum = (uint32_t)source.user_data.value.maximum();
 	uint32_t length = (uint32_t)source.user_data.value.length();
-	uint8_t* buffer = new uint8_t(*(uint8_t*)source.user_data.value.get_buffer());
+	uint8_t* buffer = new uint8_t[maximum];
+	std::memcpy(buffer, source.user_data.value.get_buffer(), maximum);
 
-	target.user_data.value.set_maximum(maximum);
-	target.user_data.value.set_length(length);
-	target.user_data.value.set_buffer(buffer);
+	target.user_data.value = sequence<uint8_t>(maximum, length, buffer);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSPublisherQos::convert(PublisherQos& source, DDS::PublisherQos& target) {
+void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos& target) {
 	// DDS::PresentationQosPolicy presentation
 	DDS::PresentationQosPolicyAccessScopeKind access_scope
 		= (DDS::PresentationQosPolicyAccessScopeKind)source.presentation.access_scope;
@@ -103,21 +105,24 @@ void OpenDDSPublisherQos::convert(PublisherQos& source, DDS::PublisherQos& targe
 	// DDS::PartitionQosPolicy partition
 	CORBA::ULong maximum1 = (CORBA::ULong)source.partition.name.maximum;
 	CORBA::ULong length1 = (CORBA::ULong)source.partition.name.length;
-	CORBA::Char* tmp = new CORBA::Char(**(CORBA::Char**)source.partition.name.buffer);
-	CORBA::Char** buffer1 = new CORBA::Char*(tmp);
+	CORBA::Char** buffer1 = new CORBA::Char*[maximum1];
+	CORBA::Char** partition_name = source.partition.name.buffer;
+	for(uint32_t i = 0; i < maximum1; ++i)
+		buffer1[i] = strdup(partition_name[i]);
 	target.partition.name = DDS::StringSeq(maximum1, length1, buffer1, false);
 
 	// DDS::GroupDataQosPolicy group_data
 	CORBA::ULong maximum2 = (CORBA::ULong)source.group_data.value.maximum;
 	CORBA::ULong length2 = (CORBA::ULong)source.group_data.value.length;
-	CORBA::Octet* buffer2 = new CORBA::Octet(*(CORBA::Octet*)source.group_data.value.buffer);
+	CORBA::Octet* buffer2 = new CORBA::Octet[maximum2];
+	std::memcpy(buffer2, source.group_data.value.buffer, maximum2);
 	target.group_data.value = DDS::OctetSeq(maximum2, length2, buffer2);
 
     // DDS::EntityFactoryQosPolicy entity_factory
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSPublisherQos::convert(DDS::PublisherQos& source, PublisherQos& target) {
+void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos& target) {
 	// PresentationQosPolicy presentation
 	PresentationQosPolicyAccessScopeKind access_scope
 		= (PresentationQosPolicyAccessScopeKind)source.presentation.access_scope;
@@ -132,42 +137,39 @@ void OpenDDSPublisherQos::convert(DDS::PublisherQos& source, PublisherQos& targe
 	// PartitionQosPolicy partition
 	uint32_t maximum1 = (uint32_t)source.partition.name.maximum();
 	uint32_t length1 = (uint32_t)source.partition.name.length();
-	char* tmp = new char(**(char**)(source.partition.name.get_buffer()));
-	char** buffer1 = new char*(tmp);
-
-	target.partition.name.set_maximum(maximum1);
-	target.partition.name.set_length(length1);
-	target.partition.name.set_buffer(buffer1);
+	char** buffer1 = new char*[maximum1];
+	char** partition_name = source.partition.name.get_buffer();
+	for(uint32_t i = 0; i < maximum1; ++i)
+		buffer1[i] = strdup(partition_name[i]);
+	target.partition.name = sequence<char*>(maximum1, length1, buffer1);
 
 	// GroupDataQosPolicy group_data
 	uint32_t maximum2 = (uint32_t)source.group_data.value.maximum();
 	uint32_t length2 = (uint32_t)source.group_data.value.length();
-	uint8_t* buffer2 = new uint8_t(*(uint8_t*)source.group_data.value.get_buffer());
-
-	target.group_data.value.set_maximum(maximum2);
-	target.group_data.value.set_length(length2);
-	target.group_data.value.set_buffer(buffer2);
+	uint8_t* buffer2 = new uint8_t[maximum2];
+	std::memcpy(buffer2, source.group_data.value.get_buffer(), maximum2);
+	target.group_data.value = sequence<uint8_t>(maximum2, length2, buffer2);
 
     // EntityFactoryQosPolicy entity_factory
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSEntityFactoryQosPolicy::convert(EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target) {
+void OpenDDSEntityFactoryQosPolicy::convert(const EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target) {
 	CORBA::Boolean inner_entitiy_factory = (CORBA::Boolean)source.autoenable_created_entities;
 	target.autoenable_created_entities = inner_entitiy_factory;
 }
 
-void OpenDDSEntityFactoryQosPolicy::convert(DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target) {
+void OpenDDSEntityFactoryQosPolicy::convert(const DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target) {
 	bool inner_entitiy_factory = (bool)source.autoenable_created_entities;
 	target.autoenable_created_entities = inner_entitiy_factory;
 }
 
-void OpenDDSDomainParticipantListener::convert(DomainParticipantListener& source, DDS::DomainParticipantListener& target) {
+void OpenDDSDomainParticipantListener::convert(const DomainParticipantListener& source, DDS::DomainParticipantListener& target) {
 	//DomainpartcipantListener --> publisherlistener, subscriberlistener, topiclistener.
 	//TODO have to convert functions --> how?
 }
 
-void OpenDDSDomainParticipantListener::convert(DDS::DomainParticipantListener& source, DomainParticipantListener& target) {
+void OpenDDSDomainParticipantListener::convert(const DDS::DomainParticipantListener& source, DomainParticipantListener& target) {
 }
 
 //TODO I think below functions have to be implemented..

@@ -851,10 +851,9 @@ DurabilityServiceQosPolicy::~DurabilityServiceQosPolicy() {
 }
 
 DomainParticipantFactoryQos::DomainParticipantFactoryQos() {
-	entity_factory = new EntityFactoryQosPolicy();
 }
 
-DomainParticipantFactoryQos::DomainParticipantFactoryQos(EntityFactoryQosPolicy* entity_factory) {
+DomainParticipantFactoryQos::DomainParticipantFactoryQos(EntityFactoryQosPolicy& entity_factory) {
 	this->entity_factory = entity_factory;
 }
 
@@ -873,35 +872,22 @@ DomainParticipantQos::~DomainParticipantQos() {
 }
 
 TopicQos::TopicQos() {
-	topic_data = new TopicDataQosPolicy();
-	durability = new DurabilityQosPolicy();
-	durability_service = new DurabilityServiceQosPolicy();
-	deadline = new DeadlineQosPolicy();
-	latency_budget = new LatencyBudgetQosPolicy();
-	liveliness = new LivelinessQosPolicy();
-	reliability = new ReliabilityQosPolicy();
-	destination_order = new DestinationOrderQosPolicy();
-	history = new HistoryQosPolicy();
-	resource_limits = new ResourceLimitsQosPolicy();
-	transport_priority = new TransportPriorityQosPolicy();
-	lifespan = new LifespanQosPolicy();
-	ownership = new OwnershipQosPolicy();
 }
 
 TopicQos::TopicQos(
-	TopicDataQosPolicy* topic_data,
-	DurabilityQosPolicy* durability,
-	DurabilityServiceQosPolicy* durability_service,
-	DeadlineQosPolicy* deadline,
-	LatencyBudgetQosPolicy* latency_budget,
-	LivelinessQosPolicy* liveliness,
-	ReliabilityQosPolicy* reliability,
-	DestinationOrderQosPolicy* destination_order,
-	HistoryQosPolicy* history,
-	ResourceLimitsQosPolicy* resource_limits,
-	TransportPriorityQosPolicy* transport_priority,
-	LifespanQosPolicy* lifespan,
-	OwnershipQosPolicy* ownership) {
+	TopicDataQosPolicy& topic_data,
+	DurabilityQosPolicy& durability,
+	DurabilityServiceQosPolicy& durability_service,
+	DeadlineQosPolicy& deadline,
+	LatencyBudgetQosPolicy& latency_budget,
+	LivelinessQosPolicy& liveliness,
+	ReliabilityQosPolicy& reliability,
+	DestinationOrderQosPolicy& destination_order,
+	HistoryQosPolicy& history,
+	ResourceLimitsQosPolicy& resource_limits,
+	TransportPriorityQosPolicy& transport_priority,
+	LifespanQosPolicy& lifespan,
+	OwnershipQosPolicy& ownership) {
 	
 	this->topic_data = topic_data;
 	this->durability = durability;
@@ -919,55 +905,27 @@ TopicQos::TopicQos(
 }
 
 TopicQos::~TopicQos() {
-	delete topic_data;
-	delete durability;
-	delete durability_service;
-	delete deadline;
-	delete latency_budget;
-	delete liveliness;
-	delete reliability;
-	delete destination_order;
-	delete history;
-	delete resource_limits;
-	delete transport_priority;
-	delete lifespan;
-	delete ownership;
 }
 
 DataWriterQos::DataWriterQos() {
-	durability = new DurabilityQosPolicy();
-	durability_service = new DurabilityServiceQosPolicy();
-	deadline = new DeadlineQosPolicy();
-	latency_budget = new LatencyBudgetQosPolicy();
-	liveliness = new LivelinessQosPolicy();
-	reliability = new ReliabilityQosPolicy();
-	destination_order = new DestinationOrderQosPolicy();
-	history = new HistoryQosPolicy();
-	resource_limits = new ResourceLimitsQosPolicy();
-	transport_priority = new TransportPriorityQosPolicy();
-	lifespan = new LifespanQosPolicy();
-	user_data = new UserDataQosPolicy();
-	ownership = new OwnershipQosPolicy();
-	ownership_strength = new OwnershipStrengthQosPolicy();
-	writer_data_lifecycle = new WriterDataLifecycleQosPolicy();
 }
 
 DataWriterQos::DataWriterQos(
-	DurabilityQosPolicy* durability,
-	DurabilityServiceQosPolicy* durability_service,
-	DeadlineQosPolicy* deadline,
-	LatencyBudgetQosPolicy* latency_budget,
-	LivelinessQosPolicy* liveliness,
-	ReliabilityQosPolicy* reliability,
-	DestinationOrderQosPolicy* destination_order,
-	HistoryQosPolicy* history,
-	ResourceLimitsQosPolicy* resource_limits,
-	TransportPriorityQosPolicy* transport_priority,
-	LifespanQosPolicy* lifespan,
-	UserDataQosPolicy* user_data,
-	OwnershipQosPolicy* ownership,
-	OwnershipStrengthQosPolicy* ownership_strength,
-	WriterDataLifecycleQosPolicy* writer_data_lifecycle) {
+	DurabilityQosPolicy& durability,
+	DurabilityServiceQosPolicy& durability_service,
+	DeadlineQosPolicy& deadline,
+	LatencyBudgetQosPolicy& latency_budget,
+	LivelinessQosPolicy& liveliness,
+	ReliabilityQosPolicy& reliability,
+	DestinationOrderQosPolicy& destination_order,
+	HistoryQosPolicy& history,
+	ResourceLimitsQosPolicy& resource_limits,
+	TransportPriorityQosPolicy& transport_priority,
+	LifespanQosPolicy& lifespan,
+	UserDataQosPolicy& user_data,
+	OwnershipQosPolicy& ownership,
+	OwnershipStrengthQosPolicy& ownership_strength,
+	WriterDataLifecycleQosPolicy& writer_data_lifecycle) {
 	
 	this->durability = durability;
 	this->durability_service = durability_service;
@@ -987,21 +945,6 @@ DataWriterQos::DataWriterQos(
 }
 
 DataWriterQos::~DataWriterQos() {
-	delete durability;
-	delete durability_service;
-	delete deadline;
-	delete latency_budget;
-	delete liveliness;
-	delete reliability;
-	delete destination_order;
-	delete history;
-	delete resource_limits;
-	delete transport_priority;
-	delete lifespan;
-	delete user_data;
-	delete ownership;
-	delete ownership_strength;
-	delete writer_data_lifecycle;
 }
 
 PublisherQos::PublisherQos() {
@@ -1023,33 +966,21 @@ PublisherQos::~PublisherQos() {
 }
 
 DataReaderQos::DataReaderQos() {
-	durability = new DurabilityQosPolicy();
-	deadline = new DeadlineQosPolicy();
-	latency_budget = new LatencyBudgetQosPolicy();
-	liveliness = new LivelinessQosPolicy();
-	reliability = new ReliabilityQosPolicy();
-	destination_order = new DestinationOrderQosPolicy();
-	history = new HistoryQosPolicy();
-	resource_limits = new ResourceLimitsQosPolicy();
-	user_data = new UserDataQosPolicy();
-	ownership = new OwnershipQosPolicy();
-	time_based_filter = new TimeBasedFilterQosPolicy();
-	reader_data_lifecycle = new ReaderDataLifecycleQosPolicy();
 }
 
 DataReaderQos::DataReaderQos(
-	DurabilityQosPolicy* durability,
-	DeadlineQosPolicy* deadline,
-	LatencyBudgetQosPolicy* latency_budget,
-	LivelinessQosPolicy* liveliness,
-	ReliabilityQosPolicy* reliability,
-	DestinationOrderQosPolicy* destination_order,
-	HistoryQosPolicy* history,
-	ResourceLimitsQosPolicy* resource_limits,
-	UserDataQosPolicy* user_data,
-	OwnershipQosPolicy* ownership,
-	TimeBasedFilterQosPolicy* time_based_filter,
-	ReaderDataLifecycleQosPolicy* reader_data_lifecycle) {
+	DurabilityQosPolicy& durability,
+	DeadlineQosPolicy& deadline,
+	LatencyBudgetQosPolicy& latency_budget,
+	LivelinessQosPolicy& liveliness,
+	ReliabilityQosPolicy& reliability,
+	DestinationOrderQosPolicy& destination_order,
+	HistoryQosPolicy& history,
+	ResourceLimitsQosPolicy& resource_limits,
+	UserDataQosPolicy& user_data,
+	OwnershipQosPolicy& ownership,
+	TimeBasedFilterQosPolicy& time_based_filter,
+	ReaderDataLifecycleQosPolicy& reader_data_lifecycle) {
 	
 	this->durability = durability;
 	this->deadline = deadline;
@@ -1066,32 +997,16 @@ DataReaderQos::DataReaderQos(
 }
 
 DataReaderQos::~DataReaderQos() {
-	delete durability;
-	delete deadline;
-	delete latency_budget;
-	delete liveliness;
-	delete reliability;
-	delete destination_order;
-	delete history;
-	delete resource_limits;
-	delete user_data;
-	delete ownership;
-	delete time_based_filter;
-	delete reader_data_lifecycle;
 }
 
 SubscriberQos::SubscriberQos() {
-	presentation = new PresentationQosPolicy();
-	partition = new PartitionQosPolicy();
-	group_data = new GroupDataQosPolicy();
-	entity_factory = new EntityFactoryQosPolicy();
 }
 
 SubscriberQos::SubscriberQos(
-	PresentationQosPolicy* presentation,
-	PartitionQosPolicy* partition,
-	GroupDataQosPolicy* group_data,
-	EntityFactoryQosPolicy* entity_factory) {
+	PresentationQosPolicy& presentation,
+	PartitionQosPolicy& partition,
+	GroupDataQosPolicy& group_data,
+	EntityFactoryQosPolicy& entity_factory) {
 	
 	this->presentation = presentation;
 	this->partition = partition;
@@ -1100,10 +1015,6 @@ SubscriberQos::SubscriberQos(
 }
 
 SubscriberQos::~SubscriberQos() {
-	delete presentation;
-	delete partition;
-	delete group_data;
-	delete entity_factory;
 }
 
 ParticipantBuiltinTopicData::ParticipantBuiltinTopicData() {
