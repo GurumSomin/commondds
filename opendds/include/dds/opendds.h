@@ -20,8 +20,8 @@ namespace dds {
 
 		virtual DomainParticipant* create_participant(
 			DomainId_t domain_id,
-			DomainParticipantQos* qos,
-			DomainParticipantListener* a_listener,
+			const DomainParticipantQos* qos,
+			const DomainParticipantListener* a_listener,
 			const StatusMask mask);
 		virtual ReturnCode_t delete_participant(
 			const DomainParticipant* a_participant);
