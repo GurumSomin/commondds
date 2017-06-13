@@ -28,7 +28,7 @@ DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 	DDS::DomainParticipantQos qos2;
 	DDS::DomainParticipantListener *a_listener2 = NULL;
 
-	OpenDDSDomainParticipantQos::convert(const_cast<DomainParticipantQos&>(*qos), qos2);
+	OpenDDSDomainParticipantQos::convert(*qos, qos2);
 
 	DDS::DomainParticipant* dp = instance->create_participant(domain_id, qos2, a_listener2, mask);
 
@@ -70,7 +70,7 @@ OpenDDSDomainParticipant::OpenDDSDomainParticipant(
 OpenDDSDomainParticipant::~OpenDDSDomainParticipant() {
 }
 
-void OpenDDSDomainParticipantQos::convert(DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
+void OpenDDSDomainParticipantQos::convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
 	CORBA::ULong maximum = (CORBA::ULong)source.user_data.value.maximum;
 	CORBA::ULong length = (CORBA::ULong)source.user_data.value.length;
 	CORBA::Octet* buffer = new CORBA::Octet[maximum];
@@ -80,7 +80,7 @@ void OpenDDSDomainParticipantQos::convert(DomainParticipantQos& source, DDS::Dom
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSDomainParticipantQos::convert(DDS::DomainParticipantQos& source, DomainParticipantQos& target) {
+void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& source, DomainParticipantQos& target) {
 	uint32_t maximum = (uint32_t)source.user_data.value.maximum();
 	uint32_t length = (uint32_t)source.user_data.value.length();
 	uint8_t* buffer = new uint8_t[maximum];
@@ -90,7 +90,7 @@ void OpenDDSDomainParticipantQos::convert(DDS::DomainParticipantQos& source, Dom
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSPublisherQos::convert(PublisherQos& source, DDS::PublisherQos& target) {
+void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos& target) {
 	// DDS::PresentationQosPolicy presentation
 	DDS::PresentationQosPolicyAccessScopeKind access_scope
 		= (DDS::PresentationQosPolicyAccessScopeKind)source.presentation.access_scope;
@@ -122,7 +122,7 @@ void OpenDDSPublisherQos::convert(PublisherQos& source, DDS::PublisherQos& targe
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSPublisherQos::convert(DDS::PublisherQos& source, PublisherQos& target) {
+void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos& target) {
 	// PresentationQosPolicy presentation
 	PresentationQosPolicyAccessScopeKind access_scope
 		= (PresentationQosPolicyAccessScopeKind)source.presentation.access_scope;
@@ -154,22 +154,22 @@ void OpenDDSPublisherQos::convert(DDS::PublisherQos& source, PublisherQos& targe
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
-void OpenDDSEntityFactoryQosPolicy::convert(EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target) {
+void OpenDDSEntityFactoryQosPolicy::convert(const EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target) {
 	CORBA::Boolean inner_entitiy_factory = (CORBA::Boolean)source.autoenable_created_entities;
 	target.autoenable_created_entities = inner_entitiy_factory;
 }
 
-void OpenDDSEntityFactoryQosPolicy::convert(DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target) {
+void OpenDDSEntityFactoryQosPolicy::convert(const DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target) {
 	bool inner_entitiy_factory = (bool)source.autoenable_created_entities;
 	target.autoenable_created_entities = inner_entitiy_factory;
 }
 
-void OpenDDSDomainParticipantListener::convert(DomainParticipantListener& source, DDS::DomainParticipantListener& target) {
+void OpenDDSDomainParticipantListener::convert(const DomainParticipantListener& source, DDS::DomainParticipantListener& target) {
 	//DomainpartcipantListener --> publisherlistener, subscriberlistener, topiclistener.
 	//TODO have to convert functions --> how?
 }
 
-void OpenDDSDomainParticipantListener::convert(DDS::DomainParticipantListener& source, DomainParticipantListener& target) {
+void OpenDDSDomainParticipantListener::convert(const DDS::DomainParticipantListener& source, DomainParticipantListener& target) {
 }
 
 //TODO I think below functions have to be implemented..

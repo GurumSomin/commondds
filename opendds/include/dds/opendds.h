@@ -140,20 +140,20 @@ namespace dds {
 
 	class OpenDDSDomainParticipantQos {
 	public:
-		static void convert(DomainParticipantQos& source, DDS::DomainParticipantQos& target);
-		static void convert(DDS::DomainParticipantQos& source, DomainParticipantQos& target);
+		static void convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target);
+		static void convert(const DDS::DomainParticipantQos& source, DomainParticipantQos& target);
 	};
 
 	class OpenDDSPublisherQos {
 	public:
-		static void convert(PublisherQos& source, DDS::PublisherQos& target);
-		static void convert(DDS::PublisherQos& source, PublisherQos& target);
+		static void convert(const PublisherQos& source, DDS::PublisherQos& target);
+		static void convert(const DDS::PublisherQos& source, PublisherQos& target);
 	};
 
 	class OpenDDSEntityFactoryQosPolicy {
 	public:
-		static void convert(EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target);
-		static void convert(DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target);
+		static void convert(const EntityFactoryQosPolicy& source, DDS::EntityFactoryQosPolicy& target);
+		static void convert(const DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target);
 	};
 
 	class OpenDDSDomainParticipantListener {
@@ -162,8 +162,8 @@ namespace dds {
 		//DDS::DomainParticipantListener instance;
 		//OpenDDSDomainParticipantListener(DDS::DomainParticipantListener instance);
 	public:
-		static void convert(DomainParticipantListener& source, DDS::DomainParticipantListener& target);
-		static void convert(DDS::DomainParticipantListener& source, DomainParticipantListener& target);
+		static void convert(const DomainParticipantListener& source, DDS::DomainParticipantListener& target);
+		static void convert(const DDS::DomainParticipantListener& source, DomainParticipantListener& target);
 	};
 
 };
