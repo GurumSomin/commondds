@@ -21,16 +21,17 @@ namespace dds {
 
 class DomainParticipantFactory* TheParticipantFactory = DomainParticipantFactory::get_instance();
 const HANDLE_TYPE_NATIVE HANDLE_NIL_NATIVE			= 0;
-/* put init value below
-const DomainParticipantQos PARTICIPANT_QOS_DEFAULT	= NULL;
-const TopicQos TOPIC_QOS_DEFAULT					= NULL;
-const PublisherQos PUBLISHER_QOS_DEFAULT			= NULL;
-const SubscriberQos SUBSCRIBER_QOS_DEFAULT			= NULL;
-const DataWriterQos DATAWRITER_QOS_DEFAULT			= NULL;
-const DataReaderQos DATAREADER_QOS_DEFAULT			= NULL;
-const DataWriterQos DATAWRITER_QOS_USE_TOPIC_QOS	= NULL;
-const DataReaderQos DATAREADER_QOS_USE_TOPIC_QOS	= NULL;
-*/
+
+//TODO put init value below qoses
+const DomainParticipantQos PARTICIPANT_QOS_DEFAULT;
+const TopicQos TOPIC_QOS_DEFAULT;
+const PublisherQos PUBLISHER_QOS_DEFAULT;
+const SubscriberQos SUBSCRIBER_QOS_DEFAULT;
+const DataWriterQos DATAWRITER_QOS_DEFAULT;
+const DataReaderQos DATAREADER_QOS_DEFAULT;
+const DataWriterQos DATAWRITER_QOS_USE_TOPIC_QOS;
+const DataReaderQos DATAREADER_QOS_USE_TOPIC_QOS;
+
 BuiltinTopicKey_t::BuiltinTopicKey_t() {
 	for(int i = 0; i < 3; i++)
 		this->value[i] = 0;
