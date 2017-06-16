@@ -138,7 +138,7 @@ void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos&
 	uint32_t maximum1 = (uint32_t)source.partition.name.maximum();
 	uint32_t length1 = (uint32_t)source.partition.name.length();
 	char** buffer1 = new char*[maximum1];
-	char** partition_name = source.partition.name.get_buffer();
+	char** partition_name = (char**)source.partition.name.get_buffer();
 	for(uint32_t i = 0; i < maximum1; ++i)
 		buffer1[i] = strdup(partition_name[i]);
 	target.partition.name = sequence<char*>(maximum1, length1, buffer1);
@@ -163,23 +163,5 @@ void OpenDDSEntityFactoryQosPolicy::convert(const DDS::EntityFactoryQosPolicy& s
 	bool inner_entitiy_factory = (bool)source.autoenable_created_entities;
 	target.autoenable_created_entities = inner_entitiy_factory;
 }
-
-void OpenDDSDomainParticipantListener::convert(const DomainParticipantListener& source, DDS::DomainParticipantListener& target) {
-	//DomainpartcipantListener --> publisherlistener, subscriberlistener, topiclistener.
-	//TODO have to convert functions --> how?
-}
-
-void OpenDDSDomainParticipantListener::convert(const DDS::DomainParticipantListener& source, DomainParticipantListener& target) {
-}
-
-//TODO I think below functions have to be implemented..
-//DDS::PublisherListener* OpenDDSPublisherListener::convert(PublisherListener* listener) {
-//PublisherListener* OpenDDSPublisherListener::convert(DDS::PublisherListener* listener) {
-//
-//DDS::SubscriberListener* OpenDDSSubscriberListener::convert(SubscriberListener* listener) {
-//SubscriberListener* OpenDDSSubscriberListener::convert(DDS::SubscriberListener* listener) {
-//
-//DDS::TopicListener* OpenDDSTopicListener::convert(TopicListener* listener) {
-//TopicListener* OpenDDSTopicListener::convert(DDS::TopicListener* listener) {
 
 };

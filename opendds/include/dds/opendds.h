@@ -156,14 +156,17 @@ namespace dds {
 		static void convert(const DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target);
 	};
 
-	class OpenDDSDomainParticipantListener {
-	//private:
-		// TODO I don't know what to do
-		//DDS::DomainParticipantListener instance;
-		//OpenDDSDomainParticipantListener(DDS::DomainParticipantListener instance);
-	public:
-		static void convert(const DomainParticipantListener& source, DDS::DomainParticipantListener& target);
-		static void convert(const DDS::DomainParticipantListener& source, DomainParticipantListener& target);
+	class OpenDDSDomainParticipantListener : public DDS::DomainParticipantListener {
+		private:
+			dds::DomainParticipantListener* listener;
+		public:
+			OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l);
+			virtual ~OpenDDSDomainParticipantListener();
+			dds::DomainParticipantListener* get_listener();
+			//TODO topiclistener function
+			//TODO datawriterlistener function
+			//TODO subscriberlistener function
+			//TODO datareaderlistener function
 	};
 
 };
