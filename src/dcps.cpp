@@ -21,14 +21,16 @@ namespace dds {
 
 class DomainParticipantFactory* TheParticipantFactory = DomainParticipantFactory::get_instance();
 const HANDLE_TYPE_NATIVE HANDLE_NIL_NATIVE			= 0;
-const DomainParticipantQos* PARTICIPANT_QOS_DEFAULT	= NULL;
-const TopicQos* TOPIC_QOS_DEFAULT					= NULL;
-const PublisherQos* PUBLISHER_QOS_DEFAULT			= NULL;
-const SubscriberQos* SUBSCRIBER_QOS_DEFAULT			= NULL;
-const DataWriterQos* DATAWRITER_QOS_DEFAULT			= NULL;
-const DataReaderQos* DATAREADER_QOS_DEFAULT			= NULL;
-const DataWriterQos* DATAWRITER_QOS_USE_TOPIC_QOS	= NULL;
-const DataReaderQos* DATAREADER_QOS_USE_TOPIC_QOS	= NULL;
+
+//TODO put init value below qoses
+const DomainParticipantQos PARTICIPANT_QOS_DEFAULT;
+const TopicQos TOPIC_QOS_DEFAULT;
+const PublisherQos PUBLISHER_QOS_DEFAULT;
+const SubscriberQos SUBSCRIBER_QOS_DEFAULT;
+const DataWriterQos DATAWRITER_QOS_DEFAULT;
+const DataReaderQos DATAREADER_QOS_DEFAULT;
+const DataWriterQos DATAWRITER_QOS_USE_TOPIC_QOS;
+const DataReaderQos DATAREADER_QOS_USE_TOPIC_QOS;
 
 BuiltinTopicKey_t::BuiltinTopicKey_t() {
 	for(int i = 0; i < 3; i++)
@@ -537,7 +539,6 @@ const QosPolicyId_t LIFESPAN_QOS_POLICY_ID				= 21;
 const QosPolicyId_t DURABILITYSERVICE_QOS_POLICY_ID		= 22;
 
 UserDataQosPolicy::UserDataQosPolicy() {
-	value = new sequence<uint8_t>();
 }
 
 UserDataQosPolicy::UserDataQosPolicy(sequence<uint8_t> value) {
@@ -545,11 +546,12 @@ UserDataQosPolicy::UserDataQosPolicy(sequence<uint8_t> value) {
 }
 
 UserDataQosPolicy::UserDataQosPolicy(uint8_t* array, uint32_t size) {
-	this->value = new sequence<uint8_t>(array, size);
+	this->value.buffer = array;
+	this->value.length = size;
+	this->value.maximum = size;
 }
 
 UserDataQosPolicy::~UserDataQosPolicy() {
-	delete value;
 }
 
 TopicDataQosPolicy::TopicDataQosPolicy() {
@@ -576,13 +578,12 @@ GroupDataQosPolicy::GroupDataQosPolicy(sequence<uint8_t> value) {
 }
 
 GroupDataQosPolicy::GroupDataQosPolicy(uint8_t* array, uint32_t size) {
-	this->value.set_buffer(array);
-	this->value.set_length(size);
-	this->value.set_maximum(size);
+	this->value.buffer = array;
+	this->value.length = size;
+	this->value.maximum = size;
 }
 
 GroupDataQosPolicy::~GroupDataQosPolicy() {
-	delete value;
 }
 
 TransportPriorityQosPolicy::TransportPriorityQosPolicy() {

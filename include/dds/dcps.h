@@ -22,13 +22,13 @@ namespace dds {
 
 	extern class DomainParticipantFactory* TheParticipantFactory;
 	extern const DomainParticipantQos PARTICIPANT_QOS_DEFAULT;
-	extern const TopicQos* TOPIC_QOS_DEFAULT;
-	extern const PublisherQos* PUBLISHER_QOS_DEFAULT;
-	extern const SubscriberQos* SUBSCRIBER_QOS_DEFAULT;
-	extern const DataWriterQos* DATAWRITER_QOS_DEFAULT;
-	extern const DataReaderQos* DATAREADER_QOS_DEFAULT;
-	extern const DataWriterQos* DATAWRITER_QOS_USE_TOPIC_QOS;
-	extern const DataReaderQos* DATAREADER_QOS_USE_TOPIC_QOS;
+	extern const TopicQos TOPIC_QOS_DEFAULT;
+	extern const PublisherQos PUBLISHER_QOS_DEFAULT;
+	extern const SubscriberQos SUBSCRIBER_QOS_DEFAULT;
+	extern const DataWriterQos DATAWRITER_QOS_DEFAULT;
+	extern const DataReaderQos DATAREADER_QOS_DEFAULT;
+	extern const DataWriterQos DATAWRITER_QOS_USE_TOPIC_QOS;
+	extern const DataReaderQos DATAREADER_QOS_USE_TOPIC_QOS;
 
 	// IDL
 	template<typename T>
@@ -448,8 +448,8 @@ namespace dds {
 	};
 	
 	class DomainParticipantListener : public TopicListener,
-					PublisherListener,
-					SubscriberListener {
+					public PublisherListener,
+					public SubscriberListener {
 	public:
 		DomainParticipantListener();
 		virtual ~DomainParticipantListener();
