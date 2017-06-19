@@ -596,6 +596,7 @@ TransportPriorityQosPolicy::~TransportPriorityQosPolicy() {
 }
 
 LifespanQosPolicy::LifespanQosPolicy() {
+	duration(DURATION_INFINITE_SEC, DURATION_INFINITE_NSEC);
 }
 
 LifespanQosPolicy::LifespanQosPolicy(Duration_t& duration) {
@@ -762,9 +763,9 @@ HistoryQosPolicy::~HistoryQosPolicy() {
 }
 
 ResourceLimitsQosPolicy::ResourceLimitsQosPolicy() {
-	max_samples = 0;
-	max_instances = 0;
-	max_samples_per_instance = 0;
+	max_samples = LENGTH_UNLIMITED;
+	max_instances = LENGTH_UNLIMITED;
+	max_samples_per_instance = LENGTH_UNLIMITED;
 }
 
 ResourceLimitsQosPolicy::ResourceLimitsQosPolicy(int32_t max_samples, int32_t max_instances, int32_t max_samples_per_instance) {
@@ -777,7 +778,7 @@ ResourceLimitsQosPolicy::~ResourceLimitsQosPolicy() {
 }
 
 EntityFactoryQosPolicy::EntityFactoryQosPolicy() {
-	autoenable_created_entities = false;
+	autoenable_created_entities = true;
 }
 
 EntityFactoryQosPolicy::EntityFactoryQosPolicy(bool autoenable_created_entities) {
@@ -788,7 +789,7 @@ EntityFactoryQosPolicy::~EntityFactoryQosPolicy() {
 }
 
 WriterDataLifecycleQosPolicy::WriterDataLifecycleQosPolicy() {
-	autodispose_unregistered_instances = false;
+	autodispose_unregistered_instances = true;
 }
 
 WriterDataLifecycleQosPolicy::WriterDataLifecycleQosPolicy(bool autoenable_unregistered_instances) {
@@ -901,6 +902,7 @@ TopicQos::~TopicQos() {
 }
 
 DataWriterQos::DataWriterQos() {
+	reliability.kind = RELIABLE_RELIABILITY_QOS; 
 }
 
 DataWriterQos::DataWriterQos(
