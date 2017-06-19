@@ -598,19 +598,18 @@ TransportPriorityQosPolicy::~TransportPriorityQosPolicy() {
 }
 
 LifespanQosPolicy::LifespanQosPolicy() {
-	duration = new Duration_t();
 }
 
-LifespanQosPolicy::LifespanQosPolicy(Duration_t* duration) {
+LifespanQosPolicy::LifespanQosPolicy(Duration_t& duration) {
 	this->duration = duration;
 }
 
 LifespanQosPolicy::LifespanQosPolicy(int32_t sec, uint32_t nanosec) {
-	this->duration = new Duration_t(sec, nanosec);
+	this->duration.sec = sec;
+	this->duration.nanosec = nanosec;
 }
 
 LifespanQosPolicy::~LifespanQosPolicy() {
-	delete duration;
 }
 
 DurabilityQosPolicy::DurabilityQosPolicy() {
@@ -728,16 +727,14 @@ PartitionQosPolicy::~PartitionQosPolicy() {
 
 ReliabilityQosPolicy::ReliabilityQosPolicy() {
 	kind = BEST_EFFORT_RELIABILITY_QOS;
-	max_blocking_time = new Duration_t();
 }
 
-ReliabilityQosPolicy::ReliabilityQosPolicy(ReliabilityQosPolicyKind kind, Duration_t* max_blocking_time) {
+ReliabilityQosPolicy::ReliabilityQosPolicy(ReliabilityQosPolicyKind kind, Duration_t& max_blocking_time) {
 	this->kind = kind;
 	this->max_blocking_time = max_blocking_time;
 }
 
 ReliabilityQosPolicy::~ReliabilityQosPolicy() {
-	delete max_blocking_time;
 }
 
 DestinationOrderQosPolicy::DestinationOrderQosPolicy() {
