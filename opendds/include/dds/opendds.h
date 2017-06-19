@@ -163,10 +163,27 @@ namespace dds {
 			OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l);
 			virtual ~OpenDDSDomainParticipantListener();
 			dds::DomainParticipantListener* get_listener();
-			//TODO topiclistener function
-			//TODO datawriterlistener function
-			//TODO subscriberlistener function
-			//TODO datareaderlistener function
+
+			//topiclistener
+			virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
+
+			//datawriterlistener
+			virtual void on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status);
+			virtual void on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status);
+			virtual void on_liveliness_lost(DDS::DataWriter* writer, const DDS::LivelinessLostStatus& status);
+			virtual void on_publication_matched(DDS::DataWriter* writer, const DDS::PublicationMatchedStatus& status);
+
+			//subscriberlistener
+			virtual void on_data_on_readers(DDS::Subscriber* the_subscriber);
+
+			//datareaderlistener
+			virtual void on_requested_deadline_missed(DDS::DataReader* the_reader, const DDS::RequestedDeadlineMissedStatus& status);
+			virtual void on_requested_incompatible_qos(DDS::DataReader* the_reader, const DDS::RequestedIncompatibleQosStatus& status);
+			virtual void on_sample_rejected(DDS::DataReader* the_reader, const DDS::SampleRejectedStatus& status);
+			virtual void on_liveliness_changed(DDS::DataReader* the_reader, const DDS::LivelinessChangedStatus& status);
+			virtual void on_data_available(DDS::DataReader* the_reader);
+			virtual void on_subscription_matched(DDS::DataReader* the_reader, const DDS::SubscriptionMatchedStatus& status);
+			virtual void on_sample_lost(DDS::DataReader* the_reader, const DDS::SampleLostStatus& status);
 	};
 
 };
