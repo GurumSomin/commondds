@@ -704,15 +704,13 @@ LivelinessQosPolicy::~LivelinessQosPolicy() {
 }
 
 TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy() {
-	minimum_separation = new Duration_t();
 }
 
-TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy(Duration_t* minimum_separation) {
+TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy(Duration_t& minimum_separation) {
 	this->minimum_separation = minimum_separation;
 }
 
 TimeBasedFilterQosPolicy::~TimeBasedFilterQosPolicy() {
-	delete minimum_separation;
 }
 
 PartitionQosPolicy::PartitionQosPolicy() {
@@ -800,21 +798,19 @@ WriterDataLifecycleQosPolicy::~WriterDataLifecycleQosPolicy() {
 }
 
 ReaderDataLifecycleQosPolicy::ReaderDataLifecycleQosPolicy() {
-	autopurge_nowriter_samples_delay = new Duration_t();
-	autopurge_disposed_samples_delay = new Duration_t();
+	autopurge_disposed_samples_delay(DURATION_INFINITE_SEC, DURATION_INFINITE_NSEC);
+	autopurge_nowriter_samples_delay(DURATION_INFINITE_SEC, DURATION_INFINITE_NSEC);
 }
 
 ReaderDataLifecycleQosPolicy::ReaderDataLifecycleQosPolicy(
-	Duration_t* autopurge_nowriter_samples_delay,
-	Duration_t* autopurge_disposed_samples_delay) {
+	Duration_t& autopurge_nowriter_samples_delay,
+	Duration_t& autopurge_disposed_samples_delay) {
 	
 	this->autopurge_nowriter_samples_delay = autopurge_nowriter_samples_delay;
 	this->autopurge_disposed_samples_delay = autopurge_disposed_samples_delay;
 }
 
 ReaderDataLifecycleQosPolicy::~ReaderDataLifecycleQosPolicy() {
-	delete autopurge_nowriter_samples_delay;
-	delete autopurge_disposed_samples_delay;
 }
 
 DurabilityServiceQosPolicy::DurabilityServiceQosPolicy() {

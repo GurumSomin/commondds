@@ -748,10 +748,10 @@ namespace dds {
 	};
 	
 	struct TimeBasedFilterQosPolicy {
-		Duration_t* minimum_separation;
+		Duration_t minimum_separation;
 		
 		TimeBasedFilterQosPolicy();
-		TimeBasedFilterQosPolicy(Duration_t* minimum_separation);
+		TimeBasedFilterQosPolicy(Duration_t& minimum_separation);
 		virtual ~TimeBasedFilterQosPolicy();
 	};
 	
@@ -838,13 +838,13 @@ namespace dds {
 	};
 	
 	struct ReaderDataLifecycleQosPolicy {
-		Duration_t* autopurge_nowriter_samples_delay;
-		Duration_t* autopurge_disposed_samples_delay;
+		Duration_t autopurge_nowriter_samples_delay;
+		Duration_t autopurge_disposed_samples_delay;
 		
 		ReaderDataLifecycleQosPolicy();
 		ReaderDataLifecycleQosPolicy(
-			Duration_t* autopurge_nowriter_samples_delay,
-			Duration_t* autopurge_disposed_samples_delay);
+			Duration_t& autopurge_nowriter_samples_delay,
+			Duration_t& autopurge_disposed_samples_delay);
 		virtual ~ReaderDataLifecycleQosPolicy();
 	};
 	
