@@ -38,6 +38,12 @@ namespace dds {
 		
 		T* buffer;
 		
+		sequence operator()(uint32_t max, uint32_t size, T* array) {
+			maximum = max;
+			length = size;
+			buffer = array;
+		}
+
 		sequence() {
 			maximum = 0;
 			length = 0;
@@ -610,16 +616,16 @@ namespace dds {
 		sequence<uint8_t> value;
 		
 		UserDataQosPolicy();
-		UserDataQosPolicy(sequence<uint8_t> value);
+		UserDataQosPolicy(sequence<uint8_t>& value);
 		UserDataQosPolicy(uint8_t* array, uint32_t size);
 		virtual ~UserDataQosPolicy();
 	};
 	
 	struct TopicDataQosPolicy {
-		sequence<uint8_t>* value;
+		sequence<uint8_t> value;
 		
 		TopicDataQosPolicy();
-		TopicDataQosPolicy(sequence<uint8_t>* value);
+		TopicDataQosPolicy(sequence<uint8_t>& value);
 		TopicDataQosPolicy(uint8_t* array, uint32_t size);
 		virtual ~TopicDataQosPolicy();
 	};
@@ -628,7 +634,7 @@ namespace dds {
 		sequence<uint8_t> value;
 		
 		GroupDataQosPolicy();
-		GroupDataQosPolicy(sequence<uint8_t> value);
+		GroupDataQosPolicy(sequence<uint8_t>& value);
 		GroupDataQosPolicy(uint8_t* array, uint32_t size);
 		virtual ~GroupDataQosPolicy();
 	};
