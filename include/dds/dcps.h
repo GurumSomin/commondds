@@ -685,19 +685,19 @@ namespace dds {
 	};
 	
 	struct DeadlineQosPolicy {
-		Duration_t* period;
+		Duration_t period;
 		
 		DeadlineQosPolicy();
-		DeadlineQosPolicy(Duration_t* period);
+		DeadlineQosPolicy(Duration_t& period);
 		DeadlineQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~DeadlineQosPolicy();
 	};
 	
 	struct LatencyBudgetQosPolicy {
-		Duration_t* duration;
+		Duration_t duration;
 		
 		LatencyBudgetQosPolicy();
-		LatencyBudgetQosPolicy(Duration_t* duration);
+		LatencyBudgetQosPolicy(Duration_t& duration);
 		LatencyBudgetQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~LatencyBudgetQosPolicy();
 	};
@@ -731,12 +731,12 @@ namespace dds {
 	
 	struct LivelinessQosPolicy {
 		LivelinessQosPolicyKind kind;
-		Duration_t* lease_duration;
+		Duration_t lease_duration;
 		
 		LivelinessQosPolicy();
 		LivelinessQosPolicy(
 			LivelinessQosPolicyKind kind,
-			Duration_t* lease_duration);
+			Duration_t& lease_duration);
 		virtual ~LivelinessQosPolicy();
 	};
 	
@@ -842,7 +842,7 @@ namespace dds {
 	};
 	
 	struct DurabilityServiceQosPolicy {
-		Duration_t*				service_cleanup_delay;
+		Duration_t				service_cleanup_delay;
 		HistoryQosPolicyKind	history_kind;
 		int32_t					history_depth;
 		int32_t					max_samples;
@@ -851,7 +851,7 @@ namespace dds {
 		
 		DurabilityServiceQosPolicy();
 		DurabilityServiceQosPolicy(
-			Duration_t* service_cleanup_delay,
+			Duration_t& service_cleanup_delay,
 			HistoryQosPolicyKind history_kind,
 			int32_t history_depth,
 			int32_t max_samples,

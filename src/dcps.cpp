@@ -643,32 +643,31 @@ DeadlineQosPolicy::DeadlineQosPolicy() {
 	DeadlineQosPolicy(0, 0);
 }
 
-DeadlineQosPolicy::DeadlineQosPolicy(Duration_t* period) {
+DeadlineQosPolicy::DeadlineQosPolicy(Duration_t& period) {
 	this->period = period;
 }
 
 DeadlineQosPolicy::DeadlineQosPolicy(int32_t sec, uint32_t nanosec) {
-	this->period = new Duration_t(sec, nanosec);
+	this->period.sec = sec;
+	this->period.nanosec = nanosec;
 }
 
 DeadlineQosPolicy::~DeadlineQosPolicy() {
-	delete period;
 }
 
 LatencyBudgetQosPolicy::LatencyBudgetQosPolicy() {
-	duration = new Duration_t();
 }
 
-LatencyBudgetQosPolicy::LatencyBudgetQosPolicy(Duration_t* duration) {
+LatencyBudgetQosPolicy::LatencyBudgetQosPolicy(Duration_t& duration) {
 	this->duration = duration;
 }
 
 LatencyBudgetQosPolicy::LatencyBudgetQosPolicy(int32_t sec, uint32_t nanosec) {
-	this->duration = new Duration_t(sec, nanosec);
+	this->duration.sec = sec;
+	this->duration.nanosec = nanosec;
 }
 
 LatencyBudgetQosPolicy::~LatencyBudgetQosPolicy() {
-	delete duration;
 }
 
 OwnershipQosPolicy::OwnershipQosPolicy() {
@@ -695,16 +694,14 @@ OwnershipStrengthQosPolicy::~OwnershipStrengthQosPolicy() {
 
 LivelinessQosPolicy::LivelinessQosPolicy() {
 	kind = AUTOMATIC_LIVELINESS_QOS;
-	lease_duration = new Duration_t();
 }
 
-LivelinessQosPolicy::LivelinessQosPolicy(LivelinessQosPolicyKind kind, Duration_t* lease_duration) {
+LivelinessQosPolicy::LivelinessQosPolicy(LivelinessQosPolicyKind kind, Duration_t& lease_duration) {
 	this->kind = kind;
 	this->lease_duration = lease_duration;
 }
 
 LivelinessQosPolicy::~LivelinessQosPolicy() {
-	delete lease_duration;
 }
 
 TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy() {
@@ -823,7 +820,6 @@ ReaderDataLifecycleQosPolicy::~ReaderDataLifecycleQosPolicy() {
 }
 
 DurabilityServiceQosPolicy::DurabilityServiceQosPolicy() {
-	service_cleanup_delay = new Duration_t();
 	history_kind = KEEP_LAST_HISTORY_QOS,
 	history_depth = 0;
 	max_samples = 0;
@@ -832,7 +828,7 @@ DurabilityServiceQosPolicy::DurabilityServiceQosPolicy() {
 }
 
 DurabilityServiceQosPolicy::DurabilityServiceQosPolicy(
-	Duration_t* service_cleanup_delay,
+	Duration_t& service_cleanup_delay,
 	HistoryQosPolicyKind history_kind,
 	int32_t history_depth,
 	int32_t max_samples,
@@ -848,7 +844,6 @@ DurabilityServiceQosPolicy::DurabilityServiceQosPolicy(
 }
 
 DurabilityServiceQosPolicy::~DurabilityServiceQosPolicy() {
-	delete service_cleanup_delay;
 }
 
 DomainParticipantFactoryQos::DomainParticipantFactoryQos() {
