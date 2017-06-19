@@ -541,46 +541,40 @@ const QosPolicyId_t DURABILITYSERVICE_QOS_POLICY_ID		= 22;
 UserDataQosPolicy::UserDataQosPolicy() {
 }
 
-UserDataQosPolicy::UserDataQosPolicy(sequence<uint8_t> value) {
+UserDataQosPolicy::UserDataQosPolicy(sequence<uint8_t>& value) {
 	this->value = value;
 }
 
 UserDataQosPolicy::UserDataQosPolicy(uint8_t* array, uint32_t size) {
-	this->value.buffer = array;
-	this->value.length = size;
-	this->value.maximum = size;
+	this->value(size, size, array);
 }
 
 UserDataQosPolicy::~UserDataQosPolicy() {
 }
 
 TopicDataQosPolicy::TopicDataQosPolicy() {
-	value = new sequence<uint8_t>();
 }
 
-TopicDataQosPolicy::TopicDataQosPolicy(sequence<uint8_t>* value) {
+TopicDataQosPolicy::TopicDataQosPolicy(sequence<uint8_t>& value) {
 	this->value = value;
 }
 
 TopicDataQosPolicy::TopicDataQosPolicy(uint8_t* array, uint32_t size) {
-	this->value = new sequence<uint8_t>(array, size);
+	this->value(size, size, array);
 }
 
 TopicDataQosPolicy::~TopicDataQosPolicy() {
-	delete value;
 }
 
 GroupDataQosPolicy::GroupDataQosPolicy() {
 }
 
-GroupDataQosPolicy::GroupDataQosPolicy(sequence<uint8_t> value) {
+GroupDataQosPolicy::GroupDataQosPolicy(sequence<uint8_t>& value) {
 	this->value = value;
 }
 
 GroupDataQosPolicy::GroupDataQosPolicy(uint8_t* array, uint32_t size) {
-	this->value.buffer = array;
-	this->value.length = size;
-	this->value.maximum = size;
+	this->value(size, size, array);
 }
 
 GroupDataQosPolicy::~GroupDataQosPolicy() {
