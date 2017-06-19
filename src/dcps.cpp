@@ -656,19 +656,18 @@ DeadlineQosPolicy::~DeadlineQosPolicy() {
 }
 
 LatencyBudgetQosPolicy::LatencyBudgetQosPolicy() {
-	duration = new Duration_t();
 }
 
-LatencyBudgetQosPolicy::LatencyBudgetQosPolicy(Duration_t* duration) {
+LatencyBudgetQosPolicy::LatencyBudgetQosPolicy(Duration_t& duration) {
 	this->duration = duration;
 }
 
 LatencyBudgetQosPolicy::LatencyBudgetQosPolicy(int32_t sec, uint32_t nanosec) {
-	this->duration = new Duration_t(sec, nanosec);
+	this->duration.sec = sec;
+	this->duration.nanosec = nanosec;
 }
 
 LatencyBudgetQosPolicy::~LatencyBudgetQosPolicy() {
-	delete duration;
 }
 
 OwnershipQosPolicy::OwnershipQosPolicy() {
@@ -695,16 +694,14 @@ OwnershipStrengthQosPolicy::~OwnershipStrengthQosPolicy() {
 
 LivelinessQosPolicy::LivelinessQosPolicy() {
 	kind = AUTOMATIC_LIVELINESS_QOS;
-	lease_duration = new Duration_t();
 }
 
-LivelinessQosPolicy::LivelinessQosPolicy(LivelinessQosPolicyKind kind, Duration_t* lease_duration) {
+LivelinessQosPolicy::LivelinessQosPolicy(LivelinessQosPolicyKind kind, Duration_t& lease_duration) {
 	this->kind = kind;
 	this->lease_duration = lease_duration;
 }
 
 LivelinessQosPolicy::~LivelinessQosPolicy() {
-	delete lease_duration;
 }
 
 TimeBasedFilterQosPolicy::TimeBasedFilterQosPolicy() {

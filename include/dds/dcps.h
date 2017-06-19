@@ -694,10 +694,10 @@ namespace dds {
 	};
 	
 	struct LatencyBudgetQosPolicy {
-		Duration_t* duration;
+		Duration_t duration;
 		
 		LatencyBudgetQosPolicy();
-		LatencyBudgetQosPolicy(Duration_t* duration);
+		LatencyBudgetQosPolicy(Duration_t& duration);
 		LatencyBudgetQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~LatencyBudgetQosPolicy();
 	};
@@ -731,12 +731,12 @@ namespace dds {
 	
 	struct LivelinessQosPolicy {
 		LivelinessQosPolicyKind kind;
-		Duration_t* lease_duration;
+		Duration_t lease_duration;
 		
 		LivelinessQosPolicy();
 		LivelinessQosPolicy(
 			LivelinessQosPolicyKind kind,
-			Duration_t* lease_duration);
+			Duration_t& lease_duration);
 		virtual ~LivelinessQosPolicy();
 	};
 	
