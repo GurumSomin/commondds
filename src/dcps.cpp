@@ -643,16 +643,16 @@ DeadlineQosPolicy::DeadlineQosPolicy() {
 	DeadlineQosPolicy(0, 0);
 }
 
-DeadlineQosPolicy::DeadlineQosPolicy(Duration_t* period) {
+DeadlineQosPolicy::DeadlineQosPolicy(Duration_t& period) {
 	this->period = period;
 }
 
 DeadlineQosPolicy::DeadlineQosPolicy(int32_t sec, uint32_t nanosec) {
-	this->period = new Duration_t(sec, nanosec);
+	this->period.sec = sec;
+	this->period.nanosec = nanosec;
 }
 
 DeadlineQosPolicy::~DeadlineQosPolicy() {
-	delete period;
 }
 
 LatencyBudgetQosPolicy::LatencyBudgetQosPolicy() {
@@ -823,7 +823,6 @@ ReaderDataLifecycleQosPolicy::~ReaderDataLifecycleQosPolicy() {
 }
 
 DurabilityServiceQosPolicy::DurabilityServiceQosPolicy() {
-	service_cleanup_delay = new Duration_t();
 	history_kind = KEEP_LAST_HISTORY_QOS,
 	history_depth = 0;
 	max_samples = 0;
@@ -832,7 +831,7 @@ DurabilityServiceQosPolicy::DurabilityServiceQosPolicy() {
 }
 
 DurabilityServiceQosPolicy::DurabilityServiceQosPolicy(
-	Duration_t* service_cleanup_delay,
+	Duration_t& service_cleanup_delay,
 	HistoryQosPolicyKind history_kind,
 	int32_t history_depth,
 	int32_t max_samples,
@@ -848,7 +847,6 @@ DurabilityServiceQosPolicy::DurabilityServiceQosPolicy(
 }
 
 DurabilityServiceQosPolicy::~DurabilityServiceQosPolicy() {
-	delete service_cleanup_delay;
 }
 
 DomainParticipantFactoryQos::DomainParticipantFactoryQos() {

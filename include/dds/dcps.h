@@ -685,10 +685,10 @@ namespace dds {
 	};
 	
 	struct DeadlineQosPolicy {
-		Duration_t* period;
+		Duration_t period;
 		
 		DeadlineQosPolicy();
-		DeadlineQosPolicy(Duration_t* period);
+		DeadlineQosPolicy(Duration_t& period);
 		DeadlineQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~DeadlineQosPolicy();
 	};
@@ -842,7 +842,7 @@ namespace dds {
 	};
 	
 	struct DurabilityServiceQosPolicy {
-		Duration_t*				service_cleanup_delay;
+		Duration_t				service_cleanup_delay;
 		HistoryQosPolicyKind	history_kind;
 		int32_t					history_depth;
 		int32_t					max_samples;
@@ -851,7 +851,7 @@ namespace dds {
 		
 		DurabilityServiceQosPolicy();
 		DurabilityServiceQosPolicy(
-			Duration_t* service_cleanup_delay,
+			Duration_t& service_cleanup_delay,
 			HistoryQosPolicyKind history_kind,
 			int32_t history_depth,
 			int32_t max_samples,
