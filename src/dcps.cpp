@@ -22,7 +22,6 @@ namespace dds {
 class DomainParticipantFactory* TheParticipantFactory = DomainParticipantFactory::get_instance();
 const HANDLE_TYPE_NATIVE HANDLE_NIL_NATIVE			= 0;
 
-//TODO put init value below qoses
 const DomainParticipantQos PARTICIPANT_QOS_DEFAULT;
 const TopicQos TOPIC_QOS_DEFAULT;
 const PublisherQos PUBLISHER_QOS_DEFAULT;
@@ -43,6 +42,11 @@ BuiltinTopicKey_t::BuiltinTopicKey_t(BUILTIN_TOPIC_KEY_TYPE_NATIVE value[3]) {
 }
 
 BuiltinTopicKey_t::~BuiltinTopicKey_t() {
+}
+
+Duration_t Duration_t::operator()(int32_t sec, uint32_t nanosec) {
+	this->sec = sec;
+	this->nanosec = nanosec;
 }
 
 Duration_t::Duration_t() {
@@ -592,6 +596,7 @@ TransportPriorityQosPolicy::~TransportPriorityQosPolicy() {
 }
 
 LifespanQosPolicy::LifespanQosPolicy() {
+	duration(DURATION_INFINITE_SEC, DURATION_INFINITE_NSEC);
 }
 
 LifespanQosPolicy::LifespanQosPolicy(Duration_t& duration) {
@@ -633,7 +638,7 @@ PresentationQosPolicy::~PresentationQosPolicy() {
 }
 
 DeadlineQosPolicy::DeadlineQosPolicy() {
-	DeadlineQosPolicy(0, 0);
+	DeadlineQosPolicy(DURATION_INFINITE_SEC, DURATION_INFINITE_NSEC);
 }
 
 DeadlineQosPolicy::DeadlineQosPolicy(Duration_t& period) {
@@ -687,6 +692,7 @@ OwnershipStrengthQosPolicy::~OwnershipStrengthQosPolicy() {
 
 LivelinessQosPolicy::LivelinessQosPolicy() {
 	kind = AUTOMATIC_LIVELINESS_QOS;
+	lease_duration(DURATION_INFINITE_SEC, DURATION_INFINITE_NSEC);
 }
 
 LivelinessQosPolicy::LivelinessQosPolicy(LivelinessQosPolicyKind kind, Duration_t& lease_duration) {
@@ -721,6 +727,7 @@ PartitionQosPolicy::~PartitionQosPolicy() {
 
 ReliabilityQosPolicy::ReliabilityQosPolicy() {
 	kind = BEST_EFFORT_RELIABILITY_QOS;
+	max_blocking_time(0, 100000000);
 }
 
 ReliabilityQosPolicy::ReliabilityQosPolicy(ReliabilityQosPolicyKind kind, Duration_t& max_blocking_time) {
@@ -744,7 +751,7 @@ DestinationOrderQosPolicy::~DestinationOrderQosPolicy() {
 
 HistoryQosPolicy::HistoryQosPolicy() {
 	kind = KEEP_LAST_HISTORY_QOS;
-	depth = 0;
+	depth = 1;
 }
 
 HistoryQosPolicy::HistoryQosPolicy(HistoryQosPolicyKind kind, int32_t depth) {
@@ -756,9 +763,9 @@ HistoryQosPolicy::~HistoryQosPolicy() {
 }
 
 ResourceLimitsQosPolicy::ResourceLimitsQosPolicy() {
-	max_samples = 0;
-	max_instances = 0;
-	max_samples_per_instance = 0;
+	max_samples = LENGTH_UNLIMITED;
+	max_instances = LENGTH_UNLIMITED;
+	max_samples_per_instance = LENGTH_UNLIMITED;
 }
 
 ResourceLimitsQosPolicy::ResourceLimitsQosPolicy(int32_t max_samples, int32_t max_instances, int32_t max_samples_per_instance) {
@@ -771,7 +778,7 @@ ResourceLimitsQosPolicy::~ResourceLimitsQosPolicy() {
 }
 
 EntityFactoryQosPolicy::EntityFactoryQosPolicy() {
-	autoenable_created_entities = false;
+	autoenable_created_entities = true;
 }
 
 EntityFactoryQosPolicy::EntityFactoryQosPolicy(bool autoenable_created_entities) {
@@ -782,7 +789,7 @@ EntityFactoryQosPolicy::~EntityFactoryQosPolicy() {
 }
 
 WriterDataLifecycleQosPolicy::WriterDataLifecycleQosPolicy() {
-	autodispose_unregistered_instances = false;
+	autodispose_unregistered_instances = true;
 }
 
 WriterDataLifecycleQosPolicy::WriterDataLifecycleQosPolicy(bool autoenable_unregistered_instances) {
@@ -811,11 +818,11 @@ ReaderDataLifecycleQosPolicy::~ReaderDataLifecycleQosPolicy() {
 }
 
 DurabilityServiceQosPolicy::DurabilityServiceQosPolicy() {
-	history_kind = KEEP_LAST_HISTORY_QOS,
-	history_depth = 0;
-	max_samples = 0;
-	max_instances = 0;
-	max_samples_per_instance = 0;
+	history_kind = KEEP_LAST_HISTORY_QOS;
+	history_depth = 1;
+	max_samples = LENGTH_UNLIMITED;
+	max_instances = LENGTH_UNLIMITED;
+	max_samples_per_instance = LENGTH_UNLIMITED;
 }
 
 DurabilityServiceQosPolicy::DurabilityServiceQosPolicy(
@@ -895,6 +902,7 @@ TopicQos::~TopicQos() {
 }
 
 DataWriterQos::DataWriterQos() {
+	reliability.kind = RELIABLE_RELIABILITY_QOS; 
 }
 
 DataWriterQos::DataWriterQos(

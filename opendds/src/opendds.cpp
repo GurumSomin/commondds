@@ -86,7 +86,7 @@ void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& sourc
 	uint8_t* buffer = new uint8_t[maximum];
 	std::memcpy(buffer, source.user_data.value.get_buffer(), maximum);
 
-	target.user_data.value = sequence<uint8_t>(maximum, length, buffer);
+	target.user_data.value(maximum, length, buffer);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
@@ -141,14 +141,14 @@ void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos&
 	char** partition_name = (char**)source.partition.name.get_buffer();
 	for(uint32_t i = 0; i < maximum1; ++i)
 		buffer1[i] = strdup(partition_name[i]);
-	target.partition.name = sequence<char*>(maximum1, length1, buffer1);
+	target.partition.name(maximum1, length1, buffer1);
 
 	// GroupDataQosPolicy group_data
 	uint32_t maximum2 = (uint32_t)source.group_data.value.maximum();
 	uint32_t length2 = (uint32_t)source.group_data.value.length();
 	uint8_t* buffer2 = new uint8_t[maximum2];
 	std::memcpy(buffer2, source.group_data.value.get_buffer(), maximum2);
-	target.group_data.value = sequence<uint8_t>(maximum2, length2, buffer2);
+	target.group_data.value(maximum2, length2, buffer2);
 
     // EntityFactoryQosPolicy entity_factory
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);

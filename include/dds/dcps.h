@@ -124,6 +124,7 @@ namespace dds {
 		uint32_t nanosec;
 		
 		Duration_t();
+		Duration_t operator()(int32_t sec, uint32_t nanosec);
 		Duration_t(int32_t sec, uint32_t nanosec);
 		virtual ~Duration_t();
 	};
