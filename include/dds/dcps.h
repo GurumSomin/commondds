@@ -642,10 +642,10 @@ namespace dds {
 	};
 	
 	struct LifespanQosPolicy {
-		Duration_t* duration;
+		Duration_t duration;
 		
 		LifespanQosPolicy();
-		LifespanQosPolicy(Duration_t* duration);
+		LifespanQosPolicy(Duration_t& duration);
 		LifespanQosPolicy(int32_t sec, uint32_t nanosec);
 		virtual ~LifespanQosPolicy();
 	};
@@ -763,12 +763,12 @@ namespace dds {
 	
 	struct ReliabilityQosPolicy {
 		ReliabilityQosPolicyKind kind;
-		Duration_t* max_blocking_time;
+		Duration_t max_blocking_time;
 		
 		ReliabilityQosPolicy();
 		ReliabilityQosPolicy(
 			ReliabilityQosPolicyKind kind,
-			Duration_t* max_blocking_time);
+			Duration_t& max_blocking_time);
 		virtual ~ReliabilityQosPolicy();
 	};
 	
