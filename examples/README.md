@@ -1,5 +1,21 @@
 # HelloWorld Examples
 
+## Advanced work
+### hello_connext
+```
+export NDDSHOME=[RTI_HOME]
+```
+
+### hello_opensplice
+```
+source [OPENSPLICE_HOME]/[PLATFORM]/release.com
+```
+
+### hello_opendds
+```
+source [OPENDDS_HOME]/setenv.sh
+```
+
 ## How to compile
 > Vendor specific environment variables should be sourced to build 
 > Before building Publisher and/or Subscriber, you must parse IDL
