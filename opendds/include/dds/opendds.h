@@ -186,6 +186,22 @@ namespace dds {
 			virtual void on_sample_lost(DDS::DataReader* the_reader, const DDS::SampleLostStatus& status);
 	};
 
+	class OpenDDSTopic : public Topic {
+	private:
+		DDS::Topic* topic;
+
+	public:
+		OpenDDSTopic(DDS::Topic* topic);
+		virtual ~OpenDDSTopic();
+		DDS::Topic* get_topic();
+
+		ReturnCode_t set_qos(const TopicQos* qos);
+		ReturnCode_t get_qos(TopicQos* qos);
+		ReturnCode_t set_listener(const TopicListener* a_listener, const StatusMask mask);
+		TopicListener* get_listener();
+		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus* a_status);
+	};
+
 };
 
 #endif /* __DDS_OPENDDS__ */
