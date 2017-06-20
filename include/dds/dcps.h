@@ -389,8 +389,8 @@ namespace dds {
 		TopicListener();
 		virtual ~TopicListener();
 		
-		virtual void on_inconsistent_topic(const Topic* the_topic, 
-			const InconsistentTopicStatus* status);
+		virtual void on_inconsistent_topic(Topic* the_topic, 
+			const InconsistentTopicStatus& status);
 	};
 	
 	class DataWriterListener : public Listener {
@@ -399,17 +399,17 @@ namespace dds {
 		virtual ~DataWriterListener();
 		
 		virtual void on_offered_deadline_missed(
-			const DataWriter* writer, 
-			const OfferedDeadlineMissedStatus* status);
+			DataWriter* writer, 
+			const OfferedDeadlineMissedStatus& status);
 		virtual void on_offered_incompatible_qos(
-			const DataWriter* writer, 
-			const OfferedIncompatibleQosStatus* status);
+			DataWriter* writer, 
+			const OfferedIncompatibleQosStatus& status);
 		virtual void on_liveliness_lost(
-			const DataWriter* writer, 
-			const LivelinessLostStatus* status);
+			DataWriter* writer, 
+			const LivelinessLostStatus& status);
 		virtual void on_publication_matched(
-			const DataWriter* writer, 
-			const PublicationMatchedStatus* status);
+			DataWriter* writer, 
+			const PublicationMatchedStatus& status);
 	};
 	
 	class PublisherListener : public DataWriterListener {
@@ -424,25 +424,25 @@ namespace dds {
 		virtual ~DataReaderListener();
 		
 		virtual void on_requested_deadline_missed(
-			const DataReader* the_reader, 
-			const RequestedDeadlineMissedStatus* status);
+			DataReader* the_reader, 
+			const RequestedDeadlineMissedStatus& status);
 		virtual void on_requested_incompatible_qos(
-			const DataReader* the_reader, 
-			const RequestedIncompatibleQosStatus* status);
+			DataReader* the_reader, 
+			const RequestedIncompatibleQosStatus& status);
 		virtual void on_sample_rejected(
-			const DataReader* the_reader,
-			const SampleRejectedStatus* status);
+			DataReader* the_reader,
+			const SampleRejectedStatus& status);
 		virtual void on_liveliness_changed(
-			const DataReader* the_reader,
-			const LivelinessChangedStatus* status);
+			DataReader* the_reader,
+			const LivelinessChangedStatus& status);
 		virtual void on_data_available(
-			const DataReader* the_reader);
+			DataReader* the_reader);
 		virtual void on_subscription_matched(
-			const DataReader* the_reader,
-			const SubscriptionMatchedStatus* status);
+			DataReader* the_reader,
+			const SubscriptionMatchedStatus& status);
 		virtual void on_sample_lost(
-			const DataReader* the_reader,
-			const SampleLostStatus* status);
+			DataReader* the_reader,
+			const SampleLostStatus& status);
 	};
 	
 	class SubscriberListener : public DataReaderListener {
@@ -451,7 +451,7 @@ namespace dds {
 		virtual ~SubscriberListener();
 		
 		virtual void on_data_on_readers(
-			const Subscriber* the_subscriber);
+			Subscriber* the_subscriber);
 	};
 	
 	class DomainParticipantListener : public TopicListener,
@@ -1202,7 +1202,7 @@ namespace dds {
 			const TopicListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_topic(
-			const Topic* a_topic);
+			Topic* a_topic);
 		Topic* find_topic(
 			const char* topic_name,
 			const Duration_t* timeout);
@@ -1210,7 +1210,7 @@ namespace dds {
 			const char* name);
 		ContentFilteredTopic* create_contentfilteredtopic(
 			const char* name,
-			const Topic* related_topic,
+			Topic* related_topic,
 			const char* filter_expression,
 			const StringSeq* expression_parameters);
 		ReturnCode_t delete_contentfilteredtopic(
@@ -1342,7 +1342,7 @@ namespace dds {
 		
 		// Access the status
 		ReturnCode_t get_inconsistent_topic_status(
-			InconsistentTopicStatus* a_status);
+			InconsistentTopicStatus& a_status);
 	};
 	
 	class ContentFilteredTopic : public TopicDescription {
@@ -1382,12 +1382,12 @@ namespace dds {
 		virtual ~Publisher();
 		
 		DataWriter* create_datawriter(
-			const Topic* a_topic,
+			Topic* a_topic,
 			const DataWriterQos* qos,
 			const DataWriterListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_datawriter(
-			const DataWriter* a_datawriter);
+			DataWriter* a_datawriter);
 		DataWriter* lookup_datawriter(
 			const char* topic_name);
 		ReturnCode_t delete_contained_entities();
@@ -1466,13 +1466,13 @@ namespace dds {
 			const Duration_t* max_wait);
 		// Access the status
 		ReturnCode_t get_liveliness_lost_status(
-			LivelinessLostStatus* status);
+			LivelinessLostStatus& status);
 		ReturnCode_t get_offered_deadline_missed_status(
-			OfferedDeadlineMissedStatus* status);
+			OfferedDeadlineMissedStatus& status);
 		ReturnCode_t get_offered_incompatible_qos_status(
-			OfferedIncompatibleQosStatus* status);
+			OfferedIncompatibleQosStatus& status);
 		ReturnCode_t get_publication_matched_status(
-			PublicationMatchedStatus* status);
+			PublicationMatchedStatus& status);
 		ReturnCode_t assert_liveliness();
 		ReturnCode_t get_matched_subscriptions(
 			InstanceHandleSeq* subscription_handles);
@@ -1493,7 +1493,7 @@ namespace dds {
 			const DataReaderListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_datareader(
-			const DataReader* a_datareader);
+			DataReader* a_datareader);
 		ReturnCode_t delete_contained_entities();
 		DataReader* lookup_datareader(
 			const char* topic_name);
@@ -1635,17 +1635,17 @@ namespace dds {
 		TopicDescription* get_topicdescription();
 		Subscriber* get_subscriber();
 		ReturnCode_t get_sample_rejected_status(
-			SampleRejectedStatus* status);
+			SampleRejectedStatus& status);
 		ReturnCode_t get_liveliness_changed_status(
-			LivelinessChangedStatus* status);
+			LivelinessChangedStatus& status);
 		ReturnCode_t get_requested_deadline_missed_status(
-			RequestedDeadlineMissedStatus* status);
+			RequestedDeadlineMissedStatus& status);
 		ReturnCode_t get_requested_incompatible_qos_status(
-			RequestedIncompatibleQosStatus* status);
+			RequestedIncompatibleQosStatus& status);
 		ReturnCode_t get_subscription_matched_status(
-			SubscriptionMatchedStatus* status);
+			SubscriptionMatchedStatus& status);
 		ReturnCode_t get_sample_lost_status(
-			SampleLostStatus* status);
+			SampleLostStatus& status);
 		ReturnCode_t wait_for_historical_data(
 			const Duration_t* max_wait);
 		ReturnCode_t get_matched_publications(
