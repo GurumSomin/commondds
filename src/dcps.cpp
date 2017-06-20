@@ -307,7 +307,7 @@ TopicListener::TopicListener() {
 TopicListener::~TopicListener() {
 }
 
-void TopicListener::on_inconsistent_topic(const Topic* the_topic, const InconsistentTopicStatus* status) {
+void TopicListener::on_inconsistent_topic(Topic* the_topic, const InconsistentTopicStatus& status) {
 }
 
 DataWriterListener::DataWriterListener() {
@@ -317,23 +317,23 @@ DataWriterListener::~DataWriterListener() {
 }
 
 void DataWriterListener::on_offered_deadline_missed(
-	const DataWriter* writer, 
-	const OfferedDeadlineMissedStatus* status) {
+	DataWriter* writer, 
+	const OfferedDeadlineMissedStatus& status) {
 }
 
 void DataWriterListener::on_offered_incompatible_qos(
-	const DataWriter* writer, 
-	const OfferedIncompatibleQosStatus* status) {
+	DataWriter* writer, 
+	const OfferedIncompatibleQosStatus& status) {
 }
 
 void DataWriterListener::on_liveliness_lost(
-	const DataWriter* writer, 
-	const LivelinessLostStatus* status) {
+	DataWriter* writer, 
+	const LivelinessLostStatus& status) {
 }
 
 void DataWriterListener::on_publication_matched(
-	const DataWriter* writer, 
-	const PublicationMatchedStatus* status) {
+	DataWriter* writer, 
+	const PublicationMatchedStatus& status) {
 }
 
 PublisherListener::PublisherListener() {
@@ -349,37 +349,37 @@ DataReaderListener::~DataReaderListener() {
 }
 
 void DataReaderListener::on_requested_deadline_missed(
-	const DataReader* the_reader, 
-	const RequestedDeadlineMissedStatus* status) {
+	DataReader* the_reader, 
+	const RequestedDeadlineMissedStatus& status) {
 }
 
 void DataReaderListener::on_requested_incompatible_qos(
-	const DataReader* the_reader, 
-	const RequestedIncompatibleQosStatus* status) {
+	DataReader* the_reader, 
+	const RequestedIncompatibleQosStatus& status) {
 }
 
 void DataReaderListener::on_sample_rejected(
-	const DataReader* the_reader,
-	const SampleRejectedStatus* status) {
+	DataReader* the_reader,
+	const SampleRejectedStatus& status) {
 }
 
 void DataReaderListener::on_liveliness_changed(
-	const DataReader* the_reader,
-	const LivelinessChangedStatus* status) {
+	DataReader* the_reader,
+	const LivelinessChangedStatus& status) {
 }
 
 void DataReaderListener::on_data_available(
-	const DataReader* the_reader) {
+	DataReader* the_reader) {
 }
 
 void DataReaderListener::on_subscription_matched(
-	const DataReader* the_reader,
-	const SubscriptionMatchedStatus* status) {
+	DataReader* the_reader,
+	const SubscriptionMatchedStatus& status) {
 }
 
 void DataReaderListener::on_sample_lost(
-	const DataReader* the_reader,
-	const SampleLostStatus* status) {
+	DataReader* the_reader,
+	const SampleLostStatus& status) {
 }
 
 SubscriberListener::SubscriberListener() {
@@ -388,7 +388,7 @@ SubscriberListener::SubscriberListener() {
 SubscriberListener::~SubscriberListener() {
 }
 
-void SubscriberListener::on_data_on_readers(const Subscriber* the_subscriber) {
+void SubscriberListener::on_data_on_readers(Subscriber* the_subscriber) {
 }
 
 DomainParticipantListener::DomainParticipantListener() {
@@ -1342,7 +1342,7 @@ Topic* DomainParticipant::create_topic(
 	return NULL;
 }
 
-ReturnCode_t DomainParticipant::delete_topic(const Topic* a_topic) {
+ReturnCode_t DomainParticipant::delete_topic(Topic* a_topic) {
 	return RETCODE_ERROR;
 }
 
@@ -1356,7 +1356,7 @@ TopicDescription* DomainParticipant::lookup_topicdescription(const char* name) {
 
 ContentFilteredTopic* DomainParticipant::create_contentfilteredtopic(
 	const char* name,
-	const Topic* related_topic,
+	Topic* related_topic,
 	const char* filter_expression,
 	const StringSeq* expression_parameters) {
 	return NULL;
@@ -1663,7 +1663,7 @@ TopicListener* Topic::get_listener() {
 	return NULL;
 }
 
-ReturnCode_t Topic::get_inconsistent_topic_status(InconsistentTopicStatus* a_status) {
+ReturnCode_t Topic::get_inconsistent_topic_status(InconsistentTopicStatus& a_status) {
 	return RETCODE_ERROR;
 }
 
@@ -1714,7 +1714,7 @@ Publisher::~Publisher() {
 }
 
 DataWriter* Publisher::create_datawriter(
-	const Topic* a_topic,
+	Topic* a_topic,
 	const DataWriterQos* qos,
 	const DataWriterListener* a_listener,
 	const StatusMask mask) {
@@ -1722,7 +1722,7 @@ DataWriter* Publisher::create_datawriter(
 	return NULL;
 }
 
-ReturnCode_t Publisher::delete_datawriter(const DataWriter* a_datawriter) {
+ReturnCode_t Publisher::delete_datawriter(DataWriter* a_datawriter) {
 	return RETCODE_ERROR;
 }
 
@@ -1820,19 +1820,19 @@ ReturnCode_t DataWriter::wait_for_acknowledgments(const Duration_t* max_wait) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataWriter::get_liveliness_lost_status(LivelinessLostStatus* status) {
+ReturnCode_t DataWriter::get_liveliness_lost_status(LivelinessLostStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataWriter::get_offered_deadline_missed_status(OfferedDeadlineMissedStatus* status) {
+ReturnCode_t DataWriter::get_offered_deadline_missed_status(OfferedDeadlineMissedStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataWriter::get_offered_incompatible_qos_status(OfferedIncompatibleQosStatus* status) {
+ReturnCode_t DataWriter::get_offered_incompatible_qos_status(OfferedIncompatibleQosStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataWriter::get_publication_matched_status(PublicationMatchedStatus* status) {
+ReturnCode_t DataWriter::get_publication_matched_status(PublicationMatchedStatus& status) {
 	return RETCODE_ERROR;
 }
 
@@ -1863,7 +1863,7 @@ DataReader* Subscriber::create_datareader(
 	return NULL;
 }
 
-ReturnCode_t Subscriber::delete_datareader(const DataReader* a_datareader) {
+ReturnCode_t Subscriber::delete_datareader(DataReader* a_datareader) {
 	return RETCODE_ERROR;
 }
 
@@ -1984,27 +1984,27 @@ Subscriber* DataReader::get_subscriber() {
 	return NULL;
 }
 
-ReturnCode_t DataReader::get_sample_rejected_status(SampleRejectedStatus* status) {
+ReturnCode_t DataReader::get_sample_rejected_status(SampleRejectedStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::get_liveliness_changed_status(LivelinessChangedStatus* status) {
+ReturnCode_t DataReader::get_liveliness_changed_status(LivelinessChangedStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::get_requested_deadline_missed_status(RequestedDeadlineMissedStatus* status) {
+ReturnCode_t DataReader::get_requested_deadline_missed_status(RequestedDeadlineMissedStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::get_requested_incompatible_qos_status(RequestedIncompatibleQosStatus* status) {
+ReturnCode_t DataReader::get_requested_incompatible_qos_status(RequestedIncompatibleQosStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::get_subscription_matched_status(SubscriptionMatchedStatus* status) {
+ReturnCode_t DataReader::get_subscription_matched_status(SubscriptionMatchedStatus& status) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::get_sample_lost_status(SampleLostStatus* status) {
+ReturnCode_t DataReader::get_sample_lost_status(SampleLostStatus& status) {
 	return RETCODE_ERROR;
 }
 

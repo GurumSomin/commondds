@@ -177,9 +177,9 @@ DomainParticipantListener* OpenDDSDomainParticipantListener::get_listener() {
 }
 
 void OpenDDSDomainParticipantListener::on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status) {
-	//TODO make converters for Topic and InconsistentTopicStatus
-	const dds::Topic* topic = new OpenDDSTopic(the_topic);
-	const dds::InconsistentTopicStatus* t;
+	dds::Topic* topic = new OpenDDSTopic(the_topic);
+	dds::InconsistentTopicStatus t;
+	OpenDDSInconsistentTopicStatus::convert(status, t);
 	listener->on_inconsistent_topic(topic, t);
 }
 
@@ -190,5 +190,15 @@ OpenDDSTopic::OpenDDSTopic(DDS::Topic* the_topic) {
 OpenDDSTopic::~OpenDDSTopic() {
 	DDS::DomainParticipant* dp = topic->get_participant();
 	dp->delete_topic(topic);
+}
+
+void OpenDDSInconsistentTopicStatus::convert(const InconsistentTopicStatus& source, DDS::InconsistentTopicStatus& target) {
+	target.total_count = (CORBA::Long) source.total_count_change;
+	target.total_count_change = (CORBA::Long) source.total_count_change;
+}
+
+void OpenDDSInconsistentTopicStatus::convert(const DDS::InconsistentTopicStatus& source, InconsistentTopicStatus& target) {
+	target.total_count = (int32_t) source.total_count_change;
+	target.total_count_change = (int32_t) source.total_count_change;
 }
 };
