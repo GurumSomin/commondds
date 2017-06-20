@@ -167,6 +167,7 @@ namespace dds {
 			//topiclistener
 			virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
 
+			//TODO 2. generate under functions.
 			//datawriterlistener
 			virtual void on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status);
 			virtual void on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status);
@@ -195,11 +196,18 @@ namespace dds {
 		virtual ~OpenDDSTopic();
 		DDS::Topic* get_topic();
 
+		//TODO 1. generate under functions.
 		ReturnCode_t set_qos(const TopicQos* qos);
 		ReturnCode_t get_qos(TopicQos* qos);
 		ReturnCode_t set_listener(const TopicListener* a_listener, const StatusMask mask);
 		TopicListener* get_listener();
 		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus* a_status);
+	};
+
+	class OpenDDSInconsistentTopicStatus {
+	public:
+		static void convert(const InconsistentTopicStatus& source, DDS::InconsistentTopicStatus& target);
+		static void convert(const DDS::InconsistentTopicStatus& source, InconsistentTopicStatus& target);
 	};
 
 };
