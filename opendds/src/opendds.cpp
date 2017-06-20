@@ -177,9 +177,17 @@ DomainParticipantListener* OpenDDSDomainParticipantListener::get_listener() {
 }
 
 void OpenDDSDomainParticipantListener::on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status) {
-	const dds::Topic* topic;
+	const dds::Topic* topic = new OpenDDSTopic(the_topic);
 	const dds::InconsistentTopicStatus* t;
 	listener->on_inconsistent_topic(topic, t);
 }
 
+OpenDDSTopic::OpenDDSTopic(DDS::Topic* the_topic) {
+	topic = the_topic;
+}
+
+OpenDDSTopic::~OpenDDSTopic() {
+	DDS::DomainParticipant* dp = topic->get_participant();
+	dp->delete_topic(topic);
+}
 };
