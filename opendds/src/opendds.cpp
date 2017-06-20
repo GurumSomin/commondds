@@ -21,14 +21,14 @@ OpenDDSDomainParticipantFactory::~OpenDDSDomainParticipantFactory() {
 
 DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 	DomainId_t domain_id,
-	const DomainParticipantQos* qos,
-	const DomainParticipantListener* a_listener,
+	const DomainParticipantQos& qos,
+	DomainParticipantListener* a_listener,
 	const StatusMask mask) {
 
 	DDS::DomainParticipantQos qos2;
-	DDS::DomainParticipantListener *a_listener2 = NULL;
 
-	OpenDDSDomainParticipantQos::convert(*qos, qos2);
+	OpenDDSDomainParticipantQos::convert(qos, qos2);
+	OpenDDSDomainParticipantListener* a_listener2 = new OpenDDSDomainParticipantListener(a_listener);
 
 	DDS::DomainParticipant* dp = instance->create_participant(domain_id, qos2, a_listener2, mask);
 
