@@ -164,4 +164,16 @@ void OpenDDSEntityFactoryQosPolicy::convert(const DDS::EntityFactoryQosPolicy& s
 	target.autoenable_created_entities = inner_entitiy_factory;
 }
 
+OpenDDSDomainParticipantListener::OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l) {
+	listener = l;
+}
+
+OpenDDSDomainParticipantListener::~OpenDDSDomainParticipantListener() {
+	delete listener;
+}
+
+DomainParticipantListener* OpenDDSDomainParticipantListener::get_listener() {
+	return listener;
+}
+
 };
