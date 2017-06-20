@@ -98,7 +98,7 @@ void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos&
 		= (CORBA::Boolean)source.presentation.coherent_access;
 	CORBA::Boolean ordered_access
 		= (CORBA::Boolean)source.presentation.ordered_access;
-    target.presentation.access_scope = access_scope;
+	target.presentation.access_scope = access_scope;
 	target.presentation.coherent_access = coherent_access;
 	target.presentation.ordered_access = ordered_access;
 
@@ -118,7 +118,7 @@ void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos&
 	std::memcpy(buffer2, source.group_data.value.buffer, maximum2);
 	target.group_data.value = DDS::OctetSeq(maximum2, length2, buffer2);
 
-    // DDS::EntityFactoryQosPolicy entity_factory
+	// DDS::EntityFactoryQosPolicy entity_factory
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
@@ -130,7 +130,7 @@ void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos&
 		= (bool)source.presentation.coherent_access;
 	bool ordered_access
 		= (bool)source.presentation.ordered_access;
-    target.presentation.access_scope = access_scope;
+	target.presentation.access_scope = access_scope;
 	target.presentation.coherent_access = coherent_access;
 	target.presentation.ordered_access = ordered_access;
 
@@ -150,7 +150,7 @@ void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos&
 	std::memcpy(buffer2, source.group_data.value.get_buffer(), maximum2);
 	target.group_data.value(maximum2, length2, buffer2);
 
-    // EntityFactoryQosPolicy entity_factory
+	// EntityFactoryQosPolicy entity_factory
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
@@ -174,6 +174,12 @@ OpenDDSDomainParticipantListener::~OpenDDSDomainParticipantListener() {
 
 DomainParticipantListener* OpenDDSDomainParticipantListener::get_listener() {
 	return listener;
+}
+
+void OpenDDSDomainParticipantListener::on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status) {
+	const dds::Topic* topic;
+	const dds::InconsistentTopicStatus* t;
+	listener->on_inconsistent_topic(topic, t);
 }
 
 };
