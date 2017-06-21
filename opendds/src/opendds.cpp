@@ -212,26 +212,33 @@ void OpenDDSInconsistentTopicStatus::convert(const DDS::InconsistentTopicStatus&
 
 void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 	//PENDING..
-	//TopicDataQosPolicy    topic_data
-	CORBA::ULong maximum = (CORBA::ULong)source.topic_data.value.maximum;
-	CORBA::ULong length = (CORBA::ULong)source.topic_data.value.length;
-	CORBA::Octet* buffer = new CORBA::Octet[maximum];
-	std::memcpy(buffer, source.topic_data.value.buffer, maximum);
-	target.topic_data.value = DDS::OctetSeq(maximum, length, buffer);
-
-	//DurabilityQosPolicy   durability;
-	//kind is enum and has same meaning
-	target.durability.kind = (DDS::DurabilityQosPolicyKind) source.durability.kind;
-
-	//DurabilityServiceQosPolicy    durability_service;
-	target.durability_service.service_cleanup_delay.sec = (CORBA::Long) source.durability_service.service_cleanup_delay.sec;
-	target.durability_service.service_cleanup_delay.nanosec = (CORBA::ULong) source.durability_service.service_cleanup_delay.nanosec;
-		//kind is enum and has same meaning
-	target.durability_service.history_kind = (DDS::HistoryQosPolicyKind) source.durability_service.history_kind;
-
-	target.durability_service.history_depth = (CORBA::Long) source.durability_service.history_depth;
-	target.durability_service.max_samples =  (CORBA::Long) source.durability_service.max_samples;
-	target.durability_service.max_instances =  (CORBA::Long) source.durability_service.max_instances;
-	target.durability_service.max_samples_per_instance =  (CORBA::Long) source.durability_service.max_samples_per_instance;
+	OpenDDSTopicDataQosPolicy::convert(source.topic_data, target.topic_data);
+	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
+	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
 }
+
+void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
+	CORBA::ULong maximum = (CORBA::ULong)source.value.maximum;
+	CORBA::ULong length = (CORBA::ULong)source.value.length;
+	CORBA::Octet* buffer = new CORBA::Octet[maximum];
+	std::memcpy(buffer, source.value.buffer, maximum);
+	target.value = DDS::OctetSeq(maximum, length, buffer);
+}
+
+void OpenDDSDurabilityQosPolicy::convert(const DurabilityQosPolicy& source, DDS::DurabilityQosPolicy& target) {
+	//kind is enum and has same meaning
+	target.kind = (DDS::DurabilityQosPolicyKind) source.kind;
+}
+
+void OpenDDSDurabilityServiceQosPolicy::convert(const DurabilityServiceQosPolicy& source, DDS::DurabilityServiceQosPolicy& target) {
+	target.service_cleanup_delay.sec = (CORBA::Long) source.service_cleanup_delay.sec;
+	target.service_cleanup_delay.nanosec = (CORBA::ULong) source.service_cleanup_delay.nanosec;
+	//kind is enum and has same meaning
+	target.history_kind = (DDS::HistoryQosPolicyKind) source.history_kind;
+	target.history_depth = (CORBA::Long) source.history_depth;
+	target.max_samples =  (CORBA::Long) source.max_samples;
+	target.max_instances =  (CORBA::Long) source.max_instances;
+	target.max_samples_per_instance =  (CORBA::Long) source.max_samples_per_instance;
+}
+
 };
