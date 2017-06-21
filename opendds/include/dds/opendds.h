@@ -197,7 +197,7 @@ namespace dds {
 		DDS::Topic* get_topic();
 
 		ReturnCode_t set_qos(const TopicQos& qos);
-		//TODO 1. generate under functions.
+		//TODO 2. generate under functions.
 		ReturnCode_t get_qos(TopicQos& qos);
 		ReturnCode_t set_listener(TopicListener* a_listener, const StatusMask mask);
 		TopicListener* get_listener();
@@ -212,10 +212,30 @@ namespace dds {
 
 	class OpenDDSTopicQos {
 	public:
-		//TODO 0. generate under functions.
+		//TODO 1. generate under functions.
 		static void convert(const TopicQos& source, DDS::TopicQos& target); // PENDING
 		static void convert(const DDS::TopicQos& source, TopicQos& target);
 	};
+
+	class OpenDDSTopicDataQosPolicy {
+	public:
+		static void convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target);
+		static void convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target); //TODO
+	};
+
+	class OpenDDSDurabilityQosPolicy {
+	public:
+		static void convert(const DurabilityQosPolicy& source, DDS::DurabilityQosPolicy& target);
+		static void convert(const DDS::DurabilityQosPolicy& source, DurabilityQosPolicy& target); //TODO
+	};
+
+	class OpenDDSDurabilityServiceQosPolicy {
+	public:
+		static void convert(const DurabilityServiceQosPolicy& source, DDS::DurabilityServiceQosPolicy& target);
+		static void convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target); //TODO
+	};
+
+	//TODO 0. Make rest of `TopicQos' member variable type` converter from CommonDDS to OpenDDS
 
 };
 
