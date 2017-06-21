@@ -93,16 +93,7 @@ void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& sourc
 }
 
 void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos& target) {
-	// DDS::PresentationQosPolicy presentation
-	DDS::PresentationQosPolicyAccessScopeKind access_scope
-		= (DDS::PresentationQosPolicyAccessScopeKind)source.presentation.access_scope;
-	CORBA::Boolean coherent_access
-		= (CORBA::Boolean)source.presentation.coherent_access;
-	CORBA::Boolean ordered_access
-		= (CORBA::Boolean)source.presentation.ordered_access;
-	target.presentation.access_scope = access_scope;
-	target.presentation.coherent_access = coherent_access;
-	target.presentation.ordered_access = ordered_access;
+	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
 
 	// DDS::PartitionQosPolicy partition
 	CORBA::ULong maximum1 = (CORBA::ULong)source.partition.name.maximum;
@@ -125,16 +116,7 @@ void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos&
 }
 
 void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos& target) {
-	// PresentationQosPolicy presentation
-	PresentationQosPolicyAccessScopeKind access_scope
-		= (PresentationQosPolicyAccessScopeKind)source.presentation.access_scope;
-	bool coherent_access
-		= (bool)source.presentation.coherent_access;
-	bool ordered_access
-		= (bool)source.presentation.ordered_access;
-	target.presentation.access_scope = access_scope;
-	target.presentation.coherent_access = coherent_access;
-	target.presentation.ordered_access = ordered_access;
+	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
 
 	// PartitionQosPolicy partition
 	uint32_t maximum1 = (uint32_t)source.partition.name.maximum();
@@ -164,6 +146,30 @@ void OpenDDSEntityFactoryQosPolicy::convert(const EntityFactoryQosPolicy& source
 void OpenDDSEntityFactoryQosPolicy::convert(const DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target) {
 	bool inner_entitiy_factory = (bool)source.autoenable_created_entities;
 	target.autoenable_created_entities = inner_entitiy_factory;
+}
+
+void OpenDDSPresentationQosPolicy::convert(const PresentationQosPolicy& source, DDS::PresentationQosPolicy& target) {
+	DDS::PresentationQosPolicyAccessScopeKind access_scope
+		= (DDS::PresentationQosPolicyAccessScopeKind)source.access_scope;
+	CORBA::Boolean coherent_access
+		= (CORBA::Boolean)source.coherent_access;
+	CORBA::Boolean ordered_access
+		= (CORBA::Boolean)source.ordered_access;
+	target.access_scope = access_scope;
+	target.coherent_access = coherent_access;
+	target.ordered_access = ordered_access;
+}
+
+void OpenDDSPresentationQosPolicy::convert(const DDS::PresentationQosPolicy& source, PresentationQosPolicy& target) {
+	PresentationQosPolicyAccessScopeKind access_scope
+		= (PresentationQosPolicyAccessScopeKind)source.access_scope;
+	bool coherent_access
+		= (bool)source.coherent_access;
+	bool ordered_access
+		= (bool)source.ordered_access;
+	target.access_scope = access_scope;
+	target.coherent_access = coherent_access;
+	target.ordered_access = ordered_access;
 }
 
 OpenDDSDomainParticipantListener::OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l) {
