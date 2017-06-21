@@ -287,4 +287,14 @@ void OpenDDSHistoryQosPolicy::convert(const HistoryQosPolicy& source, DDS::Histo
 	target.depth = (CORBA::Long) source.depth;
 }
 
+void OpenDDSResourceLimitsQosPolicy::convert(const ResourceLimitsQosPolicy& source, DDS::ResourceLimitsQosPolicy& target) {
+	target.max_samples = (CORBA::Long) source.max_samples;
+	target.max_instances = (CORBA::Long) source.max_instances;
+	target.max_samples_per_instance = (CORBA::Long) source.max_samples_per_instance;
+}
+
+void OpenDDSTransportPriorityQosPolicy::convert(const TransportPriorityQosPolicy& source, DDS::TransportPriorityQosPolicy& target) {
+	target.value = (CORBA::Long) source.value;
+}
+
 };
