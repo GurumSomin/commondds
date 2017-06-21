@@ -162,6 +162,12 @@ namespace dds {
 		static void convert(const DDS::PresentationQosPolicy& source, PresentationQosPolicy& target);
 	};
 
+	class OpenDDSPartitionQosPolicy {
+	public:
+		static void convert(const PartitionQosPolicy& source, DDS::PartitionQosPolicy& target);
+		static void convert(const DDS::PartitionQosPolicy& source, PartitionQosPolicy& target);
+	};
+
 	class OpenDDSDomainParticipantListener : public DDS::DomainParticipantListener {
 		private:
 			dds::DomainParticipantListener* listener;

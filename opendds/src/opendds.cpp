@@ -94,15 +94,7 @@ void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& sourc
 
 void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos& target) {
 	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
-
-	// DDS::PartitionQosPolicy partition
-	CORBA::ULong maximum1 = (CORBA::ULong)source.partition.name.maximum;
-	CORBA::ULong length1 = (CORBA::ULong)source.partition.name.length;
-	CORBA::Char** buffer1 = new CORBA::Char*[maximum1];
-	CORBA::Char** partition_name = source.partition.name.buffer;
-	for(uint32_t i = 0; i < maximum1; ++i)
-		buffer1[i] = strdup(partition_name[i]);
-	target.partition.name = DDS::StringSeq(maximum1, length1, buffer1, false);
+	OpenDDSPartitionQosPolicy::convert(source.partition, target.partition);
 
 	// DDS::GroupDataQosPolicy group_data
 	CORBA::ULong maximum2 = (CORBA::ULong)source.group_data.value.maximum;
@@ -117,15 +109,7 @@ void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos&
 
 void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos& target) {
 	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
-
-	// PartitionQosPolicy partition
-	uint32_t maximum1 = (uint32_t)source.partition.name.maximum();
-	uint32_t length1 = (uint32_t)source.partition.name.length();
-	char** buffer1 = new char*[maximum1];
-	char** partition_name = (char**)source.partition.name.get_buffer();
-	for(uint32_t i = 0; i < maximum1; ++i)
-		buffer1[i] = strdup(partition_name[i]);
-	target.partition.name(maximum1, length1, buffer1);
+	OpenDDSPartitionQosPolicy::convert(source.partition, target.partition);
 
 	// GroupDataQosPolicy group_data
 	uint32_t maximum2 = (uint32_t)source.group_data.value.maximum();
@@ -149,27 +133,41 @@ void OpenDDSEntityFactoryQosPolicy::convert(const DDS::EntityFactoryQosPolicy& s
 }
 
 void OpenDDSPresentationQosPolicy::convert(const PresentationQosPolicy& source, DDS::PresentationQosPolicy& target) {
-	DDS::PresentationQosPolicyAccessScopeKind access_scope
-		= (DDS::PresentationQosPolicyAccessScopeKind)source.access_scope;
-	CORBA::Boolean coherent_access
-		= (CORBA::Boolean)source.coherent_access;
-	CORBA::Boolean ordered_access
-		= (CORBA::Boolean)source.ordered_access;
+	DDS::PresentationQosPolicyAccessScopeKind access_scope = (DDS::PresentationQosPolicyAccessScopeKind)source.access_scope;
+	CORBA::Boolean coherent_access = (CORBA::Boolean)source.coherent_access;
+	CORBA::Boolean ordered_access = (CORBA::Boolean)source.ordered_access;
 	target.access_scope = access_scope;
 	target.coherent_access = coherent_access;
 	target.ordered_access = ordered_access;
 }
 
 void OpenDDSPresentationQosPolicy::convert(const DDS::PresentationQosPolicy& source, PresentationQosPolicy& target) {
-	PresentationQosPolicyAccessScopeKind access_scope
-		= (PresentationQosPolicyAccessScopeKind)source.access_scope;
-	bool coherent_access
-		= (bool)source.coherent_access;
-	bool ordered_access
-		= (bool)source.ordered_access;
+	PresentationQosPolicyAccessScopeKind access_scope = (PresentationQosPolicyAccessScopeKind)source.access_scope;
+	bool coherent_access = (bool)source.coherent_access;
+	bool ordered_access = (bool)source.ordered_access;
 	target.access_scope = access_scope;
 	target.coherent_access = coherent_access;
 	target.ordered_access = ordered_access;
+}
+
+void OpenDDSPartitionQosPolicy::convert(const PartitionQosPolicy& source, DDS::PartitionQosPolicy& target) {
+	CORBA::ULong maximum1 = (CORBA::ULong)source.name.maximum;
+	CORBA::ULong length1 = (CORBA::ULong)source.name.length;
+	CORBA::Char** buffer1 = new CORBA::Char*[maximum1];
+	CORBA::Char** partition_name = source.name.buffer;
+	for(uint32_t i = 0; i < maximum1; ++i)
+		buffer1[i] = strdup(partition_name[i]);
+	target.name = DDS::StringSeq(maximum1, length1, buffer1, false);
+}
+
+void OpenDDSPartitionQosPolicy::convert(const DDS::PartitionQosPolicy& source, PartitionQosPolicy& target) {
+	uint32_t maximum1 = (uint32_t)source.name.maximum();
+	uint32_t length1 = (uint32_t)source.name.length();
+	char** buffer1 = new char*[maximum1];
+	char** partition_name = (char**)source.name.get_buffer();
+	for(uint32_t i = 0; i < maximum1; ++i)
+		buffer1[i] = strdup(partition_name[i]);
+	target.name(maximum1, length1, buffer1);
 }
 
 OpenDDSDomainParticipantListener::OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l) {
