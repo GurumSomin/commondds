@@ -168,6 +168,12 @@ namespace dds {
 		static void convert(const DDS::PartitionQosPolicy& source, PartitionQosPolicy& target);
 	};
 
+	class OpenDDSGroupDataQosPolicy {
+	public:
+		static void convert(const GroupDataQosPolicy& source, DDS::GroupDataQosPolicy& target);
+		static void convert(const DDS::GroupDataQosPolicy& source, GroupDataQosPolicy& target);
+	};
+
 	class OpenDDSDomainParticipantListener : public DDS::DomainParticipantListener {
 		private:
 			dds::DomainParticipantListener* listener;

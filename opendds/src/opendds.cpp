@@ -95,30 +95,14 @@ void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& sourc
 void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos& target) {
 	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
 	OpenDDSPartitionQosPolicy::convert(source.partition, target.partition);
-
-	// DDS::GroupDataQosPolicy group_data
-	CORBA::ULong maximum2 = (CORBA::ULong)source.group_data.value.maximum;
-	CORBA::ULong length2 = (CORBA::ULong)source.group_data.value.length;
-	CORBA::Octet* buffer2 = new CORBA::Octet[maximum2];
-	std::memcpy(buffer2, source.group_data.value.buffer, maximum2);
-	target.group_data.value = DDS::OctetSeq(maximum2, length2, buffer2);
-
-	// DDS::EntityFactoryQosPolicy entity_factory
+	OpenDDSGroupDataQosPolicy::convert(source.group_data, target.group_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
 void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos& target) {
 	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
 	OpenDDSPartitionQosPolicy::convert(source.partition, target.partition);
-
-	// GroupDataQosPolicy group_data
-	uint32_t maximum2 = (uint32_t)source.group_data.value.maximum();
-	uint32_t length2 = (uint32_t)source.group_data.value.length();
-	uint8_t* buffer2 = new uint8_t[maximum2];
-	std::memcpy(buffer2, source.group_data.value.get_buffer(), maximum2);
-	target.group_data.value(maximum2, length2, buffer2);
-
-	// EntityFactoryQosPolicy entity_factory
+	OpenDDSGroupDataQosPolicy::convert(source.group_data, target.group_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
@@ -168,6 +152,22 @@ void OpenDDSPartitionQosPolicy::convert(const DDS::PartitionQosPolicy& source, P
 	for(uint32_t i = 0; i < maximum1; ++i)
 		buffer1[i] = strdup(partition_name[i]);
 	target.name(maximum1, length1, buffer1);
+}
+
+void OpenDDSGroupDataQosPolicy::convert(const GroupDataQosPolicy& source, DDS::GroupDataQosPolicy& target) {
+	CORBA::ULong maximum2 = (CORBA::ULong)source.value.maximum;
+	CORBA::ULong length2 = (CORBA::ULong)source.value.length;
+	CORBA::Octet* buffer2 = new CORBA::Octet[maximum2];
+	std::memcpy(buffer2, source.value.buffer, maximum2);
+	target.value = DDS::OctetSeq(maximum2, length2, buffer2);
+}
+
+void OpenDDSGroupDataQosPolicy::convert(const DDS::GroupDataQosPolicy& source, GroupDataQosPolicy& target) {
+	uint32_t maximum2 = (uint32_t)source.value.maximum();
+	uint32_t length2 = (uint32_t)source.value.length();
+	uint8_t* buffer2 = new uint8_t[maximum2];
+	std::memcpy(buffer2, source.value.get_buffer(), maximum2);
+	target.value(maximum2, length2, buffer2);
 }
 
 OpenDDSDomainParticipantListener::OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l) {
