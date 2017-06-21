@@ -156,6 +156,12 @@ namespace dds {
 		static void convert(const DDS::EntityFactoryQosPolicy& source, EntityFactoryQosPolicy& target);
 	};
 
+	class OpenDDSPresentationQosPolicy {
+	public:
+		static void convert(const PresentationQosPolicy& source, DDS::PresentationQosPolicy& target);
+		static void convert(const DDS::PresentationQosPolicy& source, PresentationQosPolicy& target);
+	};
+
 	class OpenDDSDomainParticipantListener : public DDS::DomainParticipantListener {
 		private:
 			dds::DomainParticipantListener* listener;
