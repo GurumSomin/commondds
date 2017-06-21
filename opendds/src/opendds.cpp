@@ -243,6 +243,8 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
 	OpenDDSTopicDataQosPolicy::convert(source.topic_data, target.topic_data);
 	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
+	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
+	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
 	//TODO make member variable types' converter from OpenDDS to CommonDDS
 }
 
@@ -272,17 +274,31 @@ void OpenDDSDurabilityQosPolicy::convert(const DDS::DurabilityQosPolicy& source,
 void OpenDDSDurabilityServiceQosPolicy::convert(const DurabilityServiceQosPolicy& source, DDS::DurabilityServiceQosPolicy& target) {
 	target.service_cleanup_delay.sec = (CORBA::Long) source.service_cleanup_delay.sec;
 	target.service_cleanup_delay.nanosec = (CORBA::ULong) source.service_cleanup_delay.nanosec;
-	//kind is enum and has same meaning
 	target.history_kind = (DDS::HistoryQosPolicyKind) source.history_kind;
 	target.history_depth = (CORBA::Long) source.history_depth;
-	target.max_samples =  (CORBA::Long) source.max_samples;
-	target.max_instances =  (CORBA::Long) source.max_instances;
-	target.max_samples_per_instance =  (CORBA::Long) source.max_samples_per_instance;
+	target.max_samples = (CORBA::Long) source.max_samples;
+	target.max_instances = (CORBA::Long) source.max_instances;
+	target.max_samples_per_instance = (CORBA::Long) source.max_samples_per_instance;
+}
+
+void OpenDDSDurabilityServiceQosPolicy::convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target) {
+	target.service_cleanup_delay.sec = (int32_t)source.service_cleanup_delay.sec;
+	target.service_cleanup_delay.nanosec = (int32_t)source.service_cleanup_delay.nanosec;
+	target.history_kind = (HistoryQosPolicyKind)source.history_kind;
+	target.history_depth = (int32_t)source.history_depth;
+	target.max_samples = (int32_t)source.max_samples;
+	target.max_instances = (int32_t)source.max_instances;
+	target.max_samples_per_instance = (int32_t)source.max_samples_per_instance;
 }
 
 void OpenDDSDeadlineQosPolicy::convert(const DeadlineQosPolicy& source, DDS::DeadlineQosPolicy& target) {
 	target.period.sec = (CORBA::Long) source.period.sec;
 	target.period.nanosec = (CORBA::ULong) source.period.nanosec;
+}
+
+void OpenDDSDeadlineQosPolicy::convert(const DDS::DeadlineQosPolicy& source, DeadlineQosPolicy& target) {
+	target.period.sec = (int32_t)source.period.sec;
+	target.period.nanosec = (int32_t)source.period.nanosec;
 }
 
 void OpenDDSLatencyBudgetQosPolicy::convert(const LatencyBudgetQosPolicy& source, DDS::LatencyBudgetQosPolicy& target) {

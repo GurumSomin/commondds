@@ -245,25 +245,25 @@ namespace dds {
 	class OpenDDSTopicDataQosPolicy {
 	public:
 		static void convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target);
-		static void convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target); //TODO
+		static void convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target);
 	};
 
 	class OpenDDSDurabilityQosPolicy {
 	public:
 		static void convert(const DurabilityQosPolicy& source, DDS::DurabilityQosPolicy& target);
-		static void convert(const DDS::DurabilityQosPolicy& source, DurabilityQosPolicy& target); //TODO
+		static void convert(const DDS::DurabilityQosPolicy& source, DurabilityQosPolicy& target);
 	};
 
 	class OpenDDSDurabilityServiceQosPolicy {
 	public:
 		static void convert(const DurabilityServiceQosPolicy& source, DDS::DurabilityServiceQosPolicy& target);
-		static void convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target); //TODO
+		static void convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target);
 	};
 
 	class OpenDDSDeadlineQosPolicy {
 	public:
 		static void convert(const DeadlineQosPolicy& source, DDS::DeadlineQosPolicy& target);
-		static void convert(const DDS::DeadlineQosPolicy& source, DeadlineQosPolicy& target); //TODO
+		static void convert(const DDS::DeadlineQosPolicy& source, DeadlineQosPolicy& target);
 	};
 
 	class OpenDDSLatencyBudgetQosPolicy {
