@@ -226,6 +226,8 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
 	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
 	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
+	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
+	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
@@ -260,5 +262,17 @@ void OpenDDSDeadlineQosPolicy::convert(const DeadlineQosPolicy& source, DDS::Dea
 void OpenDDSLatencyBudgetQosPolicy::convert(const LatencyBudgetQosPolicy& source, DDS::LatencyBudgetQosPolicy& target) {
 	target.duration.sec = (CORBA::Long) source.duration.sec;
 	target.duration.nanosec = (CORBA::ULong) source.duration.nanosec;
+}
+
+void OpenDDSLivelinessQosPolicy::convert(const LivelinessQosPolicy& source, DDS::LivelinessQosPolicy& target) {
+	target.kind = (DDS::LivelinessQosPolicyKind) source.kind;
+	target.lease_duration.sec = (CORBA::Long) source.lease_duration.sec;
+	target.lease_duration.nanosec = (CORBA::ULong) source.lease_duration.nanosec;
+}
+
+void OpenDDSReliabilityQosPolicy::convert(const ReliabilityQosPolicy& source, DDS::ReliabilityQosPolicy& target) {
+	target.kind = (DDS::ReliabilityQosPolicyKind) source.kind;
+	target.max_blocking_time.sec = (CORBA::Long) source.max_blocking_time.sec;
+	target.max_blocking_time.nanosec = (CORBA::ULong) source.max_blocking_time.nanosec;
 }
 };
