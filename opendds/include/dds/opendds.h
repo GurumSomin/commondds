@@ -260,6 +260,17 @@ namespace dds {
 		static void convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target); //TODO
 	};
 
+	class OpenDDSDeadlineQosPolicy {
+	public:
+		static void convert(const DeadlineQosPolicy& source, DDS::DeadlineQosPolicy& target);
+		static void convert(const DDS::DeadlineQosPolicy& source, DeadlineQosPolicy& target); //TODO
+	};
+
+	class OpenDDSLatencyBudgetQosPolicy {
+	public:
+		static void convert(const LatencyBudgetQosPolicy& source, DDS::LatencyBudgetQosPolicy& target);
+		static void convert(const DDS::LatencyBudgetQosPolicy& source, LatencyBudgetQosPolicy& target); //TODO
+	};
 	//TODO 0. Make rest of `TopicQos' member variable type` converter from CommonDDS to OpenDDS
 
 };

@@ -224,6 +224,8 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 	OpenDDSTopicDataQosPolicy::convert(source.topic_data, target.topic_data);
 	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
 	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
+	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
+	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
@@ -250,4 +252,13 @@ void OpenDDSDurabilityServiceQosPolicy::convert(const DurabilityServiceQosPolicy
 	target.max_samples_per_instance =  (CORBA::Long) source.max_samples_per_instance;
 }
 
+void OpenDDSDeadlineQosPolicy::convert(const DeadlineQosPolicy& source, DDS::DeadlineQosPolicy& target) {
+	target.period.sec = (CORBA::Long) source.period.sec;
+	target.period.nanosec = (CORBA::ULong) source.period.nanosec;
+}
+
+void OpenDDSLatencyBudgetQosPolicy::convert(const LatencyBudgetQosPolicy& source, DDS::LatencyBudgetQosPolicy& target) {
+	target.duration.sec = (CORBA::Long) source.duration.sec;
+	target.duration.nanosec = (CORBA::ULong) source.duration.nanosec;
+}
 };
