@@ -220,7 +220,6 @@ void OpenDDSInconsistentTopicStatus::convert(const DDS::InconsistentTopicStatus&
 }
 
 void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
-	//PENDING..
 	OpenDDSTopicDataQosPolicy::convert(source.topic_data, target.topic_data);
 	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
 	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
@@ -230,6 +229,8 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
 	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
 	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
+	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
+	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
@@ -295,6 +296,15 @@ void OpenDDSResourceLimitsQosPolicy::convert(const ResourceLimitsQosPolicy& sour
 
 void OpenDDSTransportPriorityQosPolicy::convert(const TransportPriorityQosPolicy& source, DDS::TransportPriorityQosPolicy& target) {
 	target.value = (CORBA::Long) source.value;
+}
+
+void OpenDDSLifespanQosPolicy::convert(const LifespanQosPolicy& source, DDS::LifespanQosPolicy& target) {
+	target.duration.sec = (CORBA::Long) source.duration.sec;
+	target.duration.nanosec = (CORBA::ULong) source.duration.nanosec;
+}
+
+void OpenDDSOwnershipQosPolicy::convert(const OwnershipQosPolicy& source, DDS::OwnershipQosPolicy& target) {
+	target.kind = (DDS::OwnershipQosPolicyKind) source.kind;
 }
 
 };
