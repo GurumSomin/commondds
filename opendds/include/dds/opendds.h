@@ -196,18 +196,24 @@ namespace dds {
 		virtual ~OpenDDSTopic();
 		DDS::Topic* get_topic();
 
-		//TODO 1. generate under functions.
-		ReturnCode_t set_qos(const TopicQos* qos);
+		//TODO 0. change params type 2. generate under functions.
+		ReturnCode_t set_qos(const TopicQos* qos); //PENDING
 		ReturnCode_t get_qos(TopicQos* qos);
 		ReturnCode_t set_listener(const TopicListener* a_listener, const StatusMask mask);
 		TopicListener* get_listener();
-		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus* a_status);
+		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus& a_status);
 	};
 
 	class OpenDDSInconsistentTopicStatus {
 	public:
 		static void convert(const InconsistentTopicStatus& source, DDS::InconsistentTopicStatus& target);
 		static void convert(const DDS::InconsistentTopicStatus& source, InconsistentTopicStatus& target);
+	};
+
+	class OpenDDSTopicQos {
+	public:
+		static void convert(const TopicQos& source, DDS::TopicQos& target);
+		static void convert(const DDS::TopicQos& source, TopicQos& target);
 	};
 
 };

@@ -27,10 +27,12 @@ DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 
 	DDS::DomainParticipantQos qos2;
 
+	DDS::DomainId_t domain_id2 = (DDS::DomainId_t) domain_id;
 	OpenDDSDomainParticipantQos::convert(qos, qos2);
 	OpenDDSDomainParticipantListener* a_listener2 = new OpenDDSDomainParticipantListener(a_listener);
+	DDS::StatusMask mask2 = (DDS::StatusMask) mask;
 
-	DDS::DomainParticipant* dp = instance->create_participant(domain_id, qos2, a_listener2, mask);
+	DDS::DomainParticipant* dp = instance->create_participant(domain_id2, qos2, a_listener2, mask2);
 
 	return new OpenDDSDomainParticipant(this, dp);
 }
@@ -190,6 +192,12 @@ OpenDDSTopic::OpenDDSTopic(DDS::Topic* the_topic) {
 OpenDDSTopic::~OpenDDSTopic() {
 	DDS::DomainParticipant* dp = topic->get_participant();
 	dp->delete_topic(topic);
+}
+
+ReturnCode_t OpenDDSTopic::set_qos(const TopicQos* qos) {
+	//TODO 1. make TopicQos converter
+	DDS::TopicQos qos2;
+	return (dds::ReturnCode_t) topic->set_qos(qos2);
 }
 
 void OpenDDSInconsistentTopicStatus::convert(const InconsistentTopicStatus& source, DDS::InconsistentTopicStatus& target) {
