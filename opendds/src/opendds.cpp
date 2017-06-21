@@ -241,6 +241,8 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 }
 
 void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
+	OpenDDSTopicDataQosPolicy::convert(source.topic_data, target.topic_data);
+	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
 	//TODO make member variable types' converter from OpenDDS to CommonDDS
 }
 
@@ -252,9 +254,19 @@ void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::T
 	target.value = DDS::OctetSeq(maximum, length, buffer);
 }
 
+void OpenDDSTopicDataQosPolicy::convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target) {
+	uint32_t maximum = (uint32_t)source.value.maximum;
+	uint32_t length = (uint32_t)source.value.length;
+	uint8_t* buffer = new uint8_t[maximum];
+	std::memcpy(buffer, source.value.get_buffer, maximum);
+	target.value(maximum, length, buffer);
+}
 void OpenDDSDurabilityQosPolicy::convert(const DurabilityQosPolicy& source, DDS::DurabilityQosPolicy& target) {
-	//kind is enum and has same meaning
 	target.kind = (DDS::DurabilityQosPolicyKind) source.kind;
+}
+
+void OpenDDSDurabilityQosPolicy::convert(const DDS::DurabilityQosPolicy& source, DurabilityQosPolicy& target) {
+	target.kind = (DurabilityQosPolicyKind) source.kind;
 }
 
 void OpenDDSDurabilityServiceQosPolicy::convert(const DurabilityServiceQosPolicy& source, DDS::DurabilityServiceQosPolicy& target) {
