@@ -1183,14 +1183,14 @@ namespace dds {
 		
 		// Factory interfaces
 		Publisher* create_publisher(
-			const PublisherQos* qos,
-			const PublisherListener* a_listener,
+			const PublisherQos& qos,
+			PublisherListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_publisher(
 			const Publisher* p);
 		Subscriber* create_subscriber(
-			const SubscriberQos* qos,
-			const SubscriberListener* a_listener,
+			const SubscriberQos& qos,
+			SubscriberListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_subscriber(
 			const Subscriber* s);
@@ -1198,8 +1198,8 @@ namespace dds {
 		Topic* create_topic(
 			const char* topic_name,
 			const char* type_name,
-			const TopicQos* qos,
-			const TopicListener* a_listener,
+			const TopicQos& qos,
+			TopicListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_topic(
 			Topic* a_topic);
@@ -1224,11 +1224,11 @@ namespace dds {
 			const MultiTopic* a_multitopic);
 		ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
-			const DomainParticipantQos* qos);
+			const DomainParticipantQos& qos);
 		ReturnCode_t get_qos(
-			DomainParticipantQos* qos);
+			DomainParticipantQos& qos);
 		ReturnCode_t set_listener(
-			const DomainParticipantListener* a_listener,
+			DomainParticipantListener* a_listener,
 			const StatusMask mask);
 		DomainParticipantListener* get_listener();
 		ReturnCode_t ignore_participant(
@@ -1242,17 +1242,17 @@ namespace dds {
 		DomainId_t get_domain_id();
 		ReturnCode_t assert_liveliness();
 		ReturnCode_t set_default_publisher_qos(
-			const PublisherQos* qos);
+			const PublisherQos& qos);
 		ReturnCode_t get_default_publisher_qos(
-			PublisherQos* qos);
+			PublisherQos& qos);
 		ReturnCode_t set_default_subscriber_qos(
-			const SubscriberQos* qos);
+			const SubscriberQos& qos);
 		ReturnCode_t get_default_subscriber_qos(
-			SubscriberQos* qos);
+			SubscriberQos& qos);
 		ReturnCode_t set_default_topic_qos(
-			const TopicQos* qos);
+			const TopicQos& qos);
 		ReturnCode_t get_default_topic_qos(
-			TopicQos* qos);
+			TopicQos& qos);
 		ReturnCode_t get_discovered_participants(
 			InstanceHandleSeq* participant_handles);
 		ReturnCode_t get_discovered_participant_data(
@@ -1287,21 +1287,21 @@ namespace dds {
 	public:
 		virtual DomainParticipant* create_participant(
 			DomainId_t domain_id,
-			const DomainParticipantQos* qos,
-			const DomainParticipantListener* a_listener,
+			const DomainParticipantQos& qos,
+			DomainParticipantListener* a_listener,
 			const StatusMask mask);
 		virtual ReturnCode_t delete_participant(
 			const DomainParticipant* a_participant);
 		virtual DomainParticipant* lookup_participant(
 			DomainId_t domain_id);
 		virtual ReturnCode_t set_default_participant_qos(
-			const DomainParticipantQos* qos);
+			const DomainParticipantQos& qos);
 		virtual ReturnCode_t get_default_participant_qos(
-			DomainParticipantQos* qos);
+			DomainParticipantQos& qos);
 		virtual ReturnCode_t set_qos(
-			const DomainParticipantFactoryQos* qos);
+			const DomainParticipantFactoryQos& qos);
 		virtual ReturnCode_t get_qos(
-			DomainParticipantFactoryQos* qos);
+			DomainParticipantFactoryQos& qos);
 	};
 	
 	class TypeSupport {
@@ -1332,11 +1332,11 @@ namespace dds {
 		virtual ~Topic();
 		
 		ReturnCode_t set_qos(
-			const TopicQos* qos);
+			const TopicQos& qos);
 		ReturnCode_t get_qos(
-			TopicQos* qos);
+			TopicQos& qos);
 		ReturnCode_t set_listener(
-			const TopicListener* a_listener,
+			TopicListener* a_listener,
 			const StatusMask mask);
 		TopicListener* get_listener();
 		
@@ -1383,8 +1383,8 @@ namespace dds {
 		
 		DataWriter* create_datawriter(
 			Topic* a_topic,
-			const DataWriterQos* qos,
-			const DataWriterListener* a_listener,
+			const DataWriterQos& qos,
+			DataWriterListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_datawriter(
 			DataWriter* a_datawriter);
@@ -1392,11 +1392,11 @@ namespace dds {
 			const char* topic_name);
 		ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
-			const PublisherQos* qos);
+			const PublisherQos& qos);
 		ReturnCode_t get_qos(
-			PublisherQos* qos);
+			PublisherQos& qos);
 		ReturnCode_t set_listener(
-			const PublisherListener* a_listener,
+			PublisherListener* a_listener,
 			const StatusMask mask);
 		PublisherListener* get_listener();
 		ReturnCode_t suspend_publications();
@@ -1407,12 +1407,12 @@ namespace dds {
 			const Duration_t* max_wait);
 		DomainParticipant* get_participant();
 		ReturnCode_t set_default_datawriter_qos(
-			const DataWriterQos* qos);
+			const DataWriterQos& qos);
 		ReturnCode_t get_default_datawriter_qos(
-			DataWriterQos* qos);
+			DataWriterQos& qos);
 		ReturnCode_t copy_from_topic_qos(
-			DataWriterQos* a_datawriter_qos,
-			const TopicQos* a_topic_qos);
+			DataWriterQos& a_datawriter_qos,
+			const TopicQos& a_topic_qos);
 	};
 	
 	class DataWriter : public Entity {
@@ -1453,11 +1453,11 @@ namespace dds {
 		// 	const Data* instance_data);
 		
 		ReturnCode_t set_qos(
-			const DataWriterQos* qos);
+			const DataWriterQos& qos);
 		ReturnCode_t get_qos(
-			DataWriterQos* qos);
+			DataWriterQos& qos);
 		ReturnCode_t set_listener(
-			const DataWriterListener* a_listener,
+			DataWriterListener* a_listener,
 			const StatusMask mask);
 		DataWriterListener* get_listener();
 		Topic* get_topic();
@@ -1489,8 +1489,8 @@ namespace dds {
 		
 		DataReader* create_datareader(
 			const TopicDescription* a_topic,
-			const DataReaderQos* qos,
-			const DataReaderListener* a_listener,
+			const DataReaderQos& qos,
+			DataReaderListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_datareader(
 			DataReader* a_datareader);
@@ -1504,23 +1504,23 @@ namespace dds {
 			const InstanceStateMask* instance_states);
 		ReturnCode_t notify_datareaders();
 		ReturnCode_t set_qos(
-			const SubscriberQos* qos);
+			const SubscriberQos& qos);
 		ReturnCode_t get_qos(
-			SubscriberQos* qos);
+			SubscriberQos& qos);
 		ReturnCode_t set_listener(
-			const SubscriberListener* a_listener,
+			SubscriberListener* a_listener,
 			const StatusMask mask);
 		SubscriberListener* get_listener();
 		ReturnCode_t begin_access();
 		ReturnCode_t end_access();
 		DomainParticipant* get_participant();
 		ReturnCode_t set_default_datareader_qos(
-			const DataReaderQos* qos);
+			const DataReaderQos& qos);
 		ReturnCode_t get_default_datareader_qos(
-			DataReaderQos* qos);
+			DataReaderQos& qos);
 		ReturnCode_t copy_from_topic_qos(
-			DataReaderQos* a_datareader_qos,
-			const TopicQos* a_topic_qos);
+			DataReaderQos& a_datareader_qos,
+			const TopicQos& a_topic_qos);
 	};
 	
 	class DataReader : public Entity {
@@ -1625,11 +1625,11 @@ namespace dds {
 			const ReadCondition* a_condition);
 		ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
-			const DataReaderQos* qos);
+			const DataReaderQos& qos);
 		ReturnCode_t get_qos(
-			DataReaderQos* qos);
+			DataReaderQos& qos);
 		ReturnCode_t set_listener(
-			const DataReaderListener* a_listener,
+			DataReaderListener* a_listener,
 			const StatusMask mask);
 		DataReaderListener* get_listener();
 		TopicDescription* get_topicdescription();

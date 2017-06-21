@@ -45,19 +45,19 @@ DomainParticipant* OpenDDSDomainParticipantFactory::lookup_participant(DomainId_
 	return NULL;
 }
 
-ReturnCode_t OpenDDSDomainParticipantFactory::set_default_participant_qos(const DomainParticipantQos* qos) {
+ReturnCode_t OpenDDSDomainParticipantFactory::set_default_participant_qos(const DomainParticipantQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t OpenDDSDomainParticipantFactory::get_default_participant_qos(DomainParticipantQos* qos) {
+ReturnCode_t OpenDDSDomainParticipantFactory::get_default_participant_qos(DomainParticipantQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t OpenDDSDomainParticipantFactory::set_qos(const DomainParticipantFactoryQos* qos) {
+ReturnCode_t OpenDDSDomainParticipantFactory::set_qos(const DomainParticipantFactoryQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t OpenDDSDomainParticipantFactory::get_qos(DomainParticipantFactoryQos* qos) {
+ReturnCode_t OpenDDSDomainParticipantFactory::get_qos(DomainParticipantFactoryQos& qos) {
 	return RETCODE_ERROR;
 }
 
@@ -194,8 +194,8 @@ OpenDDSTopic::~OpenDDSTopic() {
 	dp->delete_topic(topic);
 }
 
-ReturnCode_t OpenDDSTopic::set_qos(const TopicQos* qos) {
-	//TODO 1. make TopicQos converter
+ReturnCode_t OpenDDSTopic::set_qos(const TopicQos& qos) {
+	//TODO 0. make TopicQos converter
 	DDS::TopicQos qos2;
 	return (dds::ReturnCode_t) topic->set_qos(qos2);
 }
