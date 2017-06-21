@@ -28,13 +28,13 @@ namespace dds {
 		virtual DomainParticipant* lookup_participant(
 			DomainId_t domain_id);
 		virtual ReturnCode_t set_default_participant_qos(
-			const DomainParticipantQos* qos);
+			const DomainParticipantQos& qos);
 		virtual ReturnCode_t get_default_participant_qos(
-			DomainParticipantQos* qos);
+			DomainParticipantQos& qos);
 		virtual ReturnCode_t set_qos(
-			const DomainParticipantFactoryQos* qos);
+			const DomainParticipantFactoryQos& qos);
 		virtual ReturnCode_t get_qos(
-			DomainParticipantFactoryQos* qos);
+			DomainParticipantFactoryQos& qos);
 	};
 
 	class OpenDDSDomainParticipant : public DomainParticipant {
@@ -51,14 +51,14 @@ namespace dds {
 		/*
 		// Factory interfaces
 		Publisher* create_publisher(
-			const PublisherQos* qos,
-			const PublisherListener* a_listener,
+			const PublisherQos& qos,
+			PublisherListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_publisher(
 			const Publisher* p);
 		Subscriber* create_subscriber(
-			const SubscriberQos* qos,
-			const SubscriberListener* a_listener,
+			const SubscriberQos& qos,
+			SubscriberListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_subscriber(
 			const Subscriber* s);
@@ -66,8 +66,8 @@ namespace dds {
 		Topic* create_topic(
 			const char* topic_name,
 			const char* type_name,
-			const TopicQos* qos,
-			const TopicListener* a_listener,
+			const TopicQos& qos,
+			TopicListener* a_listener,
 			const StatusMask mask);
 		ReturnCode_t delete_topic(
 			const Topic* a_topic);
@@ -92,11 +92,11 @@ namespace dds {
 			const MultiTopic* a_multitopic);
 		ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
-			const DomainParticipantQos* qos);
+			const DomainParticipantQos& qos);
 		ReturnCode_t get_qos(
-			DomainParticipantQos* qos);
+			DomainParticipantQos& qos);
 		ReturnCode_t set_listener(
-			const DomainParticipantListener* a_listener,
+			DomainParticipantListener* a_listener,
 			const StatusMask mask);
 		DomainParticipantListener* get_listener();
 		ReturnCode_t ignore_participant(
@@ -110,17 +110,17 @@ namespace dds {
 		DomainId_t get_domain_id();
 		ReturnCode_t assert_liveliness();
 		ReturnCode_t set_default_publisher_qos(
-			const PublisherQos* qos);
+			const PublisherQos& qos);
 		ReturnCode_t get_default_publisher_qos(
-			PublisherQos* qos);
+			PublisherQos& qos);
 		ReturnCode_t set_default_subscriber_qos(
-			const SubscriberQos* qos);
+			const SubscriberQos& qos);
 		ReturnCode_t get_default_subscriber_qos(
-			SubscriberQos* qos);
+			SubscriberQos& qos);
 		ReturnCode_t set_default_topic_qos(
-			const TopicQos* qos);
+			const TopicQos& qos);
 		ReturnCode_t get_default_topic_qos(
-			TopicQos* qos);
+			TopicQos& qos);
 		ReturnCode_t get_discovered_participants(
 			InstanceHandleSeq* participant_handles);
 		ReturnCode_t get_discovered_participant_data(
@@ -196,10 +196,10 @@ namespace dds {
 		virtual ~OpenDDSTopic();
 		DDS::Topic* get_topic();
 
-		//TODO 0. change params type 2. generate under functions.
-		ReturnCode_t set_qos(const TopicQos* qos); //PENDING
-		ReturnCode_t get_qos(TopicQos* qos);
-		ReturnCode_t set_listener(const TopicListener* a_listener, const StatusMask mask);
+		//TODO 1. generate under functions.
+		ReturnCode_t set_qos(const TopicQos& qos); //PENDING
+		ReturnCode_t get_qos(TopicQos& qos);
+		ReturnCode_t set_listener(TopicListener* a_listener, const StatusMask mask);
 		TopicListener* get_listener();
 		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus& a_status);
 	};

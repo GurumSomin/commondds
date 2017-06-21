@@ -1305,8 +1305,8 @@ DomainParticipant::~DomainParticipant() {
 
 
 Publisher* DomainParticipant::create_publisher(
-	const PublisherQos* qos,
-	const PublisherListener* a_listener,
+	const PublisherQos& qos,
+	PublisherListener* a_listener,
 	const StatusMask mask) {
 
 	return NULL;
@@ -1317,8 +1317,8 @@ ReturnCode_t DomainParticipant::delete_publisher(const Publisher* p) {
 }
 
 Subscriber* DomainParticipant::create_subscriber(
-	const SubscriberQos* qos,
-	const SubscriberListener* a_listener,
+	const SubscriberQos& qos,
+	SubscriberListener* a_listener,
 	const StatusMask mask) {
 
 	return NULL;
@@ -1335,8 +1335,8 @@ Subscriber* DomainParticipant::get_builtin_subscriber() {
 Topic* DomainParticipant::create_topic(
 	const char* topic_name,
 	const char* type_name,
-	const TopicQos* qos,
-	const TopicListener* a_listener,
+	const TopicQos& qos,
+	TopicListener* a_listener,
 	const StatusMask mask) {
 
 	return NULL;
@@ -1383,15 +1383,15 @@ ReturnCode_t DomainParticipant::delete_contained_entities() {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::set_qos(const DomainParticipantQos* qos) {
+ReturnCode_t DomainParticipant::set_qos(const DomainParticipantQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::get_qos(DomainParticipantQos* qos) {
+ReturnCode_t DomainParticipant::get_qos(DomainParticipantQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::set_listener(const DomainParticipantListener* a_listener, const StatusMask mask) {
+ReturnCode_t DomainParticipant::set_listener(DomainParticipantListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1423,27 +1423,27 @@ ReturnCode_t DomainParticipant::assert_liveliness() {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::set_default_publisher_qos(const PublisherQos* qos) {
+ReturnCode_t DomainParticipant::set_default_publisher_qos(const PublisherQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::get_default_publisher_qos(PublisherQos* qos) {
+ReturnCode_t DomainParticipant::get_default_publisher_qos(PublisherQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::set_default_subscriber_qos(const SubscriberQos* qos) {
+ReturnCode_t DomainParticipant::set_default_subscriber_qos(const SubscriberQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::get_default_subscriber_qos(SubscriberQos* qos) {
+ReturnCode_t DomainParticipant::get_default_subscriber_qos(SubscriberQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::set_default_topic_qos(const TopicQos* qos) {
+ReturnCode_t DomainParticipant::set_default_topic_qos(const TopicQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipant::get_default_topic_qos(TopicQos* qos) {
+ReturnCode_t DomainParticipant::get_default_topic_qos(TopicQos& qos) {
 	return RETCODE_ERROR;
 }
 
@@ -1586,8 +1586,8 @@ DomainParticipantFactory::~DomainParticipantFactory() {
 
 DomainParticipant* DomainParticipantFactory::create_participant(
 	DomainId_t domain_id,
-	const DomainParticipantQos* qos,
-	const DomainParticipantListener* a_listener,
+	const DomainParticipantQos& qos,
+	DomainParticipantListener* a_listener,
 	const StatusMask mask) {
 
 	return NULL;
@@ -1601,19 +1601,19 @@ DomainParticipant* DomainParticipantFactory::lookup_participant(DomainId_t domai
 	return NULL;
 }
 
-ReturnCode_t DomainParticipantFactory::set_default_participant_qos(const DomainParticipantQos* qos) {
+ReturnCode_t DomainParticipantFactory::set_default_participant_qos(const DomainParticipantQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipantFactory::get_default_participant_qos(DomainParticipantQos* qos) {
+ReturnCode_t DomainParticipantFactory::get_default_participant_qos(DomainParticipantQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipantFactory::set_qos(const DomainParticipantFactoryQos* qos) {
+ReturnCode_t DomainParticipantFactory::set_qos(const DomainParticipantFactoryQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DomainParticipantFactory::get_qos(DomainParticipantFactoryQos* qos) {
+ReturnCode_t DomainParticipantFactory::get_qos(DomainParticipantFactoryQos& qos) {
 	return RETCODE_ERROR;
 }
 
@@ -1647,15 +1647,15 @@ Topic::Topic() {
 Topic::~Topic() {
 }
 
-ReturnCode_t Topic::set_qos(const TopicQos* qos) {
+ReturnCode_t Topic::set_qos(const TopicQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Topic::get_qos(TopicQos* qos) {
+ReturnCode_t Topic::get_qos(TopicQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Topic::set_listener(const TopicListener* a_listener, const StatusMask mask) {
+ReturnCode_t Topic::set_listener(TopicListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1715,8 +1715,8 @@ Publisher::~Publisher() {
 
 DataWriter* Publisher::create_datawriter(
 	Topic* a_topic,
-	const DataWriterQos* qos,
-	const DataWriterListener* a_listener,
+	const DataWriterQos& qos,
+	DataWriterListener* a_listener,
 	const StatusMask mask) {
 
 	return NULL;
@@ -1734,15 +1734,15 @@ ReturnCode_t Publisher::delete_contained_entities() {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Publisher::set_qos(const PublisherQos* qos) {
+ReturnCode_t Publisher::set_qos(const PublisherQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Publisher::get_qos(PublisherQos* qos) {
+ReturnCode_t Publisher::get_qos(PublisherQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Publisher::set_listener(const PublisherListener* a_listener, const StatusMask mask) {
+ReturnCode_t Publisher::set_listener(PublisherListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1774,15 +1774,15 @@ DomainParticipant* Publisher::get_participant() {
 	return NULL;
 }
 
-ReturnCode_t Publisher::set_default_datawriter_qos(const DataWriterQos* qos) {
+ReturnCode_t Publisher::set_default_datawriter_qos(const DataWriterQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Publisher::get_default_datawriter_qos(DataWriterQos* qos) {
+ReturnCode_t Publisher::get_default_datawriter_qos(DataWriterQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Publisher::copy_from_topic_qos(DataWriterQos* a_datawriter_qos, const TopicQos* a_topic_qos) {
+ReturnCode_t Publisher::copy_from_topic_qos(DataWriterQos& a_datawriter_qos, const TopicQos& a_topic_qos) {
 	return RETCODE_ERROR;
 }
 
@@ -1792,15 +1792,15 @@ DataWriter::DataWriter() {
 DataWriter::~DataWriter() {
 }
 
-ReturnCode_t DataWriter::set_qos(const DataWriterQos* qos) {
+ReturnCode_t DataWriter::set_qos(const DataWriterQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataWriter::get_qos(DataWriterQos* qos) {
+ReturnCode_t DataWriter::get_qos(DataWriterQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataWriter::set_listener(const DataWriterListener* a_listener, const StatusMask mask) {
+ReturnCode_t DataWriter::set_listener(DataWriterListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1856,8 +1856,8 @@ Subscriber::~Subscriber() {
 
 DataReader* Subscriber::create_datareader(
 	const TopicDescription* a_topic,
-	const DataReaderQos* qos,
-	const DataReaderListener* a_listener,
+	const DataReaderQos& qos,
+	DataReaderListener* a_listener,
 	const StatusMask mask) {
 
 	return NULL;
@@ -1888,15 +1888,15 @@ ReturnCode_t Subscriber::notify_datareaders() {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Subscriber::set_qos(const SubscriberQos* qos) {
+ReturnCode_t Subscriber::set_qos(const SubscriberQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Subscriber::get_qos(SubscriberQos* qos) {
+ReturnCode_t Subscriber::get_qos(SubscriberQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Subscriber::set_listener(const SubscriberListener* a_listener, const StatusMask mask) {
+ReturnCode_t Subscriber::set_listener(SubscriberListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
@@ -1916,15 +1916,15 @@ DomainParticipant* Subscriber::get_participant() {
 	return NULL;
 }
 
-ReturnCode_t Subscriber::set_default_datareader_qos(const DataReaderQos* qos) {
+ReturnCode_t Subscriber::set_default_datareader_qos(const DataReaderQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Subscriber::get_default_datareader_qos(DataReaderQos* qos) {
+ReturnCode_t Subscriber::get_default_datareader_qos(DataReaderQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t Subscriber::copy_from_topic_qos(DataReaderQos* a_datareader_qos, const TopicQos* a_topic_qos) {
+ReturnCode_t Subscriber::copy_from_topic_qos(DataReaderQos& a_datareader_qos, const TopicQos& a_topic_qos) {
 	return RETCODE_ERROR;
 }
 
@@ -1960,15 +1960,15 @@ ReturnCode_t DataReader::delete_contained_entities() {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::set_qos(const DataReaderQos* qos) {
+ReturnCode_t DataReader::set_qos(const DataReaderQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::get_qos(DataReaderQos* qos) {
+ReturnCode_t DataReader::get_qos(DataReaderQos& qos) {
 	return RETCODE_ERROR;
 }
 
-ReturnCode_t DataReader::set_listener(const DataReaderListener* a_listener, const StatusMask mask) {
+ReturnCode_t DataReader::set_listener(DataReaderListener* a_listener, const StatusMask mask) {
 	return RETCODE_ERROR;
 }
 
