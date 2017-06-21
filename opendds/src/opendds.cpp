@@ -73,22 +73,12 @@ OpenDDSDomainParticipant::~OpenDDSDomainParticipant() {
 }
 
 void OpenDDSDomainParticipantQos::convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
-	CORBA::ULong maximum = (CORBA::ULong)source.user_data.value.maximum;
-	CORBA::ULong length = (CORBA::ULong)source.user_data.value.length;
-	CORBA::Octet* buffer = new CORBA::Octet[maximum];
-	std::memcpy(buffer, source.user_data.value.buffer, maximum);
-
-	target.user_data.value = DDS::OctetSeq(maximum, length, buffer);
+	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
 void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& source, DomainParticipantQos& target) {
-	uint32_t maximum = (uint32_t)source.user_data.value.maximum();
-	uint32_t length = (uint32_t)source.user_data.value.length();
-	uint8_t* buffer = new uint8_t[maximum];
-	std::memcpy(buffer, source.user_data.value.get_buffer(), maximum);
-
-	target.user_data.value(maximum, length, buffer);
+	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
@@ -168,6 +158,21 @@ void OpenDDSGroupDataQosPolicy::convert(const DDS::GroupDataQosPolicy& source, G
 	uint8_t* buffer2 = new uint8_t[maximum2];
 	std::memcpy(buffer2, source.value.get_buffer(), maximum2);
 	target.value(maximum2, length2, buffer2);
+}
+
+void OpenDDSUserDataQosPolicy::convert(const UserDataQosPolicy& source, DDS::UserDataQosPolicy& target) {
+	CORBA::ULong maximum = (CORBA::ULong)source.value.maximum;
+	CORBA::ULong length = (CORBA::ULong)source.value.length;
+	CORBA::Octet* buffer = new CORBA::Octet[maximum];
+	std::memcpy(buffer, source.value.buffer, maximum);
+	target.value = DDS::OctetSeq(maximum, length, buffer);
+}
+void OpenDDSUserDataQosPolicy::convert(const DDS::UserDataQosPolicy& source, UserDataQosPolicy& target) {
+	uint32_t maximum = (uint32_t)source.value.maximum();
+	uint32_t length = (uint32_t)source.value.length();
+	uint8_t* buffer = new uint8_t[maximum];
+	std::memcpy(buffer, source.value.get_buffer(), maximum);
+	target.value(maximum, length, buffer);
 }
 
 OpenDDSDomainParticipantListener::OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l) {

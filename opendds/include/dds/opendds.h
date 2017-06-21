@@ -138,6 +138,7 @@ namespace dds {
 		*/
 	};
 
+
 	class OpenDDSDomainParticipantQos {
 	public:
 		static void convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target);
@@ -172,6 +173,12 @@ namespace dds {
 	public:
 		static void convert(const GroupDataQosPolicy& source, DDS::GroupDataQosPolicy& target);
 		static void convert(const DDS::GroupDataQosPolicy& source, GroupDataQosPolicy& target);
+	};
+
+	class OpenDDSUserDataQosPolicy {
+	public:
+		static void convert(const UserDataQosPolicy& source, DDS::UserDataQosPolicy& target);
+		static void convert(const DDS::UserDataQosPolicy& source, UserDataQosPolicy& target);
 	};
 
 	class OpenDDSDomainParticipantListener : public DDS::DomainParticipantListener {
