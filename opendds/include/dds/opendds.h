@@ -222,8 +222,8 @@ namespace dds {
 		DDS::Topic* get_topic();
 
 		ReturnCode_t set_qos(const TopicQos& qos);
-		//TODO 2. generate under functions.
 		ReturnCode_t get_qos(TopicQos& qos);
+		//TODO 1. generate under functions.
 		ReturnCode_t set_listener(TopicListener* a_listener, const StatusMask mask);
 		TopicListener* get_listener();
 		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus& a_status);
@@ -237,8 +237,8 @@ namespace dds {
 
 	class OpenDDSTopicQos {
 	public:
-		//TODO 1. generate under functions.
-		static void convert(const TopicQos& source, DDS::TopicQos& target); // PENDING
+		static void convert(const TopicQos& source, DDS::TopicQos& target);
+		//TODO 0. generate under function.
 		static void convert(const DDS::TopicQos& source, TopicQos& target);
 	};
 

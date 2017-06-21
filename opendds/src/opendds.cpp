@@ -209,6 +209,13 @@ ReturnCode_t OpenDDSTopic::set_qos(const TopicQos& qos) {
 	return (dds::ReturnCode_t) topic->set_qos(qos2);
 }
 
+ReturnCode_t OpenDDSTopic::get_qos(TopicQos& qos) {
+	DDS::TopicQos qos2;
+	ReturnCode_t rc = (dds::ReturnCode_t) topic->get_qos(qos2);
+	OpenDDSTopicQos::convert(qos2, qos);
+	return rc;
+}
+
 void OpenDDSInconsistentTopicStatus::convert(const InconsistentTopicStatus& source, DDS::InconsistentTopicStatus& target) {
 	target.total_count = (CORBA::Long) source.total_count_change;
 	target.total_count_change = (CORBA::Long) source.total_count_change;
@@ -231,6 +238,10 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
 	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
 	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
+}
+
+void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
+	//TODO make member variable types' converter from OpenDDS to CommonDDS
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
