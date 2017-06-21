@@ -228,6 +228,8 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
 	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
 	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
+	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
@@ -275,4 +277,14 @@ void OpenDDSReliabilityQosPolicy::convert(const ReliabilityQosPolicy& source, DD
 	target.max_blocking_time.sec = (CORBA::Long) source.max_blocking_time.sec;
 	target.max_blocking_time.nanosec = (CORBA::ULong) source.max_blocking_time.nanosec;
 }
+
+void OpenDDSDestinationOrderQosPolicy::convert(const DestinationOrderQosPolicy& source, DDS::DestinationOrderQosPolicy& target) {
+	target.kind = (DDS::DestinationOrderQosPolicyKind) source.kind;
+}
+
+void OpenDDSHistoryQosPolicy::convert(const HistoryQosPolicy& source, DDS::HistoryQosPolicy& target) {
+	target.kind = (DDS::HistoryQosPolicyKind) source.kind;
+	target.depth = (CORBA::Long) source.depth;
+}
+
 };

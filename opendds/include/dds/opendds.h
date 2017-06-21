@@ -283,6 +283,18 @@ namespace dds {
 		static void convert(const ReliabilityQosPolicy& source, DDS::ReliabilityQosPolicy& target);
 		static void convert(const DDS::ReliabilityQosPolicy& source, ReliabilityQosPolicy& target); //TODO
 	};
+
+	class OpenDDSDestinationOrderQosPolicy {
+	public:
+		static void convert(const DestinationOrderQosPolicy& source, DDS::DestinationOrderQosPolicy& target);
+		static void convert(const DDS::DestinationOrderQosPolicy& source, DestinationOrderQosPolicy& target); //TODO
+	};
+
+	class OpenDDSHistoryQosPolicy {
+	public:
+		static void convert(const HistoryQosPolicy& source, DDS::HistoryQosPolicy& target);
+		static void convert(const DDS::HistoryQosPolicy& source, HistoryQosPolicy& target); //TODO
+	};
 	//TODO 0. Make rest of `TopicQos' member variable type` converter from CommonDDS to OpenDDS
 
 };
