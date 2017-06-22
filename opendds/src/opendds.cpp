@@ -364,8 +364,18 @@ void OpenDDSResourceLimitsQosPolicy::convert(const ResourceLimitsQosPolicy& sour
 	target.max_samples_per_instance = (CORBA::Long) source.max_samples_per_instance;
 }
 
+void OpenDDSResourceLimitsQosPolicy::convert(const DDS::ResourceLimitsQosPolicy& source, ResourceLimitsQosPolicy& target) {
+	target.max_samples = (int32_t)source.max_samples;
+	target.max_instances = (int32_t)source.max_instances;
+	target.max_samples_per_instance = (int32_t)source.max_samples_per_instance;
+}
+
 void OpenDDSTransportPriorityQosPolicy::convert(const TransportPriorityQosPolicy& source, DDS::TransportPriorityQosPolicy& target) {
 	target.value = (CORBA::Long) source.value;
+}
+
+void OpenDDSTransportPriorityQosPolicy::convert(const DDS::TransportPriorityQosPolicy& source, TransportPriorityQosPolicy& target) {
+	target.value = (int32_t)source.value;
 }
 
 void OpenDDSLifespanQosPolicy::convert(const LifespanQosPolicy& source, DDS::LifespanQosPolicy& target) {

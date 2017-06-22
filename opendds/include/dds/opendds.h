@@ -299,13 +299,13 @@ namespace dds {
 	class OpenDDSResourceLimitsQosPolicy {
 	public:
 		static void convert(const ResourceLimitsQosPolicy& source, DDS::ResourceLimitsQosPolicy& target);
-		static void convert(const DDS::ResourceLimitsQosPolicy& source, ResourceLimitsQosPolicy& target); //TODO
+		static void convert(const DDS::ResourceLimitsQosPolicy& source, ResourceLimitsQosPolicy& target);
 	};
 
 	class OpenDDSTransportPriorityQosPolicy {
 	public:
 		static void convert(const TransportPriorityQosPolicy& source, DDS::TransportPriorityQosPolicy& target);
-		static void convert(const DDS::TransportPriorityQosPolicy& source, TransportPriorityQosPolicy& target); //TODO
+		static void convert(const DDS::TransportPriorityQosPolicy& source, TransportPriorityQosPolicy& target);
 	};
 
 	class OpenDDSLifespanQosPolicy {
