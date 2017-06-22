@@ -74,14 +74,13 @@ OpenDDSDomainParticipant::~OpenDDSDomainParticipant() {
 
 Publisher* OpenDDSDomainParticipant::create_publisher(const PublisherQos& qos, PublisherListener* a_listener, const StatusMask mask) {
 	DDS::PublisherQos qos2;
-	DDS::PublisherListener* a_listener2 = NULL;
+	OpenDDSPublisherListener* a_listener2 = NULL;
 	DDS::StatusMask mask2;
 
 	OpenDDSPublisherQos::convert(qos, qos2);
 	mask2 = (DDS::StatusMask) mask;
 
-	//TODO make PublisherListener converter
-	//a_listener2 = new OpenDDSPublisherListener(a_listener);
+	a_listener2 = new OpenDDSPublisherListener(a_listener);
 	DDS::Publisher* publisher = this->instance->create_publisher(qos2, a_listener2, mask2);
 	Publisher* publisher2 = new OpenDDSPublisher(publisher, this);
 	return NULL;
