@@ -52,6 +52,7 @@ namespace dds {
 			const PublisherQos& qos,
 			PublisherListener* a_listener,
 			const StatusMask mask);
+		DDS::DomainParticipant* get_instance();
 		/*
 		// Factory interfaces
 		ReturnCode_t delete_publisher(
@@ -321,11 +322,12 @@ namespace dds {
 
 	class OpenDDSPublisherListener : public DDS::PublisherListener {
 	private:
-		PublisherListener* instance;
+		dds::PublisherListener* listener;
 	public:
-		OpenDDSPublisherListener(DDS::PublisherListener* p);
-		~OpenDDSPublisherListener();
-		//TODO generate functions
+		OpenDDSPublisherListener(dds::PublisherListener* p);
+		virtual ~OpenDDSPublisherListener();
+		dds::PublisherListener* get_listener();
+		//TODO generate inherit functions
 	};
 
 	class OpenDDSPublisher : public Publisher {
@@ -334,8 +336,8 @@ namespace dds {
 		OpenDDSDomainParticipant* parent;
 	public:
 		OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent);
-		~OpenDDSPublisher();
-		//TODO generate functions
+		virtual ~OpenDDSPublisher();
+		//TODO generate inherit functions
 	};
 
 };

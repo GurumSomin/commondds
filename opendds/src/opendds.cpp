@@ -78,15 +78,19 @@ Publisher* OpenDDSDomainParticipant::create_publisher(const PublisherQos& qos, P
 	DDS::StatusMask mask2;
 
 	OpenDDSPublisherQos::convert(qos, qos2);
-	//TODO make PublisherListener converter
-	//a_listener2 = new PublisherListener(a_listener);
 	mask2 = (DDS::StatusMask) mask;
 
+	//TODO make PublisherListener converter
+	//a_listener2 = new OpenDDSPublisherListener(a_listener);
 	DDS::Publisher* publisher = this->instance->create_publisher(qos2, a_listener2, mask2);
-	//TODO make Publisher converter
-	//Publisher publisher2 = new OpenDDSPublisher(publisher, this);
+	Publisher* publisher2 = new OpenDDSPublisher(publisher, this);
 	return NULL;
 }
+
+DDS::DomainParticipant* OpenDDSDomainParticipant::get_instance() {
+	return instance;
+}
+
 void OpenDDSDomainParticipantQos::convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
 	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
@@ -411,4 +415,26 @@ void OpenDDSOwnershipQosPolicy::convert(const OwnershipQosPolicy& source, DDS::O
 void OpenDDSOwnershipQosPolicy::convert(const DDS::OwnershipQosPolicy& source, OwnershipQosPolicy& target) {
 	target.kind = (OwnershipQosPolicyKind) source.kind;
 }
+
+OpenDDSPublisherListener::OpenDDSPublisherListener(dds::PublisherListener* p) {
+	this->listener = p;
+}
+
+OpenDDSPublisherListener::~OpenDDSPublisherListener() {
+	delete listener;
+}
+
+dds::PublisherListener* OpenDDSPublisherListener::get_listener() {
+	return listener;
+}
+
+OpenDDSPublisher::OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent) {
+	this->instance = instance;
+	this->parent = parent;
+}
+
+OpenDDSPublisher::~OpenDDSPublisher() {
+	parent->get_instance()->delete_publisher(instance);
+}
+
 };
