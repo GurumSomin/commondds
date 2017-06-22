@@ -281,19 +281,19 @@ namespace dds {
 	class OpenDDSReliabilityQosPolicy {
 	public:
 		static void convert(const ReliabilityQosPolicy& source, DDS::ReliabilityQosPolicy& target);
-		static void convert(const DDS::ReliabilityQosPolicy& source, ReliabilityQosPolicy& target); //TODO
+		static void convert(const DDS::ReliabilityQosPolicy& source, ReliabilityQosPolicy& target);
 	};
 
 	class OpenDDSDestinationOrderQosPolicy {
 	public:
 		static void convert(const DestinationOrderQosPolicy& source, DDS::DestinationOrderQosPolicy& target);
-		static void convert(const DDS::DestinationOrderQosPolicy& source, DestinationOrderQosPolicy& target); //TODO
+		static void convert(const DDS::DestinationOrderQosPolicy& source, DestinationOrderQosPolicy& target);
 	};
 
 	class OpenDDSHistoryQosPolicy {
 	public:
 		static void convert(const HistoryQosPolicy& source, DDS::HistoryQosPolicy& target);
-		static void convert(const DDS::HistoryQosPolicy& source, HistoryQosPolicy& target); //TODO
+		static void convert(const DDS::HistoryQosPolicy& source, HistoryQosPolicy& target);
 	};
 
 	class OpenDDSResourceLimitsQosPolicy {

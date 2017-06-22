@@ -247,6 +247,9 @@ void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
 	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
 	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
 	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
+	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
+	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
 	//TODO make member variable types' converter from OpenDDS to CommonDDS
 }
 
@@ -331,13 +334,28 @@ void OpenDDSReliabilityQosPolicy::convert(const ReliabilityQosPolicy& source, DD
 	target.max_blocking_time.nanosec = (CORBA::ULong) source.max_blocking_time.nanosec;
 }
 
+void OpenDDSReliabilityQosPolicy::convert(const DDS::ReliabilityQosPolicy& source, ReliabilityQosPolicy& target) {
+	target.kind = (ReliabilityQosPolicyKind)source.kind;
+	target.max_blocking_time.sec = (int32_t)source.max_blocking_time.sec;
+	target.max_blocking_time.nanosec = (int32_t)source.max_blocking_time.nanosec;
+}
+
 void OpenDDSDestinationOrderQosPolicy::convert(const DestinationOrderQosPolicy& source, DDS::DestinationOrderQosPolicy& target) {
 	target.kind = (DDS::DestinationOrderQosPolicyKind) source.kind;
+}
+
+void OpenDDSDestinationOrderQosPolicy::convert(const DDS::DestinationOrderQosPolicy& source, DestinationOrderQosPolicy& target) {
+	target.kind = (DestinationOrderQosPolicyKind) source.kind;
 }
 
 void OpenDDSHistoryQosPolicy::convert(const HistoryQosPolicy& source, DDS::HistoryQosPolicy& target) {
 	target.kind = (DDS::HistoryQosPolicyKind) source.kind;
 	target.depth = (CORBA::Long) source.depth;
+}
+
+void OpenDDSHistoryQosPolicy::convert(const DDS::HistoryQosPolicy& source, HistoryQosPolicy& target) {
+	target.kind = (HistoryQosPolicyKind) source.kind;
+	target.depth = (int32_t) source.depth;
 }
 
 void OpenDDSResourceLimitsQosPolicy::convert(const ResourceLimitsQosPolicy& source, DDS::ResourceLimitsQosPolicy& target) {
