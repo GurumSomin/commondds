@@ -269,13 +269,13 @@ namespace dds {
 	class OpenDDSLatencyBudgetQosPolicy {
 	public:
 		static void convert(const LatencyBudgetQosPolicy& source, DDS::LatencyBudgetQosPolicy& target);
-		static void convert(const DDS::LatencyBudgetQosPolicy& source, LatencyBudgetQosPolicy& target); //TODO
+		static void convert(const DDS::LatencyBudgetQosPolicy& source, LatencyBudgetQosPolicy& target);
 	};
 
 	class OpenDDSLivelinessQosPolicy {
 	public:
 		static void convert(const LivelinessQosPolicy& source, DDS::LivelinessQosPolicy& target);
-		static void convert(const DDS::LivelinessQosPolicy& source, LivelinessQosPolicy& target); //TODO
+		static void convert(const DDS::LivelinessQosPolicy& source, LivelinessQosPolicy& target);
 	};
 
 	class OpenDDSReliabilityQosPolicy {

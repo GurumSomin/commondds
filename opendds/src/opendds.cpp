@@ -245,6 +245,8 @@ void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
 	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
 	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
 	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
+	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
+	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
 	//TODO make member variable types' converter from OpenDDS to CommonDDS
 }
 
@@ -257,10 +259,10 @@ void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::T
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target) {
-	uint32_t maximum = (uint32_t)source.value.maximum;
-	uint32_t length = (uint32_t)source.value.length;
+	uint32_t maximum = (uint32_t)source.value.maximum();
+	uint32_t length = (uint32_t)source.value.length();
 	uint8_t* buffer = new uint8_t[maximum];
-	std::memcpy(buffer, source.value.get_buffer, maximum);
+	std::memcpy(buffer, source.value.get_buffer(), maximum);
 	target.value(maximum, length, buffer);
 }
 void OpenDDSDurabilityQosPolicy::convert(const DurabilityQosPolicy& source, DDS::DurabilityQosPolicy& target) {
@@ -306,10 +308,21 @@ void OpenDDSLatencyBudgetQosPolicy::convert(const LatencyBudgetQosPolicy& source
 	target.duration.nanosec = (CORBA::ULong) source.duration.nanosec;
 }
 
+void OpenDDSLatencyBudgetQosPolicy::convert(const DDS::LatencyBudgetQosPolicy& source, LatencyBudgetQosPolicy& target) {
+	target.duration.sec = (int32_t)source.duration.sec;
+	target.duration.nanosec = (uint32_t)source.duration.nanosec;
+}
+
 void OpenDDSLivelinessQosPolicy::convert(const LivelinessQosPolicy& source, DDS::LivelinessQosPolicy& target) {
 	target.kind = (DDS::LivelinessQosPolicyKind) source.kind;
 	target.lease_duration.sec = (CORBA::Long) source.lease_duration.sec;
 	target.lease_duration.nanosec = (CORBA::ULong) source.lease_duration.nanosec;
+}
+
+void OpenDDSLivelinessQosPolicy::convert(const DDS::LivelinessQosPolicy& source, LivelinessQosPolicy& target) {
+	target.kind = (LivelinessQosPolicyKind)source.kind;
+	target.lease_duration.sec = (int32_t)source.lease_duration.sec;
+	target.lease_duration.nanosec = (uint32_t)source.lease_duration.nanosec;
 }
 
 void OpenDDSReliabilityQosPolicy::convert(const ReliabilityQosPolicy& source, DDS::ReliabilityQosPolicy& target) {
