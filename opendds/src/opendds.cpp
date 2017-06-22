@@ -72,53 +72,46 @@ OpenDDSDomainParticipant::OpenDDSDomainParticipant(
 OpenDDSDomainParticipant::~OpenDDSDomainParticipant() {
 }
 
-void OpenDDSDomainParticipantQos::convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
-	CORBA::ULong maximum = (CORBA::ULong)source.user_data.value.maximum;
-	CORBA::ULong length = (CORBA::ULong)source.user_data.value.length;
-	CORBA::Octet* buffer = new CORBA::Octet[maximum];
-	std::memcpy(buffer, source.user_data.value.buffer, maximum);
+Publisher* OpenDDSDomainParticipant::create_publisher(const PublisherQos& qos, PublisherListener* a_listener, const StatusMask mask) {
+	DDS::PublisherQos qos2;
+	DDS::PublisherListener* a_listener2 = NULL;
+	DDS::StatusMask mask2;
 
-	target.user_data.value = DDS::OctetSeq(maximum, length, buffer);
+	OpenDDSPublisherQos::convert(qos, qos2);
+	mask2 = (DDS::StatusMask) mask;
+
+	//TODO make PublisherListener converter
+	//a_listener2 = new OpenDDSPublisherListener(a_listener);
+	DDS::Publisher* publisher = this->instance->create_publisher(qos2, a_listener2, mask2);
+	Publisher* publisher2 = new OpenDDSPublisher(publisher, this);
+	return NULL;
+}
+
+DDS::DomainParticipant* OpenDDSDomainParticipant::get_instance() {
+	return instance;
+}
+
+void OpenDDSDomainParticipantQos::convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
+	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
 void OpenDDSDomainParticipantQos::convert(const DDS::DomainParticipantQos& source, DomainParticipantQos& target) {
-	uint32_t maximum = (uint32_t)source.user_data.value.maximum();
-	uint32_t length = (uint32_t)source.user_data.value.length();
-	uint8_t* buffer = new uint8_t[maximum];
-	std::memcpy(buffer, source.user_data.value.get_buffer(), maximum);
-
-	target.user_data.value(maximum, length, buffer);
+	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
 void OpenDDSPublisherQos::convert(const PublisherQos& source, DDS::PublisherQos& target) {
 	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
 	OpenDDSPartitionQosPolicy::convert(source.partition, target.partition);
-
-	// DDS::GroupDataQosPolicy group_data
-	CORBA::ULong maximum2 = (CORBA::ULong)source.group_data.value.maximum;
-	CORBA::ULong length2 = (CORBA::ULong)source.group_data.value.length;
-	CORBA::Octet* buffer2 = new CORBA::Octet[maximum2];
-	std::memcpy(buffer2, source.group_data.value.buffer, maximum2);
-	target.group_data.value = DDS::OctetSeq(maximum2, length2, buffer2);
-
-	// DDS::EntityFactoryQosPolicy entity_factory
+	OpenDDSGroupDataQosPolicy::convert(source.group_data, target.group_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
 void OpenDDSPublisherQos::convert(const DDS::PublisherQos& source, PublisherQos& target) {
 	OpenDDSPresentationQosPolicy::convert(source.presentation, target.presentation);
 	OpenDDSPartitionQosPolicy::convert(source.partition, target.partition);
-
-	// GroupDataQosPolicy group_data
-	uint32_t maximum2 = (uint32_t)source.group_data.value.maximum();
-	uint32_t length2 = (uint32_t)source.group_data.value.length();
-	uint8_t* buffer2 = new uint8_t[maximum2];
-	std::memcpy(buffer2, source.group_data.value.get_buffer(), maximum2);
-	target.group_data.value(maximum2, length2, buffer2);
-
-	// EntityFactoryQosPolicy entity_factory
+	OpenDDSGroupDataQosPolicy::convert(source.group_data, target.group_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);
 }
 
@@ -170,6 +163,37 @@ void OpenDDSPartitionQosPolicy::convert(const DDS::PartitionQosPolicy& source, P
 	target.name(maximum1, length1, buffer1);
 }
 
+void OpenDDSGroupDataQosPolicy::convert(const GroupDataQosPolicy& source, DDS::GroupDataQosPolicy& target) {
+	CORBA::ULong maximum2 = (CORBA::ULong)source.value.maximum;
+	CORBA::ULong length2 = (CORBA::ULong)source.value.length;
+	CORBA::Octet* buffer2 = new CORBA::Octet[maximum2];
+	std::memcpy(buffer2, source.value.buffer, maximum2);
+	target.value = DDS::OctetSeq(maximum2, length2, buffer2);
+}
+
+void OpenDDSGroupDataQosPolicy::convert(const DDS::GroupDataQosPolicy& source, GroupDataQosPolicy& target) {
+	uint32_t maximum2 = (uint32_t)source.value.maximum();
+	uint32_t length2 = (uint32_t)source.value.length();
+	uint8_t* buffer2 = new uint8_t[maximum2];
+	std::memcpy(buffer2, source.value.get_buffer(), maximum2);
+	target.value(maximum2, length2, buffer2);
+}
+
+void OpenDDSUserDataQosPolicy::convert(const UserDataQosPolicy& source, DDS::UserDataQosPolicy& target) {
+	CORBA::ULong maximum = (CORBA::ULong)source.value.maximum;
+	CORBA::ULong length = (CORBA::ULong)source.value.length;
+	CORBA::Octet* buffer = new CORBA::Octet[maximum];
+	std::memcpy(buffer, source.value.buffer, maximum);
+	target.value = DDS::OctetSeq(maximum, length, buffer);
+}
+void OpenDDSUserDataQosPolicy::convert(const DDS::UserDataQosPolicy& source, UserDataQosPolicy& target) {
+	uint32_t maximum = (uint32_t)source.value.maximum();
+	uint32_t length = (uint32_t)source.value.length();
+	uint8_t* buffer = new uint8_t[maximum];
+	std::memcpy(buffer, source.value.get_buffer(), maximum);
+	target.value(maximum, length, buffer);
+}
+
 OpenDDSDomainParticipantListener::OpenDDSDomainParticipantListener(dds::DomainParticipantListener* l) {
 	listener = l;
 }
@@ -204,6 +228,13 @@ ReturnCode_t OpenDDSTopic::set_qos(const TopicQos& qos) {
 	return (dds::ReturnCode_t) topic->set_qos(qos2);
 }
 
+ReturnCode_t OpenDDSTopic::get_qos(TopicQos& qos) {
+	DDS::TopicQos qos2;
+	ReturnCode_t rc = (dds::ReturnCode_t) topic->get_qos(qos2);
+	OpenDDSTopicQos::convert(qos2, qos);
+	return rc;
+}
+
 void OpenDDSInconsistentTopicStatus::convert(const InconsistentTopicStatus& source, DDS::InconsistentTopicStatus& target) {
 	target.total_count = (CORBA::Long) source.total_count_change;
 	target.total_count_change = (CORBA::Long) source.total_count_change;
@@ -215,10 +246,31 @@ void OpenDDSInconsistentTopicStatus::convert(const DDS::InconsistentTopicStatus&
 }
 
 void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
-	//PENDING..
 	OpenDDSTopicDataQosPolicy::convert(source.topic_data, target.topic_data);
 	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
 	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
+	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
+	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
+	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
+	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
+	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
+	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
+	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
+}
+
+void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
+	OpenDDSTopicDataQosPolicy::convert(source.topic_data, target.topic_data);
+	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
+	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
+	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
+	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
+	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
+	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
+	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
+	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
+	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
@@ -229,20 +281,160 @@ void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::T
 	target.value = DDS::OctetSeq(maximum, length, buffer);
 }
 
+void OpenDDSTopicDataQosPolicy::convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target) {
+	uint32_t maximum = (uint32_t)source.value.maximum();
+	uint32_t length = (uint32_t)source.value.length();
+	uint8_t* buffer = new uint8_t[maximum];
+	std::memcpy(buffer, source.value.get_buffer(), maximum);
+	target.value(maximum, length, buffer);
+}
 void OpenDDSDurabilityQosPolicy::convert(const DurabilityQosPolicy& source, DDS::DurabilityQosPolicy& target) {
-	//kind is enum and has same meaning
 	target.kind = (DDS::DurabilityQosPolicyKind) source.kind;
+}
+
+void OpenDDSDurabilityQosPolicy::convert(const DDS::DurabilityQosPolicy& source, DurabilityQosPolicy& target) {
+	target.kind = (DurabilityQosPolicyKind) source.kind;
 }
 
 void OpenDDSDurabilityServiceQosPolicy::convert(const DurabilityServiceQosPolicy& source, DDS::DurabilityServiceQosPolicy& target) {
 	target.service_cleanup_delay.sec = (CORBA::Long) source.service_cleanup_delay.sec;
 	target.service_cleanup_delay.nanosec = (CORBA::ULong) source.service_cleanup_delay.nanosec;
-	//kind is enum and has same meaning
 	target.history_kind = (DDS::HistoryQosPolicyKind) source.history_kind;
 	target.history_depth = (CORBA::Long) source.history_depth;
-	target.max_samples =  (CORBA::Long) source.max_samples;
-	target.max_instances =  (CORBA::Long) source.max_instances;
-	target.max_samples_per_instance =  (CORBA::Long) source.max_samples_per_instance;
+	target.max_samples = (CORBA::Long) source.max_samples;
+	target.max_instances = (CORBA::Long) source.max_instances;
+	target.max_samples_per_instance = (CORBA::Long) source.max_samples_per_instance;
+}
+
+void OpenDDSDurabilityServiceQosPolicy::convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target) {
+	target.service_cleanup_delay.sec = (int32_t)source.service_cleanup_delay.sec;
+	target.service_cleanup_delay.nanosec = (int32_t)source.service_cleanup_delay.nanosec;
+	target.history_kind = (HistoryQosPolicyKind)source.history_kind;
+	target.history_depth = (int32_t)source.history_depth;
+	target.max_samples = (int32_t)source.max_samples;
+	target.max_instances = (int32_t)source.max_instances;
+	target.max_samples_per_instance = (int32_t)source.max_samples_per_instance;
+}
+
+void OpenDDSDeadlineQosPolicy::convert(const DeadlineQosPolicy& source, DDS::DeadlineQosPolicy& target) {
+	target.period.sec = (CORBA::Long) source.period.sec;
+	target.period.nanosec = (CORBA::ULong) source.period.nanosec;
+}
+
+void OpenDDSDeadlineQosPolicy::convert(const DDS::DeadlineQosPolicy& source, DeadlineQosPolicy& target) {
+	target.period.sec = (int32_t)source.period.sec;
+	target.period.nanosec = (int32_t)source.period.nanosec;
+}
+
+void OpenDDSLatencyBudgetQosPolicy::convert(const LatencyBudgetQosPolicy& source, DDS::LatencyBudgetQosPolicy& target) {
+	target.duration.sec = (CORBA::Long) source.duration.sec;
+	target.duration.nanosec = (CORBA::ULong) source.duration.nanosec;
+}
+
+void OpenDDSLatencyBudgetQosPolicy::convert(const DDS::LatencyBudgetQosPolicy& source, LatencyBudgetQosPolicy& target) {
+	target.duration.sec = (int32_t)source.duration.sec;
+	target.duration.nanosec = (uint32_t)source.duration.nanosec;
+}
+
+void OpenDDSLivelinessQosPolicy::convert(const LivelinessQosPolicy& source, DDS::LivelinessQosPolicy& target) {
+	target.kind = (DDS::LivelinessQosPolicyKind) source.kind;
+	target.lease_duration.sec = (CORBA::Long) source.lease_duration.sec;
+	target.lease_duration.nanosec = (CORBA::ULong) source.lease_duration.nanosec;
+}
+
+void OpenDDSLivelinessQosPolicy::convert(const DDS::LivelinessQosPolicy& source, LivelinessQosPolicy& target) {
+	target.kind = (LivelinessQosPolicyKind)source.kind;
+	target.lease_duration.sec = (int32_t)source.lease_duration.sec;
+	target.lease_duration.nanosec = (uint32_t)source.lease_duration.nanosec;
+}
+
+void OpenDDSReliabilityQosPolicy::convert(const ReliabilityQosPolicy& source, DDS::ReliabilityQosPolicy& target) {
+	target.kind = (DDS::ReliabilityQosPolicyKind) source.kind;
+	target.max_blocking_time.sec = (CORBA::Long) source.max_blocking_time.sec;
+	target.max_blocking_time.nanosec = (CORBA::ULong) source.max_blocking_time.nanosec;
+}
+
+void OpenDDSReliabilityQosPolicy::convert(const DDS::ReliabilityQosPolicy& source, ReliabilityQosPolicy& target) {
+	target.kind = (ReliabilityQosPolicyKind)source.kind;
+	target.max_blocking_time.sec = (int32_t)source.max_blocking_time.sec;
+	target.max_blocking_time.nanosec = (int32_t)source.max_blocking_time.nanosec;
+}
+
+void OpenDDSDestinationOrderQosPolicy::convert(const DestinationOrderQosPolicy& source, DDS::DestinationOrderQosPolicy& target) {
+	target.kind = (DDS::DestinationOrderQosPolicyKind) source.kind;
+}
+
+void OpenDDSDestinationOrderQosPolicy::convert(const DDS::DestinationOrderQosPolicy& source, DestinationOrderQosPolicy& target) {
+	target.kind = (DestinationOrderQosPolicyKind) source.kind;
+}
+
+void OpenDDSHistoryQosPolicy::convert(const HistoryQosPolicy& source, DDS::HistoryQosPolicy& target) {
+	target.kind = (DDS::HistoryQosPolicyKind) source.kind;
+	target.depth = (CORBA::Long) source.depth;
+}
+
+void OpenDDSHistoryQosPolicy::convert(const DDS::HistoryQosPolicy& source, HistoryQosPolicy& target) {
+	target.kind = (HistoryQosPolicyKind) source.kind;
+	target.depth = (int32_t) source.depth;
+}
+
+void OpenDDSResourceLimitsQosPolicy::convert(const ResourceLimitsQosPolicy& source, DDS::ResourceLimitsQosPolicy& target) {
+	target.max_samples = (CORBA::Long) source.max_samples;
+	target.max_instances = (CORBA::Long) source.max_instances;
+	target.max_samples_per_instance = (CORBA::Long) source.max_samples_per_instance;
+}
+
+void OpenDDSResourceLimitsQosPolicy::convert(const DDS::ResourceLimitsQosPolicy& source, ResourceLimitsQosPolicy& target) {
+	target.max_samples = (int32_t)source.max_samples;
+	target.max_instances = (int32_t)source.max_instances;
+	target.max_samples_per_instance = (int32_t)source.max_samples_per_instance;
+}
+
+void OpenDDSTransportPriorityQosPolicy::convert(const TransportPriorityQosPolicy& source, DDS::TransportPriorityQosPolicy& target) {
+	target.value = (CORBA::Long) source.value;
+}
+
+void OpenDDSTransportPriorityQosPolicy::convert(const DDS::TransportPriorityQosPolicy& source, TransportPriorityQosPolicy& target) {
+	target.value = (int32_t)source.value;
+}
+
+void OpenDDSLifespanQosPolicy::convert(const LifespanQosPolicy& source, DDS::LifespanQosPolicy& target) {
+	target.duration.sec = (CORBA::Long) source.duration.sec;
+	target.duration.nanosec = (CORBA::ULong) source.duration.nanosec;
+}
+
+void OpenDDSLifespanQosPolicy::convert(const DDS::LifespanQosPolicy& source, LifespanQosPolicy& target) {
+	target.duration.sec = (int32_t)source.duration.sec;
+	target.duration.nanosec = (uint32_t)source.duration.nanosec;
+}
+
+void OpenDDSOwnershipQosPolicy::convert(const OwnershipQosPolicy& source, DDS::OwnershipQosPolicy& target) {
+	target.kind = (DDS::OwnershipQosPolicyKind) source.kind;
+}
+
+void OpenDDSOwnershipQosPolicy::convert(const DDS::OwnershipQosPolicy& source, OwnershipQosPolicy& target) {
+	target.kind = (OwnershipQosPolicyKind) source.kind;
+}
+
+OpenDDSPublisherListener::OpenDDSPublisherListener(dds::PublisherListener* p) {
+	this->listener = p;
+}
+
+OpenDDSPublisherListener::~OpenDDSPublisherListener() {
+	delete listener;
+}
+
+dds::PublisherListener* OpenDDSPublisherListener::get_listener() {
+	return listener;
+}
+
+OpenDDSPublisher::OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent) {
+	this->instance = instance;
+	this->parent = parent;
+}
+
+OpenDDSPublisher::~OpenDDSPublisher() {
+	parent->get_instance()->delete_publisher(instance);
 }
 
 };

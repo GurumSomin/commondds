@@ -48,12 +48,13 @@ namespace dds {
 			DDS::DomainParticipant* instance);
 		virtual ~OpenDDSDomainParticipant();
 		
-		/*
-		// Factory interfaces
 		Publisher* create_publisher(
 			const PublisherQos& qos,
 			PublisherListener* a_listener,
 			const StatusMask mask);
+		DDS::DomainParticipant* get_instance();
+		/*
+		// Factory interfaces
 		ReturnCode_t delete_publisher(
 			const Publisher* p);
 		Subscriber* create_subscriber(
@@ -138,6 +139,7 @@ namespace dds {
 		*/
 	};
 
+
 	class OpenDDSDomainParticipantQos {
 	public:
 		static void convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target);
@@ -168,6 +170,18 @@ namespace dds {
 		static void convert(const DDS::PartitionQosPolicy& source, PartitionQosPolicy& target);
 	};
 
+	class OpenDDSGroupDataQosPolicy {
+	public:
+		static void convert(const GroupDataQosPolicy& source, DDS::GroupDataQosPolicy& target);
+		static void convert(const DDS::GroupDataQosPolicy& source, GroupDataQosPolicy& target);
+	};
+
+	class OpenDDSUserDataQosPolicy {
+	public:
+		static void convert(const UserDataQosPolicy& source, DDS::UserDataQosPolicy& target);
+		static void convert(const DDS::UserDataQosPolicy& source, UserDataQosPolicy& target);
+	};
+
 	class OpenDDSDomainParticipantListener : public DDS::DomainParticipantListener {
 		private:
 			dds::DomainParticipantListener* listener;
@@ -179,7 +193,7 @@ namespace dds {
 			//topiclistener
 			virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
 
-			//TODO 2. generate under functions.
+			//TODO generate under functions.
 			//datawriterlistener
 			virtual void on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status);
 			virtual void on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status);
@@ -209,8 +223,8 @@ namespace dds {
 		DDS::Topic* get_topic();
 
 		ReturnCode_t set_qos(const TopicQos& qos);
-		//TODO 2. generate under functions.
 		ReturnCode_t get_qos(TopicQos& qos);
+		//TODO generate under functions.
 		ReturnCode_t set_listener(TopicListener* a_listener, const StatusMask mask);
 		TopicListener* get_listener();
 		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus& a_status);
@@ -224,30 +238,107 @@ namespace dds {
 
 	class OpenDDSTopicQos {
 	public:
-		//TODO 1. generate under functions.
-		static void convert(const TopicQos& source, DDS::TopicQos& target); // PENDING
+		static void convert(const TopicQos& source, DDS::TopicQos& target);
 		static void convert(const DDS::TopicQos& source, TopicQos& target);
 	};
 
 	class OpenDDSTopicDataQosPolicy {
 	public:
 		static void convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target);
-		static void convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target); //TODO
+		static void convert(const DDS::TopicDataQosPolicy& source, TopicDataQosPolicy& target);
 	};
 
 	class OpenDDSDurabilityQosPolicy {
 	public:
 		static void convert(const DurabilityQosPolicy& source, DDS::DurabilityQosPolicy& target);
-		static void convert(const DDS::DurabilityQosPolicy& source, DurabilityQosPolicy& target); //TODO
+		static void convert(const DDS::DurabilityQosPolicy& source, DurabilityQosPolicy& target);
 	};
 
 	class OpenDDSDurabilityServiceQosPolicy {
 	public:
 		static void convert(const DurabilityServiceQosPolicy& source, DDS::DurabilityServiceQosPolicy& target);
-		static void convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target); //TODO
+		static void convert(const DDS::DurabilityServiceQosPolicy& source, DurabilityServiceQosPolicy& target);
 	};
 
-	//TODO 0. Make rest of `TopicQos' member variable type` converter from CommonDDS to OpenDDS
+	class OpenDDSDeadlineQosPolicy {
+	public:
+		static void convert(const DeadlineQosPolicy& source, DDS::DeadlineQosPolicy& target);
+		static void convert(const DDS::DeadlineQosPolicy& source, DeadlineQosPolicy& target);
+	};
+
+	class OpenDDSLatencyBudgetQosPolicy {
+	public:
+		static void convert(const LatencyBudgetQosPolicy& source, DDS::LatencyBudgetQosPolicy& target);
+		static void convert(const DDS::LatencyBudgetQosPolicy& source, LatencyBudgetQosPolicy& target);
+	};
+
+	class OpenDDSLivelinessQosPolicy {
+	public:
+		static void convert(const LivelinessQosPolicy& source, DDS::LivelinessQosPolicy& target);
+		static void convert(const DDS::LivelinessQosPolicy& source, LivelinessQosPolicy& target);
+	};
+
+	class OpenDDSReliabilityQosPolicy {
+	public:
+		static void convert(const ReliabilityQosPolicy& source, DDS::ReliabilityQosPolicy& target);
+		static void convert(const DDS::ReliabilityQosPolicy& source, ReliabilityQosPolicy& target);
+	};
+
+	class OpenDDSDestinationOrderQosPolicy {
+	public:
+		static void convert(const DestinationOrderQosPolicy& source, DDS::DestinationOrderQosPolicy& target);
+		static void convert(const DDS::DestinationOrderQosPolicy& source, DestinationOrderQosPolicy& target);
+	};
+
+	class OpenDDSHistoryQosPolicy {
+	public:
+		static void convert(const HistoryQosPolicy& source, DDS::HistoryQosPolicy& target);
+		static void convert(const DDS::HistoryQosPolicy& source, HistoryQosPolicy& target);
+	};
+
+	class OpenDDSResourceLimitsQosPolicy {
+	public:
+		static void convert(const ResourceLimitsQosPolicy& source, DDS::ResourceLimitsQosPolicy& target);
+		static void convert(const DDS::ResourceLimitsQosPolicy& source, ResourceLimitsQosPolicy& target);
+	};
+
+	class OpenDDSTransportPriorityQosPolicy {
+	public:
+		static void convert(const TransportPriorityQosPolicy& source, DDS::TransportPriorityQosPolicy& target);
+		static void convert(const DDS::TransportPriorityQosPolicy& source, TransportPriorityQosPolicy& target);
+	};
+
+	class OpenDDSLifespanQosPolicy {
+	public:
+		static void convert(const LifespanQosPolicy& source, DDS::LifespanQosPolicy& target);
+		static void convert(const DDS::LifespanQosPolicy& source, LifespanQosPolicy& target);
+	};
+
+	class OpenDDSOwnershipQosPolicy {
+	public:
+		static void convert(const OwnershipQosPolicy& source, DDS::OwnershipQosPolicy& target);
+		static void convert(const DDS::OwnershipQosPolicy& source, OwnershipQosPolicy& target);
+	};
+
+	class OpenDDSPublisherListener : public DDS::PublisherListener {
+	private:
+		dds::PublisherListener* listener;
+	public:
+		OpenDDSPublisherListener(dds::PublisherListener* p);
+		virtual ~OpenDDSPublisherListener();
+		dds::PublisherListener* get_listener();
+		//TODO generate inherit functions
+	};
+
+	class OpenDDSPublisher : public Publisher {
+	private:
+		DDS::Publisher* instance;
+		OpenDDSDomainParticipant* parent;
+	public:
+		OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent);
+		virtual ~OpenDDSPublisher();
+		//TODO generate inherit functions
+	};
 
 };
 
