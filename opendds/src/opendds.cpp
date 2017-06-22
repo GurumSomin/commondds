@@ -86,6 +86,20 @@ Publisher* OpenDDSDomainParticipant::create_publisher(const PublisherQos& qos, P
 	return NULL;
 }
 
+Topic* OpenDDSDomainParticipant::create_topic(const char* topic_name, const char* type_name, const TopicQos& qos, TopicListener* a_listener, const StatusMask mask) {
+	DDS::TopicQos qos2;
+	OpenDDSTopicQos::convert(qos, qos2);
+	//TODO make converter
+	//OpenDDSTopicListener* a_listener2 = new OpenDDSTopicListener(a_listener);
+	DDS::StatusMask mask2 = (DDS::StatusMask) mask;
+
+	//DDS::Topic* topic = instance->create_topic(topic_name, type_name, qos2, a_listener2, mask2);
+	DDS::Topic* topic = NULL;
+	OpenDDSTopic* topic2 = new OpenDDSTopic(topic);
+
+	return topic2;
+}
+
 DDS::DomainParticipant* OpenDDSDomainParticipant::get_instance() {
 	return instance;
 }

@@ -64,12 +64,14 @@ namespace dds {
 		ReturnCode_t delete_subscriber(
 			const Subscriber* s);
 		Subscriber* get_builtin_subscriber();
+		*/
 		Topic* create_topic(
 			const char* topic_name,
 			const char* type_name,
 			const TopicQos& qos,
 			TopicListener* a_listener,
 			const StatusMask mask);
+		/*
 		ReturnCode_t delete_topic(
 			const Topic* a_topic);
 		Topic* find_topic(
@@ -348,6 +350,7 @@ namespace dds {
 	private:
 		DDS::DataWriter* instance;
 	public:
+		//TODO generate inherit functions and below functions
 		OpenDDSDataWriter(DDS::DataWriter* d);
 		virtual ~OpenDDSDataWriter();
 	};
