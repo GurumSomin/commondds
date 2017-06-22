@@ -250,7 +250,8 @@ void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
 	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
 	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
 	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
-	//TODO make member variable types' converter from OpenDDS to CommonDDS
+	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
+	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
@@ -383,8 +384,16 @@ void OpenDDSLifespanQosPolicy::convert(const LifespanQosPolicy& source, DDS::Lif
 	target.duration.nanosec = (CORBA::ULong) source.duration.nanosec;
 }
 
+void OpenDDSLifespanQosPolicy::convert(const DDS::LifespanQosPolicy& source, LifespanQosPolicy& target) {
+	target.duration.sec = (int32_t)source.duration.sec;
+	target.duration.nanosec = (uint32_t)source.duration.nanosec;
+}
+
 void OpenDDSOwnershipQosPolicy::convert(const OwnershipQosPolicy& source, DDS::OwnershipQosPolicy& target) {
 	target.kind = (DDS::OwnershipQosPolicyKind) source.kind;
 }
 
+void OpenDDSOwnershipQosPolicy::convert(const DDS::OwnershipQosPolicy& source, OwnershipQosPolicy& target) {
+	target.kind = (OwnershipQosPolicyKind) source.kind;
+}
 };

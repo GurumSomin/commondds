@@ -192,7 +192,7 @@ namespace dds {
 			//topiclistener
 			virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
 
-			//TODO 2. generate under functions.
+			//TODO generate under functions.
 			//datawriterlistener
 			virtual void on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status);
 			virtual void on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status);
@@ -223,7 +223,7 @@ namespace dds {
 
 		ReturnCode_t set_qos(const TopicQos& qos);
 		ReturnCode_t get_qos(TopicQos& qos);
-		//TODO 1. generate under functions.
+		//TODO generate under functions.
 		ReturnCode_t set_listener(TopicListener* a_listener, const StatusMask mask);
 		TopicListener* get_listener();
 		ReturnCode_t get_inconsistent_topic_status(InconsistentTopicStatus& a_status);
@@ -238,7 +238,6 @@ namespace dds {
 	class OpenDDSTopicQos {
 	public:
 		static void convert(const TopicQos& source, DDS::TopicQos& target);
-		//TODO 0. generate under function.
 		static void convert(const DDS::TopicQos& source, TopicQos& target);
 	};
 
@@ -311,13 +310,13 @@ namespace dds {
 	class OpenDDSLifespanQosPolicy {
 	public:
 		static void convert(const LifespanQosPolicy& source, DDS::LifespanQosPolicy& target);
-		static void convert(const DDS::LifespanQosPolicy& source, LifespanQosPolicy& target); //TODO
+		static void convert(const DDS::LifespanQosPolicy& source, LifespanQosPolicy& target);
 	};
 
 	class OpenDDSOwnershipQosPolicy {
 	public:
 		static void convert(const OwnershipQosPolicy& source, DDS::OwnershipQosPolicy& target);
-		static void convert(const DDS::OwnershipQosPolicy& source, OwnershipQosPolicy& target); //TODO
+		static void convert(const DDS::OwnershipQosPolicy& source, OwnershipQosPolicy& target);
 	};
 
 };
