@@ -48,12 +48,12 @@ namespace dds {
 			DDS::DomainParticipant* instance);
 		virtual ~OpenDDSDomainParticipant();
 		
-		/*
-		// Factory interfaces
 		Publisher* create_publisher(
 			const PublisherQos& qos,
 			PublisherListener* a_listener,
 			const StatusMask mask);
+		/*
+		// Factory interfaces
 		ReturnCode_t delete_publisher(
 			const Publisher* p);
 		Subscriber* create_subscriber(
@@ -317,6 +317,25 @@ namespace dds {
 	public:
 		static void convert(const OwnershipQosPolicy& source, DDS::OwnershipQosPolicy& target);
 		static void convert(const DDS::OwnershipQosPolicy& source, OwnershipQosPolicy& target);
+	};
+
+	class OpenDDSPublisherListener : public DDS::PublisherListener {
+	private:
+		PublisherListener* instance;
+	public:
+		OpenDDSPublisherListener(DDS::PublisherListener* p);
+		~OpenDDSPublisherListener();
+		//TODO generate functions
+	};
+
+	class OpenDDSPublisher : public Publisher {
+	private:
+		DDS::Publisher* instance;
+		OpenDDSDomainParticipant* parent;
+	public:
+		OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent);
+		~OpenDDSPublisher();
+		//TODO generate functions
 	};
 
 };
