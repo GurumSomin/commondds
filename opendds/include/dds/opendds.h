@@ -64,12 +64,14 @@ namespace dds {
 		ReturnCode_t delete_subscriber(
 			const Subscriber* s);
 		Subscriber* get_builtin_subscriber();
+		*/
 		Topic* create_topic(
 			const char* topic_name,
 			const char* type_name,
 			const TopicQos& qos,
 			TopicListener* a_listener,
 			const StatusMask mask);
+		/*
 		ReturnCode_t delete_topic(
 			const Topic* a_topic);
 		Topic* find_topic(
@@ -348,8 +350,19 @@ namespace dds {
 	private:
 		DDS::DataWriter* instance;
 	public:
+		//TODO generate inherit functions and below functions
 		OpenDDSDataWriter(DDS::DataWriter* d);
 		virtual ~OpenDDSDataWriter();
+	};
+
+	class OpenDDSTopicListener : public DDS::TopicListener {
+	private:
+		dds::TopicListener* listener;
+	public:
+		OpenDDSTopicListener(dds::TopicListener* t);
+		virtual ~OpenDDSTopicListener();
+		dds::TopicListener* get_listener();
+		virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
 	};
 
 };
