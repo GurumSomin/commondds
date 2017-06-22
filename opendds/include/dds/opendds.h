@@ -355,6 +355,16 @@ namespace dds {
 		virtual ~OpenDDSDataWriter();
 	};
 
+	class OpenDDSTopicListener : public DDS::TopicListener {
+	private:
+		dds::TopicListener* listener;
+	public:
+		OpenDDSTopicListener(dds::TopicListener* t);
+		virtual ~OpenDDSTopicListener();
+		dds::TopicListener* get_listener();
+		virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
+	};
+
 };
 
 #endif /* __DDS_OPENDDS__ */
