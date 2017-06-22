@@ -328,6 +328,10 @@ namespace dds {
 		virtual ~OpenDDSPublisherListener();
 		dds::PublisherListener* get_listener();
 		//TODO generate inherit functions
+		virtual void on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status);
+		virtual void on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status);
+		virtual void on_liveliness_lost(DDS::DataWriter* writer, const DDS::LivelinessLostStatus& status);
+		virtual void on_publication_matched(DDS::DataWriter* writer, const DDS::PublicationMatchedStatus& status);
 	};
 
 	class OpenDDSPublisher : public Publisher {
@@ -338,6 +342,14 @@ namespace dds {
 		OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent);
 		virtual ~OpenDDSPublisher();
 		//TODO generate inherit functions
+	};
+
+	class OpenDDSDataWriter : public DataWriter {
+	private:
+		DDS::DataWriter* instance;
+	public:
+		OpenDDSDataWriter(DDS::DataWriter* d);
+		virtual ~OpenDDSDataWriter();
 	};
 
 };
