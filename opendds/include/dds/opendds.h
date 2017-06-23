@@ -343,6 +343,7 @@ namespace dds {
 	public:
 		OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent);
 		virtual ~OpenDDSPublisher();
+		DataWriter* create_datawriter(Topic* a_topic, const DataWriterQos& qos, DataWriterListener* a_listener, const StatusMask mask);
 		//TODO generate inherit functions
 	};
 
@@ -350,9 +351,10 @@ namespace dds {
 	private:
 		DDS::DataWriter* instance;
 	public:
-		//TODO generate inherit functions and below functions
 		OpenDDSDataWriter(DDS::DataWriter* d);
 		virtual ~OpenDDSDataWriter();
+		DDS::DataWriter* get_instance();
+		//TODO generate inherit functions
 	};
 
 	class OpenDDSTopicListener : public DDS::TopicListener {
@@ -365,6 +367,17 @@ namespace dds {
 		virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
 	};
 
+	class OpenDDSDataWriterQos {
+	public:
+		static void convert(const DataWriterQos& source, DDS::DataWriterQos& target);
+		static void convert(const DDS::DataWriterQos& source, DataWriterQos& target);
+	};
+
+	class OpenDDSOwnershipStrengthQosPolicy {
+	public:
+		static void convert(const OwnershipStrengthQosPolicy& source, DDS::OwnershipStrengthQosPolicy& target);
+		static void convert(const DDS::OwnershipStrengthQosPolicy& source, OwnershipStrengthQosPolicy& target);
+	};
 };
 
 #endif /* __DDS_OPENDDS__ */
