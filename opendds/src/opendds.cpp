@@ -452,10 +452,8 @@ DataWriter* OpenDDSPublisher::create_datawriter(Topic* a_topic, const DataWriter
 	OpenDDSTopic* topic = (OpenDDSTopic*)a_topic;
 	DDS::Topic* a_topic2 = topic->get_topic();
 	DDS::DataWriterQos qos2;
-	DDS::DataWriterListener* a_listener2 = NULL;
 	OpenDDSDataWriterQos::convert(qos, qos2);
-	//TODO make converter for DataWriterListener
-	//OpenDDSDataWriterListener* a_listener2 = new OpenDDSDataWriterListener(a_listener);
+	OpenDDSDataWriterListener* a_listener2 = new OpenDDSDataWriterListener(a_listener);
 	DDS::StatusMask mask2 = (DDS::StatusMask) mask;
 
 	DDS::DataWriter* datawriter = instance->create_datawriter(a_topic2, qos2, a_listener2, mask2);
@@ -535,6 +533,18 @@ void OpenDDSOwnershipStrengthQosPolicy::convert(const OwnershipStrengthQosPolicy
 
 void OpenDDSOwnershipStrengthQosPolicy::convert(const DDS::OwnershipStrengthQosPolicy& source, OwnershipStrengthQosPolicy& target) {
 	target.value = (int32_t) source.value;
+}
+
+OpenDDSDataWriterListener::OpenDDSDataWriterListener(dds::DataWriterListener* l) {
+	listener = l;
+}
+
+OpenDDSDataWriterListener::~OpenDDSDataWriterListener() {
+	delete listener;
+}
+
+dds::DataWriterListener* OpenDDSDataWriterListener::get_listener() {
+	return listener;
 }
 
 };
