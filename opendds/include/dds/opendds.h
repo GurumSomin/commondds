@@ -343,6 +343,7 @@ namespace dds {
 	public:
 		OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent);
 		virtual ~OpenDDSPublisher();
+		DataWriter* create_datawriter(Topic* a_topic, const DataWriterQos& qos, DataWriterListener* a_listener, const StatusMask mask);
 		//TODO generate inherit functions
 	};
 
@@ -350,9 +351,10 @@ namespace dds {
 	private:
 		DDS::DataWriter* instance;
 	public:
-		//TODO generate inherit functions and below functions
 		OpenDDSDataWriter(DDS::DataWriter* d);
 		virtual ~OpenDDSDataWriter();
+		DDS::DataWriter* get_instance();
+		//TODO generate inherit functions
 	};
 
 	class OpenDDSTopicListener : public DDS::TopicListener {

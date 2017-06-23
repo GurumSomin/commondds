@@ -218,10 +218,10 @@ DomainParticipantListener* OpenDDSDomainParticipantListener::get_listener() {
 }
 
 void OpenDDSDomainParticipantListener::on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status) {
-	dds::Topic* topic = new OpenDDSTopic(the_topic);
+	OpenDDSTopic topic(the_topic);
 	dds::InconsistentTopicStatus t;
 	OpenDDSInconsistentTopicStatus::convert(status, t);
-	listener->on_inconsistent_topic(topic, t);
+	listener->on_inconsistent_topic(&topic, t);
 }
 
 OpenDDSTopic::OpenDDSTopic(DDS::Topic* the_topic) {
@@ -448,6 +448,35 @@ OpenDDSPublisher::~OpenDDSPublisher() {
 	parent->get_instance()->delete_publisher(instance);
 }
 
+DataWriter* OpenDDSPublisher::create_datawriter(Topic* a_topic, const DataWriterQos& qos, DataWriterListener* a_listener, const StatusMask mask) {
+	OpenDDSTopic* topic = (OpenDDSTopic*)a_topic;
+	DDS::Topic* a_topic2 = topic->get_topic();
+	DDS::DataWriterQos qos2;
+	DDS::DataWriterListener* a_listener2 = NULL;
+	//TODO make converter for DataWriterQos
+	//OpenDDSDataWriterQos::convert(qos, qos2);
+	//TODO make converter for DataWriterListener
+	//OpenDDSDataWriterListener* a_listener2 = new OpenDDSDataWriterListener(a_listener);
+	DDS::StatusMask mask2 = (DDS::StatusMask) mask;
+
+	DDS::DataWriter* datawriter = instance->create_datawriter(a_topic2, qos2, a_listener2, mask2);
+	OpenDDSDataWriter* datawriter2 = new OpenDDSDataWriter(datawriter);
+	return datawriter2;
+}
+
+OpenDDSDataWriter::OpenDDSDataWriter(DDS::DataWriter* d) {
+	instance = d;
+}
+
+OpenDDSDataWriter::~OpenDDSDataWriter() {
+	DDS::Publisher* p = instance->get_publisher();
+	p->delete_datawriter(instance);
+}
+
+DDS::DataWriter* OpenDDSDataWriter::get_instance() {
+	return instance;
+}
+
 OpenDDSTopicListener::OpenDDSTopicListener(dds::TopicListener* t) {
 	listener = t;
 }
@@ -461,10 +490,10 @@ dds::TopicListener* OpenDDSTopicListener::get_listener() {
 }
 
 void OpenDDSTopicListener::on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status) {
-	dds::Topic* topic = new OpenDDSTopic(the_topic);
+	OpenDDSTopic topic(the_topic);
 	dds::InconsistentTopicStatus t;
 	OpenDDSInconsistentTopicStatus::convert(status, t);
-	listener->on_inconsistent_topic(topic, t);
+	listener->on_inconsistent_topic(&topic, t);
 }
 
 };
