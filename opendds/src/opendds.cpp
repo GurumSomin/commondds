@@ -453,8 +453,7 @@ DataWriter* OpenDDSPublisher::create_datawriter(Topic* a_topic, const DataWriter
 	DDS::Topic* a_topic2 = topic->get_topic();
 	DDS::DataWriterQos qos2;
 	DDS::DataWriterListener* a_listener2 = NULL;
-	//TODO make converter for DataWriterQos
-	//OpenDDSDataWriterQos::convert(qos, qos2);
+	OpenDDSDataWriterQos::convert(qos, qos2);
 	//TODO make converter for DataWriterListener
 	//OpenDDSDataWriterListener* a_listener2 = new OpenDDSDataWriterListener(a_listener);
 	DDS::StatusMask mask2 = (DDS::StatusMask) mask;
@@ -510,6 +509,14 @@ void OpenDDSDataWriterQos::convert(const DataWriterQos& source, DDS::DataWriterQ
 	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
 	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
-	//TODO make OwnershipStrengthQosPolicy converter
+	OpenDDSOwnershipStrengthQosPolicy::convert(source.ownership_strength, target.ownership_strength);
+}
+
+void OpenDDSOwnershipStrengthQosPolicy::convert(const OwnershipStrengthQosPolicy& source, DDS::OwnershipStrengthQosPolicy& target) {
+	target.value = (CORBA::Long) source.value;
+}
+
+void OpenDDSOwnershipStrengthQosPolicy::convert(const DDS::OwnershipStrengthQosPolicy& source, OwnershipStrengthQosPolicy& target) {
+	target.value = (int32_t) source.value;
 }
 };

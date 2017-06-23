@@ -372,6 +372,12 @@ namespace dds {
 		static void convert(const DataWriterQos& source, DDS::DataWriterQos& target);
 		static void convert(const DDS::DataWriterQos& source, DataWriterQos& target);
 	};
+
+	class OpenDDSOwnershipStrengthQosPolicy {
+	public:
+		static void convert(const OwnershipStrengthQosPolicy& source, DDS::OwnershipStrengthQosPolicy& target);
+		static void convert(const DDS::OwnershipStrengthQosPolicy& source, OwnershipStrengthQosPolicy& target);
+	};
 };
 
 #endif /* __DDS_OPENDDS__ */
