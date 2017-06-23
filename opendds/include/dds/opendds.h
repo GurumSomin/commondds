@@ -378,6 +378,21 @@ namespace dds {
 		static void convert(const OwnershipStrengthQosPolicy& source, DDS::OwnershipStrengthQosPolicy& target);
 		static void convert(const DDS::OwnershipStrengthQosPolicy& source, OwnershipStrengthQosPolicy& target);
 	};
+
+	class OpenDDSDataWriterListener : public DDS::DataWriterListener {
+	private:
+		dds::DataWriterListener* listener;
+	public:
+		OpenDDSDataWriterListener(dds::DataWriterListener* l);
+		virtual ~OpenDDSDataWriterListener();
+		dds::DataWriterListener* get_listener();
+
+		//TODO generate inherit functions
+		virtual void on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status);
+		virtual void on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status);
+		virtual void on_liveliness_lost(DDS::DataWriter* writer, const DDS::LivelinessLostStatus& status);
+		virtual void on_publication_matched(DDS::DataWriter* writer, const DDS::PublicationMatchedStatus& status);
+	};
 };
 
 #endif /* __DDS_OPENDDS__ */
