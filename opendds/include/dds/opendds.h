@@ -367,6 +367,11 @@ namespace dds {
 		virtual void on_inconsistent_topic(DDS::Topic* the_topic, const DDS::InconsistentTopicStatus& status);
 	};
 
+	class OpenDDSDataWriterQos {
+	public:
+		static void convert(const DataWriterQos& source, DDS::DataWriterQos& target);
+		static void convert(const DDS::DataWriterQos& source, DataWriterQos& target);
+	};
 };
 
 #endif /* __DDS_OPENDDS__ */

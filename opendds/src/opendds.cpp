@@ -496,4 +496,20 @@ void OpenDDSTopicListener::on_inconsistent_topic(DDS::Topic* the_topic, const DD
 	listener->on_inconsistent_topic(&topic, t);
 }
 
+void OpenDDSDataWriterQos::convert(const DataWriterQos& source, DDS::DataWriterQos& target) {
+	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
+	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
+	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
+	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
+	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
+	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
+	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
+	OpenDDSResourceLimitsQosPolicy::convert(source.resource_limits, target.resource_limits);
+	OpenDDSTransportPriorityQosPolicy::convert(source.transport_priority, target.transport_priority);
+	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
+	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
+	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
+	//TODO make OwnershipStrengthQosPolicy converter
+}
 };
