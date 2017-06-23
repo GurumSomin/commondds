@@ -512,6 +512,23 @@ void OpenDDSDataWriterQos::convert(const DataWriterQos& source, DDS::DataWriterQ
 	OpenDDSOwnershipStrengthQosPolicy::convert(source.ownership_strength, target.ownership_strength);
 }
 
+void OpenDDSDataWriterQos::convert(const DDS::DataWriterQos& source, DataWriterQos& target) {
+	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
+	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
+	OpenDDSDeadlineQosPolicy::convert(source.deadline, target.deadline);
+	OpenDDSLatencyBudgetQosPolicy::convert(source.latency_budget, target.latency_budget);
+	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
+	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
+	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
+	OpenDDSResourceLimitsQosPolicy::convert(source.resource_limits, target.resource_limits);
+	OpenDDSTransportPriorityQosPolicy::convert(source.transport_priority, target.transport_priority);
+	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
+	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
+	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
+	OpenDDSOwnershipStrengthQosPolicy::convert(source.ownership_strength, target.ownership_strength);
+}
+
 void OpenDDSOwnershipStrengthQosPolicy::convert(const OwnershipStrengthQosPolicy& source, DDS::OwnershipStrengthQosPolicy& target) {
 	target.value = (CORBA::Long) source.value;
 }
@@ -519,4 +536,5 @@ void OpenDDSOwnershipStrengthQosPolicy::convert(const OwnershipStrengthQosPolicy
 void OpenDDSOwnershipStrengthQosPolicy::convert(const DDS::OwnershipStrengthQosPolicy& source, OwnershipStrengthQosPolicy& target) {
 	target.value = (int32_t) source.value;
 }
+
 };
