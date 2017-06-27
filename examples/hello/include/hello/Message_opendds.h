@@ -3,32 +3,39 @@
 
 #include <stdint.h>
 #include <dds/dcps.h>
+#include <HelloTypeSupportC.h>
 
-namespace hello {
+namespace Hello {
 	class Message {
 	public:
 		uint32_t	seq;
 		uint64_t	time;
-		char*		message;
+		char*		msg;
 	};
 
-	class MessageTypeSupport : dds::TypeSupport {
+	//REAL user use this, so not put OpenDDS prefix.
+	class MessageTypeSupport : public dds::TypeSupport {
 	private:
 		MessageTypeSupport();
 		virtual ~MessageTypeSupport();
 		
 	public:
+		//TODO make below functions
 		static dds::ReturnCode_t register_type(
 			const dds::DomainParticipant* domain,
 			const char* type_name);
 		static const char* get_type_name();
 	};
 
-	class MessageDataWriter : dds::DataWriter {
+	class MessageDataWriter : public dds::DataWriter {
+	private:
+		DDS::DataWriter* ginstance;
+		hello::MessageDataWriter* instance;
 	public:
-		MessageDataWriter();
+		MessageDataWriter(DDS::DataWriter* g);
 		virtual ~MessageDataWriter();
 
+		/*
 		dds::InstanceHandle_t register_instance(
 			const Message* instance_data);
 		dds::InstanceHandle_t register_instance_w_timestamp(
@@ -41,9 +48,11 @@ namespace hello {
 			const Message* instance_data,
 			dds::InstanceHandle_t handle,
 			const dds::Time_t* source_timestamp);
+		*/
 		dds::ReturnCode_t write(
 			const Message* instance_data,
 			dds::InstanceHandle_t handle);
+		/*
 		dds::ReturnCode_t write_w_timestamp(
 			const Message* instance_data,
 			dds::InstanceHandle_t handle,
@@ -60,6 +69,7 @@ namespace hello {
 			dds::InstanceHandle_t handle);
 		dds::InstanceHandle_t lookup_instance(
 			const Message* instance_data);
+		*/
 	};
 };
 

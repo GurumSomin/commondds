@@ -8,7 +8,7 @@ DDS_ROOT = $(OPENDDS_HOME)
 
 NAME = opendds
 CC = g++
-CFLAGS = -Iinclude -I../include -I$(ACE_ROOT) -I$(TAO_ROOT) -I$(DDS_ROOT) \
+CFLAGS = -Iinclude -I../include -I$(ACE_ROOT) -I$(TAO_ROOT) -I$(DDS_ROOT) -I../examples/hello/include \
 	-fPIC \
 	-Wl,-E \
 	-Wno-deprecated-declarations -W -Wpointer-arith \

@@ -3,7 +3,7 @@
 
 #include <ctime>
 
-#include <hello/Message.h>
+#include <hello/Message_opendds.h>
 
 int main(int argc, char** argv) {
 	int error_code = 0;
@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
 	dds::DomainParticipant* participant = NULL;
 	dds::Publisher* publisher = NULL;
 	dds::Topic* topic = NULL;
-	hello::MessageDataWriter* writer = NULL;
+	Hello::MessageDataWriter* writer = NULL;
 	dds::ReturnCode_t ret = 0;
 
 	// 1. Create DomainParticipant
@@ -40,13 +40,13 @@ int main(int argc, char** argv) {
 	}
 
 	// 3. Register type to the DomainParticipant
-	ret = hello::MessageTypeSupport::register_type(
+	ret = Hello::MessageTypeSupport::register_type(
 		participant, /* domain:dds::DomainParticipant* */
-		hello::MessageTypeSupport::get_type_name()); /* type_name:char* */
+		Hello::MessageTypeSupport::get_type_name()); /* type_name:char* */
 
 	if(ret != dds::RETCODE_OK) {
 		std::cerr << "Cannot register type to participant: " << 
-			hello::MessageTypeSupport::get_type_name() << std::endl;
+			Hello::MessageTypeSupport::get_type_name() << std::endl;
 		error_code = 3;
 		goto error;
 	}
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 	// 4. Create Topic
 	topic = participant->create_topic(
 		"Hello CommonDDS", /* topic_name:char* */
-		hello::MessageTypeSupport::get_type_name(), /* type_name:char* */
+		Hello::MessageTypeSupport::get_type_name(), /* type_name:char* */
 		dds::TOPIC_QOS_DEFAULT, /* qos: TopicQos* */
 		NULL, /* a_listener:TopicListener* */
 		0); /* mask:StatusMask */
@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 	}
 
 	// 5. Create DataWriter
-	writer = (hello::MessageDataWriter*)publisher->create_datawriter(
+	writer = (Hello::MessageDataWriter*)publisher->create_datawriter(
 			topic, /* a_topic:Topic* */
 			dds::DATAWRITER_QOS_DEFAULT, /* qos:DataWriterQos* qos */
 			NULL, /* a_listener:DataWriterListener* */
@@ -79,10 +79,10 @@ int main(int argc, char** argv) {
 	}
 
 	// 6. Allocate Data
-	hello::Message msg;
+	Hello::Message msg;
 	msg.seq = 1;
 	msg.time = (unsigned long long)std::time(NULL);
-	msg.message = (char*)"Hello, CommonDDS!";
+	msg.msg = (char*)"Hello, CommonDDS!";
 
 	// 7. Write the Data
 	ret = writer->write(

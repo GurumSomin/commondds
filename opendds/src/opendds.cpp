@@ -457,21 +457,8 @@ DataWriter* OpenDDSPublisher::create_datawriter(Topic* a_topic, const DataWriter
 	DDS::StatusMask mask2 = (DDS::StatusMask) mask;
 
 	DDS::DataWriter* datawriter = instance->create_datawriter(a_topic2, qos2, a_listener2, mask2);
-	OpenDDSDataWriter* datawriter2 = new OpenDDSDataWriter(datawriter);
+	Hello::MessageDataWriter* datawriter2 = new Hello::MessageDataWriter(datawriter);
 	return datawriter2;
-}
-
-OpenDDSDataWriter::OpenDDSDataWriter(DDS::DataWriter* d) {
-	instance = d;
-}
-
-OpenDDSDataWriter::~OpenDDSDataWriter() {
-	DDS::Publisher* p = instance->get_publisher();
-	p->delete_datawriter(instance);
-}
-
-DDS::DataWriter* OpenDDSDataWriter::get_instance() {
-	return instance;
 }
 
 OpenDDSTopicListener::OpenDDSTopicListener(dds::TopicListener* t) {

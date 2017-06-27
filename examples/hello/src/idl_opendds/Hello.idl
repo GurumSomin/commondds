@@ -1,7 +1,9 @@
 module hello {
+#pragma DCPS_DATA_TYPE "hello::Message"
+#pragma DCPS_DATA_KEY "hello::Message seq"
 	struct Message {
 		unsigned long		seq;
 		unsigned long long	time;
 		string				msg;
 	};
-}
+};
