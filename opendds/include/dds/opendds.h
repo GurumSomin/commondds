@@ -9,6 +9,8 @@
 #include <dds/DCPS/Service_Participant.h>
 #include <dds/DCPS/StaticIncludes.h>
 
+#include <hello/Message_opendds.h>
+
 namespace dds {
 	class OpenDDSDomainParticipantFactory : public DomainParticipantFactory {
 	private:
@@ -344,16 +346,6 @@ namespace dds {
 		OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent);
 		virtual ~OpenDDSPublisher();
 		DataWriter* create_datawriter(Topic* a_topic, const DataWriterQos& qos, DataWriterListener* a_listener, const StatusMask mask);
-		//TODO generate inherit functions
-	};
-
-	class OpenDDSDataWriter : public DataWriter {
-	private:
-		DDS::DataWriter* instance;
-	public:
-		OpenDDSDataWriter(DDS::DataWriter* d);
-		virtual ~OpenDDSDataWriter();
-		DDS::DataWriter* get_instance();
 		//TODO generate inherit functions
 	};
 

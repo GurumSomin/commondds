@@ -1,9 +1,9 @@
 .PHONY: clean all COMMONDDS_HOME
 
 CC = g++
-CFLAGS = -Iinclude -I$(COMMONDDS_HOME)/include
+CFLAGS = -Iinclude -I$(COMMONDDS_HOME)/include -Isrc/idl_opendds
 
-SRCS = src/Message.cpp
+SRCS = src/Message_opendds.cpp
 OBJS = $(patsubst src/%.cpp, obj/%.o, $(SRCS))
 
 all: pub sub

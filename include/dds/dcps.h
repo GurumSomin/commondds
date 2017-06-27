@@ -1433,8 +1433,8 @@ namespace dds {
 		// 	InstanceHandle_t handle,
 		// 	const Time_t* source_timestamp);
 		// abstract ReturnCode_t write(
-		// 	const Data* instance_data,
-		// 	InstanceHandle_t handle);
+		//  const Data* instance_data,
+		//  InstanceHandle_t handle);
 		// abstract ReturnCode_t write_w_timestamp(
 		// 	const Data* instance_data,
 		// 	InstanceHandle_t handle,
