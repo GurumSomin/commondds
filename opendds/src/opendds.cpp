@@ -102,6 +102,10 @@ DDS::DomainParticipant* OpenDDSDomainParticipant::get_instance() {
 	return instance;
 }
 
+ReturnCode_t OpenDDSDomainParticipant::delete_contained_entities() { //TODO: should find the method to delete instances of OpenDDS prefixed classes
+	return (ReturnCode_t)instance->delete_contained_entities();
+}
+
 void OpenDDSDomainParticipantQos::convert(const DomainParticipantQos& source, DDS::DomainParticipantQos& target) {
 	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSEntityFactoryQosPolicy::convert(source.entity_factory, target.entity_factory);

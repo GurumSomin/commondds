@@ -95,7 +95,9 @@ namespace dds {
 			const StringSeq* expression_parameters);
 		ReturnCode_t delete_multitopic(
 			const MultiTopic* a_multitopic);
+		*/
 		ReturnCode_t delete_contained_entities();
+		/*
 		ReturnCode_t set_qos(
 			const DomainParticipantQos& qos);
 		ReturnCode_t get_qos(

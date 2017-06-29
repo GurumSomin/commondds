@@ -12,7 +12,10 @@ MessageTypeSupport::~MessageTypeSupport() {
 dds::ReturnCode_t MessageTypeSupport::register_type(
 	const dds::DomainParticipant* domain,
 	const char* type_name) {
-	return dds::RETCODE_ERROR;
+
+	hello::MessageTypeSupport* ts = new hello::MessageTypeSupportImpl;
+
+	return (dds::ReturnCode_t)ts->register_type((DDS::DomainParticipant_var)domain, type_name);
 }
 
 const char* MessageTypeSupport::get_type_name() {
