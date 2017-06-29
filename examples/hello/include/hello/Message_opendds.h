@@ -18,7 +18,7 @@ namespace Hello {
 	private:
 		MessageTypeSupport();
 		virtual ~MessageTypeSupport();
-		
+	
 	public:
 		//TODO make below functions
 		static dds::ReturnCode_t register_type(
