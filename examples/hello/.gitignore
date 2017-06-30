@@ -4,3 +4,4 @@ obj
 src/idl_opendds/HelloType*
 src/idl_opendds/HelloC.*
 src/idl_opendds/HelloS.*
+repo.ior

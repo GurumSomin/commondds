@@ -3,7 +3,8 @@
 
 #include <stdint.h>
 #include <dds/dcps.h>
-#include <HelloTypeSupportC.h>
+#include <dds/opendds.h>
+#include <HelloTypeSupportImpl.h>
 
 namespace Hello {
 	class Message {
@@ -20,7 +21,6 @@ namespace Hello {
 		virtual ~MessageTypeSupport();
 	
 	public:
-		//TODO make below functions
 		static dds::ReturnCode_t register_type(
 			const dds::DomainParticipant* domain,
 			const char* type_name);

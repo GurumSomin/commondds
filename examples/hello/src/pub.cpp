@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
 	// 6. Allocate Data
 	Hello::Message msg;
 	msg.seq = 1;
-	msg.time = (unsigned long long)std::time(NULL);
+	msg.time = 10000;
 	msg.msg = (char*)"Hello, CommonDDS!";
 
 	// 7. Write the Data
