@@ -38,7 +38,8 @@ DomainParticipant* OpenDDSDomainParticipantFactory::create_participant(
 }
 
 ReturnCode_t OpenDDSDomainParticipantFactory::delete_participant(const DomainParticipant* a_participant) {
-	return RETCODE_ERROR;
+	OpenDDSDomainParticipant* a_participant2 = (OpenDDSDomainParticipant*) a_participant;
+	return (ReturnCode_t)instance->delete_participant(a_participant2->get_instance());
 }
 
 DomainParticipant* OpenDDSDomainParticipantFactory::lookup_participant(DomainId_t domain_id) {
@@ -81,7 +82,7 @@ Publisher* OpenDDSDomainParticipant::create_publisher(const PublisherQos& qos, P
 	mask2 = (DDS::StatusMask) mask;
 
 	DDS::Publisher* publisher = this->instance->create_publisher(qos2, a_listener2, mask2);
-	Publisher* publisher2 = new OpenDDSPublisher(publisher, this);
+	OpenDDSPublisher* publisher2 = new OpenDDSPublisher(publisher, this);
 
 	return publisher2;
 }
@@ -228,6 +229,31 @@ void OpenDDSDomainParticipantListener::on_inconsistent_topic(DDS::Topic* the_top
 	listener->on_inconsistent_topic(&topic, t);
 }
 
+void OpenDDSDomainParticipantListener::on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_liveliness_lost(DDS::DataWriter* writer, const DDS::LivelinessLostStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_publication_matched(DDS::DataWriter* writer, const DDS::PublicationMatchedStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_data_on_readers(DDS::Subscriber* the_subscriber) {
+}
+void OpenDDSDomainParticipantListener::on_requested_deadline_missed(DDS::DataReader* the_reader, const DDS::RequestedDeadlineMissedStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_requested_incompatible_qos(DDS::DataReader* the_reader, const DDS::RequestedIncompatibleQosStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_sample_rejected(DDS::DataReader* the_reader, const DDS::SampleRejectedStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_liveliness_changed(DDS::DataReader* the_reader, const DDS::LivelinessChangedStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_data_available(DDS::DataReader* the_reader) {
+}
+void OpenDDSDomainParticipantListener::on_subscription_matched(DDS::DataReader* the_reader, const DDS::SubscriptionMatchedStatus& status) {
+}
+void OpenDDSDomainParticipantListener::on_sample_lost(DDS::DataReader* the_reader, const DDS::SampleLostStatus& status) {
+}
+
 OpenDDSTopic::OpenDDSTopic(DDS::Topic* the_topic) {
 	topic = the_topic;
 }
@@ -235,6 +261,10 @@ OpenDDSTopic::OpenDDSTopic(DDS::Topic* the_topic) {
 OpenDDSTopic::~OpenDDSTopic() {
 	DDS::DomainParticipant* dp = topic->get_participant();
 	dp->delete_topic(topic);
+}
+
+DDS::Topic* OpenDDSTopic::get_topic() {
+	return this->topic;
 }
 
 ReturnCode_t OpenDDSTopic::set_qos(const TopicQos& qos) {
@@ -269,9 +299,11 @@ void OpenDDSTopicQos::convert(const TopicQos& source, DDS::TopicQos& target) {
 	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
 	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
 	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSResourceLimitsQosPolicy::convert(source.resource_limits, target.resource_limits);
 	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
 	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
 	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
+	OpenDDSTransportPriorityQosPolicy::convert(source.transport_priority, target.transport_priority);
 }
 
 void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
@@ -283,9 +315,11 @@ void OpenDDSTopicQos::convert(const DDS::TopicQos& source, TopicQos& target) {
 	OpenDDSLivelinessQosPolicy::convert(source.liveliness, target.liveliness);
 	OpenDDSReliabilityQosPolicy::convert(source.reliability, target.reliability);
 	OpenDDSDestinationOrderQosPolicy::convert(source.destination_order, target.destination_order);
+	OpenDDSResourceLimitsQosPolicy::convert(source.resource_limits, target.resource_limits);
 	OpenDDSHistoryQosPolicy::convert(source.history, target.history);
 	OpenDDSLifespanQosPolicy::convert(source.lifespan, target.lifespan);
 	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
+	OpenDDSTransportPriorityQosPolicy::convert(source.transport_priority, target.transport_priority);
 }
 
 void OpenDDSTopicDataQosPolicy::convert(const TopicDataQosPolicy& source, DDS::TopicDataQosPolicy& target) {
@@ -431,6 +465,15 @@ void OpenDDSOwnershipQosPolicy::convert(const DDS::OwnershipQosPolicy& source, O
 	target.kind = (OwnershipQosPolicyKind) source.kind;
 }
 
+void OpenDDSWriterDataLifecycleQosPolicy::convert(const WriterDataLifecycleQosPolicy& source, DDS::WriterDataLifecycleQosPolicy target) {
+	CORBA::Boolean b = (CORBA::Boolean)source.autodispose_unregistered_instances;
+	target.autodispose_unregistered_instances = b;
+}
+void OpenDDSWriterDataLifecycleQosPolicy::convert(const DDS::WriterDataLifecycleQosPolicy& source, WriterDataLifecycleQosPolicy target) {
+	bool b = (bool)source.autodispose_unregistered_instances;
+	target.autodispose_unregistered_instances = b;
+}
+
 OpenDDSPublisherListener::OpenDDSPublisherListener(dds::PublisherListener* p) {
 	this->listener = p;
 }
@@ -443,6 +486,14 @@ dds::PublisherListener* OpenDDSPublisherListener::get_listener() {
 	return listener;
 }
 
+void OpenDDSPublisherListener::on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status) {
+}
+void OpenDDSPublisherListener::on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status) {
+}
+void OpenDDSPublisherListener::on_liveliness_lost(DDS::DataWriter* writer, const DDS::LivelinessLostStatus& status) {
+}
+void OpenDDSPublisherListener::on_publication_matched(DDS::DataWriter* writer, const DDS::PublicationMatchedStatus& status) {
+}
 OpenDDSPublisher::OpenDDSPublisher(DDS::Publisher* instance, OpenDDSDomainParticipant* parent) {
 	this->instance = instance;
 	this->parent = parent;
@@ -484,6 +535,7 @@ void OpenDDSTopicListener::on_inconsistent_topic(DDS::Topic* the_topic, const DD
 	listener->on_inconsistent_topic(&topic, t);
 }
 
+
 void OpenDDSDataWriterQos::convert(const DataWriterQos& source, DDS::DataWriterQos& target) {
 	OpenDDSDurabilityQosPolicy::convert(source.durability, target.durability);
 	OpenDDSDurabilityServiceQosPolicy::convert(source.durability_service, target.durability_service);
@@ -499,6 +551,7 @@ void OpenDDSDataWriterQos::convert(const DataWriterQos& source, DDS::DataWriterQ
 	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
 	OpenDDSOwnershipStrengthQosPolicy::convert(source.ownership_strength, target.ownership_strength);
+	OpenDDSWriterDataLifecycleQosPolicy::convert(source.writer_data_lifecycle, target.writer_data_lifecycle);
 }
 
 void OpenDDSDataWriterQos::convert(const DDS::DataWriterQos& source, DataWriterQos& target) {
@@ -516,6 +569,7 @@ void OpenDDSDataWriterQos::convert(const DDS::DataWriterQos& source, DataWriterQ
 	OpenDDSUserDataQosPolicy::convert(source.user_data, target.user_data);
 	OpenDDSOwnershipQosPolicy::convert(source.ownership, target.ownership);
 	OpenDDSOwnershipStrengthQosPolicy::convert(source.ownership_strength, target.ownership_strength);
+	OpenDDSWriterDataLifecycleQosPolicy::convert(source.writer_data_lifecycle, target.writer_data_lifecycle);
 }
 
 void OpenDDSOwnershipStrengthQosPolicy::convert(const OwnershipStrengthQosPolicy& source, DDS::OwnershipStrengthQosPolicy& target) {
@@ -538,4 +592,12 @@ dds::DataWriterListener* OpenDDSDataWriterListener::get_listener() {
 	return listener;
 }
 
+void OpenDDSDataWriterListener::on_offered_deadline_missed(DDS::DataWriter* writer, const DDS::OfferedDeadlineMissedStatus& status) {
+}
+void OpenDDSDataWriterListener::on_offered_incompatible_qos(DDS::DataWriter* writer, const DDS::OfferedIncompatibleQosStatus& status) {
+}
+void OpenDDSDataWriterListener::on_liveliness_lost(DDS::DataWriter* writer, const DDS::LivelinessLostStatus& status) {
+}
+void OpenDDSDataWriterListener::on_publication_matched(DDS::DataWriter* writer, const DDS::PublicationMatchedStatus& status) {
+}
 };

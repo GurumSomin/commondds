@@ -387,6 +387,12 @@ namespace dds {
 		virtual void on_liveliness_lost(DDS::DataWriter* writer, const DDS::LivelinessLostStatus& status);
 		virtual void on_publication_matched(DDS::DataWriter* writer, const DDS::PublicationMatchedStatus& status);
 	};
+
+	class OpenDDSWriterDataLifecycleQosPolicy {
+	public:
+		static void convert(const WriterDataLifecycleQosPolicy& source, DDS::WriterDataLifecycleQosPolicy target);
+		static void convert(const DDS::WriterDataLifecycleQosPolicy& source, WriterDataLifecycleQosPolicy target);
+	};
 };
 
 #endif /* __DDS_OPENDDS__ */

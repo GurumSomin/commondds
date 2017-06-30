@@ -638,7 +638,8 @@ PresentationQosPolicy::~PresentationQosPolicy() {
 }
 
 DeadlineQosPolicy::DeadlineQosPolicy() {
-	DeadlineQosPolicy(DURATION_INFINITE_SEC, DURATION_INFINITE_NSEC);
+	this->period.sec = DURATION_INFINITE_SEC;
+	this->period.nanosec = DURATION_INFINITE_NSEC;
 }
 
 DeadlineQosPolicy::DeadlineQosPolicy(Duration_t& period) {

@@ -1182,7 +1182,7 @@ namespace dds {
 		virtual ~DomainParticipant();
 		
 		// Factory interfaces
-		Publisher* create_publisher(
+		virtual Publisher* create_publisher(
 			const PublisherQos& qos,
 			PublisherListener* a_listener,
 			const StatusMask mask);
@@ -1195,7 +1195,7 @@ namespace dds {
 		ReturnCode_t delete_subscriber(
 			const Subscriber* s);
 		Subscriber* get_builtin_subscriber();
-		Topic* create_topic(
+		virtual Topic* create_topic(
 			const char* topic_name,
 			const char* type_name,
 			const TopicQos& qos,
@@ -1222,7 +1222,7 @@ namespace dds {
 			const StringSeq* expression_parameters);
 		ReturnCode_t delete_multitopic(
 			const MultiTopic* a_multitopic);
-		ReturnCode_t delete_contained_entities();
+		virtual ReturnCode_t delete_contained_entities();
 		ReturnCode_t set_qos(
 			const DomainParticipantQos& qos);
 		ReturnCode_t get_qos(
@@ -1381,7 +1381,7 @@ namespace dds {
 		Publisher();
 		virtual ~Publisher();
 		
-		DataWriter* create_datawriter(
+		virtual DataWriter* create_datawriter(
 			Topic* a_topic,
 			const DataWriterQos& qos,
 			DataWriterListener* a_listener,
